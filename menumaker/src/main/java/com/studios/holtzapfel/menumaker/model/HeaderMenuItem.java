@@ -1,16 +1,14 @@
 package com.studios.holtzapfel.menumaker.model;
 
+import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.studios.holtzapfel.menumaker.MenuFragment;
 import com.studios.holtzapfel.menumaker.R;
 import com.studios.holtzapfel.menumaker.model.interfaces.IHeaderItem;
-
-import java.util.List;
 
 /**
  * Created by holtzapfel on 6/19/17.
@@ -18,28 +16,38 @@ import java.util.List;
 
 public class HeaderMenuItem extends AbstractMenuItem<HeaderMenuItem, HeaderMenuItem.HeaderViewHolder> implements IHeaderItem<HeaderMenuItem, HeaderMenuItem.HeaderViewHolder>{
 
-    protected String mTitle;
+    private String mTitle;
+
+    public HeaderMenuItem(int id){
+        this.mID = id;
+    }
+
+    public HeaderMenuItem(int id, String title){
+        this.mID = id;
+        this.mTitle = title;
+    }
+
+    public HeaderMenuItem(String title){
+        this.mTitle = title;
+    }
 
     @Override
     public int getMenuType() {
-        return R.id.menu_maker_item_header;
+        return MENU_ITEM_TYPE_HEADER;
     }
 
     @Override
-    public int getLayoutRes() {
-        return 0;
-    }
-
-    @Override
-    public void bindView(HeaderViewHolder holder, final MenuFragment.OnFragmentInteractionListener listener) {
+    public void bindView(Context context, HeaderViewHolder holder, final MenuFragment.OnFragmentInteractionListener listener) {
         holder.title.setText(mTitle);
 
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                listener.onMenuItemClick(HeaderMenuItem.this);
-            }
-        });
+        if (mID != -1) {
+            holder.cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.onMenuItemClick(HeaderMenuItem.this);
+                }
+            });
+        }
     }
 
     @Override
@@ -56,11 +64,6 @@ public class HeaderMenuItem extends AbstractMenuItem<HeaderMenuItem, HeaderMenuI
     @Override
     public String getTitle() {
         return mTitle;
-    }
-
-    @Override
-    public HeaderViewHolder getViewHolder(View v) {
-        return new HeaderViewHolder(v);
     }
 
     public static class HeaderViewHolder extends RecyclerView.ViewHolder{

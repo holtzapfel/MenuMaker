@@ -1,14 +1,12 @@
 package com.studios.holtzapfel.menumaker;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -85,25 +83,25 @@ public class MenuFragment extends Fragment {
     }
 
     public interface OnFragmentInteractionListener {
-        String getTitle(int rootID);
-        boolean isFABEnabled(int rootID);
-        void onFABClick(int rootID);
-        List<IMenuItem> onRequestMenuItems(int rootID);
+        List<IMenuItem> onRequestMenuItems(int pageID);
         IMenuItem onMenuItemClick(IMenuItem menuItem);
+        String onRequestTitle(int pageID);
+        boolean isFloatingActionButtonEnabled(int pageID);
+        void onFloatingActionButtonClick(int pageID);
     }
 
     private void updateUI(){
         // Set title
-        if (mListener.getTitle(mRootID) != null){
-            getActivity().setTitle(mListener.getTitle(mRootID));
+        if (mListener.onRequestTitle(mRootID) != null){
+            getActivity().setTitle(mListener.onRequestTitle(mRootID));
         }
 
         // Configure FAB
-        if (mListener.isFABEnabled(mRootID)){
+        if (mListener.isFloatingActionButtonEnabled(mRootID)){
             mFAB.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mListener.onFABClick(mRootID);
+                    mListener.onFloatingActionButtonClick(mRootID);
                 }
             });
         } else mFAB.setVisibility(View.GONE);
@@ -123,6 +121,6 @@ public class MenuFragment extends Fragment {
             }
         });
         // TODO SETUP RECYCLER ADAPTER
-        mRecycler.setAdapter(new MenuFragmentRecyclerAdapter(menuItems, mListener));
+        mRecycler.setAdapter(new MenuFragmentRecyclerAdapter(getContext(), menuItems, mListener));
     }
 }
