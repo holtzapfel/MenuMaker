@@ -11,4 +11,8 @@ public interface IHeaderItem<T, VH extends RecyclerView.ViewHolder> extends IMen
     T setTitle(String title);
 
     String getTitle();
+
+    T setTitleTextColor(int colorRes);
+
+    int getTitleTextColorRes();
 }

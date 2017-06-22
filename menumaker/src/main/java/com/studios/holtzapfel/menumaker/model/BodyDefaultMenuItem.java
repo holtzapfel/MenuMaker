@@ -66,6 +66,9 @@ public class BodyDefaultMenuItem extends BaseBodyMenuItem<BodyDefaultMenuItem, B
             holder.title.setVisibility(View.VISIBLE);
             holder.title.setText(getTitle());
         } else holder.title.setVisibility(View.GONE);
+        if (getTitleTextColorRes() != -1){
+            holder.title.setTextColor(ResourcesCompat.getColor(context.getResources(), getTitleTextColorRes(), context.getTheme()));
+        }
 
         // Configure description
         if (getDescription() != null){

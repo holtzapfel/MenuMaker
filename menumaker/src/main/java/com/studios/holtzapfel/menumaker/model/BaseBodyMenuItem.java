@@ -17,6 +17,7 @@ public abstract class BaseBodyMenuItem<T, VH extends RecyclerView.ViewHolder> ex
     private int mIconRes = -1;
     private boolean isIconVisible = true;
     private boolean isLastItem = false;
+    private int mTitleTextColorRes = -1;
 
     @Override
     public T setTitle(String title) {
@@ -82,5 +83,16 @@ public abstract class BaseBodyMenuItem<T, VH extends RecyclerView.ViewHolder> ex
     @Override
     public boolean isLastItem() {
         return isLastItem;
+    }
+
+    @Override
+    public T setTitleTextColor(int colorRes) {
+        this.mTitleTextColorRes = colorRes;
+        return (T) this;
+    }
+
+    @Override
+    public int getTitleTextColorRes() {
+        return mTitleTextColorRes;
     }
 }

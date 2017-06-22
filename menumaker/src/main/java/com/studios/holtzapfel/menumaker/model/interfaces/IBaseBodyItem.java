@@ -33,4 +33,8 @@ public interface IBaseBodyItem<T, VH extends RecyclerView.ViewHolder> extends IM
 
     boolean isLastItem();
 
+    T setTitleTextColor(int colorRes);
+
+    int getTitleTextColorRes();
+
 }

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.studios.holtzapfel.menumaker.MMActivity;
+import com.studios.holtzapfel.menumaker.MMBuilder;
 import com.studios.holtzapfel.menumaker.model.BaseBodyMenuItem;
 import com.studios.holtzapfel.menumaker.model.BodyDefaultMenuItem;
 import com.studios.holtzapfel.menumaker.model.BodySwitchMenuItem;
@@ -75,6 +76,7 @@ public class MainActivity extends MMActivity{
     @Override
     public List<IMenuItem> onRequestMenuItems(int pageID) {
         List<IMenuItem> menuItems = new ArrayList<>();
+
         switch (pageID){
             case PAGE_ROOT:
                 menuItems.add(new HeaderMenuItem("General Options"));
@@ -98,7 +100,19 @@ public class MainActivity extends MMActivity{
                 break;
         }
 
-        return menuItems;
+        //return menuItems;
+
+        return new MMBuilder(this)
+                .addMenuItems(
+                        new HeaderMenuItem("General Options"),
+                        new BodyDefaultMenuItem(0, "Title 1"),
+                        new BodyDefaultMenuItem(1, "Title 2").setLastItem(true),
+                        new FooterMenuItem(),
+                        new HeaderMenuItem("General Options").setTitleTextColor(R.color.colorPrimary),
+                        new BodyDefaultMenuItem(0, "Title 1")
+
+                )
+                .generateList();
     }
 
     @Override
