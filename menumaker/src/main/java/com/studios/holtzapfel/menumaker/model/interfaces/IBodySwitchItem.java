@@ -8,11 +8,11 @@ import android.support.v7.widget.RecyclerView;
 
 public interface IBodySwitchItem<T, VH extends RecyclerView.ViewHolder> extends IBaseBodyItem<T, VH> {
 
-    T setBooleanValue(boolean value);
+    T withBooleanValue(boolean value);
 
     boolean getBooleanValue();
 
-    T setSwitchEnabled(boolean isSwitchEnabled);
+    T withSwitchEnabled(boolean isSwitchEnabled);
 
     boolean isSwitchEnabled();
 

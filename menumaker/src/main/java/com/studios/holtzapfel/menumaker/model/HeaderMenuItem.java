@@ -66,7 +66,7 @@ public class HeaderMenuItem extends AbstractMenuItem<HeaderMenuItem, HeaderMenuI
     }
 
     @Override
-    public HeaderMenuItem setTitle(String title) {
+    public HeaderMenuItem withTitle(String title) {
         this.mTitle = title;
         return this;
     }
@@ -77,7 +77,7 @@ public class HeaderMenuItem extends AbstractMenuItem<HeaderMenuItem, HeaderMenuI
     }
 
     @Override
-    public HeaderMenuItem setTitleTextColor(int colorRes) {
+    public HeaderMenuItem withTitleTextColor(int colorRes) {
         this.mTitleTextColorRes = colorRes;
         return this;
     }

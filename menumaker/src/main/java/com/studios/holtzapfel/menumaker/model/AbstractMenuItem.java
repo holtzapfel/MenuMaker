@@ -8,10 +8,11 @@ import com.studios.holtzapfel.menumaker.model.interfaces.IMenuItem;
  * Created by holtzapfel on 6/19/17.
  */
 
-public abstract class AbstractMenuItem<T, VH extends RecyclerView.ViewHolder> implements IMenuItem<T, VH>{
+@SuppressWarnings("unchecked")
+abstract class AbstractMenuItem<T, VH extends RecyclerView.ViewHolder> implements IMenuItem<T, VH>{
 
-    protected int mID = -1;
-    protected boolean mIsEnabled;
+    int mID = -1;
+    boolean isEnabled = true;
 
     @Override
     public int getID() {
@@ -19,19 +20,23 @@ public abstract class AbstractMenuItem<T, VH extends RecyclerView.ViewHolder> im
     }
 
     @Override
-    public T setID(int id) {
+    public T withID(int id) {
         this.mID = id;
         return (T) this;
     }
 
     @Override
     public boolean isEnabled() {
-        return mIsEnabled;
+        return isEnabled;
     }
 
     @Override
-    public T setEnabled(boolean enabled) {
-        mIsEnabled = enabled;
+    public T withEnabled(boolean enabled) {
+        isEnabled = enabled;
         return (T) this;
     }
+
+    /*ImageView holderSetupIcon(ImageView icon){
+
+    }*/
 }

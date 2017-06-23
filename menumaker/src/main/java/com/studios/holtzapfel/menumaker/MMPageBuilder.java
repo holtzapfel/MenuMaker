@@ -14,7 +14,7 @@ import java.util.List;
  * Created by holtzapfel on 6/21/17.
  */
 
-public class MMBuilder {
+public class MMPageBuilder {
 
     private Context mContext;
     private List<IMenuItem> mMenuItems;
@@ -22,22 +22,22 @@ public class MMBuilder {
     private int mPrefHeaderTitleTextColorRes = -1;
     private int mPrefBodyTitleTextColorRes = -1;
 
-    public MMBuilder(Context context){
+    public MMPageBuilder(Context context){
         this.mContext = context;
         mMenuItems = new ArrayList<>();
     }
 
-    public MMBuilder addMenuItems(IMenuItem... items){
+    public MMPageBuilder addMenuItems(IMenuItem... items){
         Collections.addAll(mMenuItems, items);
         return this;
     }
 
-    public MMBuilder setHeaderTitleTextColor(int colorRes){
+    public MMPageBuilder setHeaderTitleTextColor(int colorRes){
         this.mPrefHeaderTitleTextColorRes = colorRes;
         return this;
     }
 
-    public MMBuilder setBodyTitleTextColor(int colorRes){
+    public MMPageBuilder setBodyTitleTextColor(int colorRes){
         this.mPrefBodyTitleTextColorRes = colorRes;
         return this;
     }
@@ -50,7 +50,7 @@ public class MMBuilder {
                 // Set custom header title text color if not already defined
                 if (mPrefHeaderTitleTextColorRes != -1){
                     if (headerMenuItem.getTitleTextColorRes() == -1){
-                        headerMenuItem.setTitleTextColor(mPrefHeaderTitleTextColorRes);
+                        headerMenuItem.withTitleTextColor(mPrefHeaderTitleTextColorRes);
                     }
                 }
 
@@ -61,7 +61,7 @@ public class MMBuilder {
                 // Set custom body title text color if not already defined
                 if (mPrefBodyTitleTextColorRes != -1){
                     if (bodyDefaultMenuItem.getTitleTextColorRes() == -1){
-                        bodyDefaultMenuItem.setTitleTextColor(mPrefBodyTitleTextColorRes);
+                        bodyDefaultMenuItem.withTitleTextColor(mPrefBodyTitleTextColorRes);
                     }
                 }
 
@@ -71,7 +71,7 @@ public class MMBuilder {
         return item;
     }
 
-    public List<IMenuItem> generateList(){
+    public List<IMenuItem> build(){
         for (int x = 0; x < mMenuItems.size(); x++){
             IMenuItem item = mMenuItems.get(x);
             mMenuItems.remove(x);

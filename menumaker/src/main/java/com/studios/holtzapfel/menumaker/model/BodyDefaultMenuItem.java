@@ -24,19 +24,8 @@ public class BodyDefaultMenuItem extends BaseBodyMenuItem<BodyDefaultMenuItem, B
         this.mID = id;
     }
 
-    public BodyDefaultMenuItem(int id, String title){
-        this.mID = id;
-        this.mTitle = title;
-    }
-
-    public BodyDefaultMenuItem(int id, String title, String description){
-        this.mID = id;
-        this.mTitle = title;
-        this.mDescription = description;
-    }
-
     @Override
-    public BodyDefaultMenuItem setValue(String value) {
+    public BodyDefaultMenuItem withValue(String value) {
         this.mValue = value;
         return this;
     }
@@ -54,46 +43,52 @@ public class BodyDefaultMenuItem extends BaseBodyMenuItem<BodyDefaultMenuItem, B
     @Override
     public void bindView(Context context, BodyDefaultViewHolder holder, final MenuFragment.OnFragmentInteractionListener listener) {
         // Configure card
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                listener.onMenuItemClick(BodyDefaultMenuItem.this);
-            }
-        });
-
-        // Configure title
-        if (getTitle() != null){
-            holder.title.setVisibility(View.VISIBLE);
-            holder.title.setText(getTitle());
-        } else holder.title.setVisibility(View.GONE);
-        if (getTitleTextColorRes() != -1){
-            holder.title.setTextColor(ResourcesCompat.getColor(context.getResources(), getTitleTextColorRes(), context.getTheme()));
+        if (isEnabled) {
+            holder.cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.onMenuItemClick(BodyDefaultMenuItem.this);
+                }
+            });
         }
 
+        // Configure title
+        if (mTitle != null){
+            holder.title.setVisibility(View.VISIBLE);
+            holder.title.setText(mTitle);
+        } else holder.title.setVisibility(View.GONE);
+        if (mTitleTextColorRes != -1){
+            holder.title.setTextColor(ResourcesCompat.getColor(context.getResources(), mTitleTextColorRes, context.getTheme()));
+        }
+        holder.title.setEnabled(isEnabled);
+
         // Configure description
-        if (getDescription() != null){
+        if (mDescription != null){
             holder.description.setVisibility(View.VISIBLE);
-            holder.description.setText(getDescription());
+            holder.description.setText(mDescription);
         } else holder.description.setVisibility(View.GONE);
+        holder.description.setEnabled(isEnabled);
 
         // Configure value
-        if (getValue() != null){
+        if (mValue != null){
             holder.value.setVisibility(View.VISIBLE);
-            holder.value.setText(getValue());
+            holder.value.setText(mValue);
         } else holder.value.setVisibility(View.GONE);
+        holder.value.setEnabled(isEnabled);
 
         // Configure icon
-        if (isIconVisible()){
+        if (isIconVisible){
             holder.icon.setVisibility(View.VISIBLE);
-            if (getIcon() != null){
-                holder.icon.setImageDrawable(getIcon());
-            } else if (getIconRes() != -1){
-                holder.icon.setImageDrawable(ResourcesCompat.getDrawable(context.getResources(), getIconRes(), context.getTheme()));
+            if (mIcon != null){
+                holder.icon.setImageDrawable(mIcon);
+            } else if (mIconRes != -1){
+                holder.icon.setImageDrawable(ResourcesCompat.getDrawable(context.getResources(), mIconRes, context.getTheme()));
             } else holder.icon.setVisibility(View.GONE);
         } else holder.icon.setVisibility(View.GONE);
+        holder.icon.setEnabled(isEnabled);
 
         // Configure divider
-        if (isLastItem()){
+        if (isLastItem){
             holder.divider.setVisibility(View.GONE);
         } else holder.divider.setVisibility(View.VISIBLE);
     }

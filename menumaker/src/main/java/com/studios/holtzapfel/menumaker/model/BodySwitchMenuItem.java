@@ -23,6 +23,10 @@ public class BodySwitchMenuItem extends BaseBodyMenuItem<BodySwitchMenuItem, Bod
     private boolean mBooleanValue = false;
     private boolean isSwitchEnabled = true;
 
+    public BodySwitchMenuItem(int id){
+        this.mID = id;
+    }
+
     public BodySwitchMenuItem(int id, boolean value){
         this.mID = id;
         this.mBooleanValue = value;
@@ -42,7 +46,7 @@ public class BodySwitchMenuItem extends BaseBodyMenuItem<BodySwitchMenuItem, Bod
     }
 
     @Override
-    public BodySwitchMenuItem setBooleanValue(boolean value) {
+    public BodySwitchMenuItem withBooleanValue(boolean value) {
         this.mBooleanValue = value;
         return this;
     }
@@ -53,7 +57,7 @@ public class BodySwitchMenuItem extends BaseBodyMenuItem<BodySwitchMenuItem, Bod
     }
 
     @Override
-    public BodySwitchMenuItem setSwitchEnabled(boolean isSwitchEnabled) {
+    public BodySwitchMenuItem withSwitchEnabled(boolean isSwitchEnabled) {
         this.isSwitchEnabled = isSwitchEnabled;
         return this;
     }
@@ -71,24 +75,28 @@ public class BodySwitchMenuItem extends BaseBodyMenuItem<BodySwitchMenuItem, Bod
     @Override
     public void bindView(Context context, final BodySwitchViewHolder holder, final MenuFragment.OnFragmentInteractionListener listener) {
         // Configure card
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                holder.booleanSwitch.setChecked(!holder.booleanSwitch.isChecked());
-            }
-        });
+        if (isEnabled) {
+            holder.cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    holder.booleanSwitch.setChecked(!holder.booleanSwitch.isChecked());
+                }
+            });
+        }
 
         // Configure title
-        if (getTitle() != null){
+        if (mTitle != null){
             holder.title.setVisibility(View.VISIBLE);
-            holder.title.setText(getTitle());
+            holder.title.setText(mTitle);
         } else holder.title.setVisibility(View.GONE);
+        holder.title.setEnabled(isEnabled);
 
         // Configure description
-        if (getDescription() != null){
+        if (mDescription != null){
             holder.description.setVisibility(View.VISIBLE);
-            holder.description.setText(getDescription());
+            holder.description.setText(mDescription);
         } else holder.description.setVisibility(View.GONE);
+        holder.description.setEnabled(isEnabled);
 
         // Configure switch
         holder.booleanSwitch.setChecked(mBooleanValue);
@@ -96,23 +104,24 @@ public class BodySwitchMenuItem extends BaseBodyMenuItem<BodySwitchMenuItem, Bod
         holder.booleanSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                setBooleanValue(b);
+                withBooleanValue(b);
                 listener.onMenuItemClick(BodySwitchMenuItem.this);
             }
         });
 
         // Configure icon
-        if (isIconVisible()){
+        if (isIconVisible){
             holder.icon.setVisibility(View.VISIBLE);
-            if (getIcon() != null){
-                holder.icon.setImageDrawable(getIcon());
-            } else if (getIconRes() != -1){
-                holder.icon.setImageDrawable(ResourcesCompat.getDrawable(context.getResources(), getIconRes(), context.getTheme()));
+            if (mIcon != null){
+                holder.icon.setImageDrawable(mIcon);
+            } else if (mIconRes != -1){
+                holder.icon.setImageDrawable(ResourcesCompat.getDrawable(context.getResources(), mIconRes, context.getTheme()));
             } else holder.icon.setVisibility(View.GONE);
         } else holder.icon.setVisibility(View.GONE);
+        holder.icon.setEnabled(isEnabled);
 
         // Configure divider
-        if (isLastItem()){
+        if (isLastItem){
             holder.divider.setVisibility(View.GONE);
         } else holder.divider.setVisibility(View.VISIBLE);
     }

@@ -8,7 +8,7 @@ import android.support.v7.widget.RecyclerView;
 
 public interface IBodyDefaultItem<T, VH extends RecyclerView.ViewHolder> extends IBaseBodyItem<T,VH> {
 
-    T setValue(String value);
+    T withValue(String value);
 
     String getValue();
 

@@ -18,13 +18,13 @@ public interface IMenuItem<T, VH extends RecyclerView.ViewHolder> {
 
     int getID();
 
-    T setID(int id);
+    T withID(int id);
 
     int getMenuType();
 
     boolean isEnabled();
 
-    T setEnabled(boolean isEnabled);
+    T withEnabled(boolean isEnabled);
 
     void bindView(Context context, VH holder, MenuFragment.OnFragmentInteractionListener listener);
 
