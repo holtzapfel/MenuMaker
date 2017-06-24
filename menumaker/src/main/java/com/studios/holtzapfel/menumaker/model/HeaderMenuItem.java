@@ -4,15 +4,12 @@ import android.content.Context;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.studios.holtzapfel.menumaker.MenuFragment;
+import com.studios.holtzapfel.menumaker.MMFragment;
 import com.studios.holtzapfel.menumaker.R;
 import com.studios.holtzapfel.menumaker.model.interfaces.IHeaderItem;
-
-import static android.content.ContentValues.TAG;
 
 /**
  * Created by holtzapfel on 6/19/17.
@@ -42,12 +39,11 @@ public class HeaderMenuItem extends AbstractMenuItem<HeaderMenuItem, HeaderMenuI
     }
 
     @Override
-    public void bindView(Context context, HeaderViewHolder holder, final MenuFragment.OnFragmentInteractionListener listener) {
+    public void bindView(Context context, HeaderViewHolder holder, final MMFragment.OnFragmentInteractionListener listener) {
         // Configure title
         holder.title.setText(mTitle);
         if (mTitleTextColorRes != -1){
             holder.title.setTextColor(ResourcesCompat.getColor(context.getApplicationContext().getResources(), mTitleTextColorRes, context.getTheme()));
-            Log.d(TAG, "bindView: 1");
         }
 
         if (mID != -1) {

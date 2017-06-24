@@ -13,25 +13,24 @@ import android.view.ViewGroup;
 import com.studios.holtzapfel.menumaker.adapters.MenuFragmentRecyclerAdapter;
 import com.studios.holtzapfel.menumaker.model.interfaces.IMenuItem;
 
-import java.util.List;
-
-public class MenuFragment extends Fragment {
+public class MMFragment extends Fragment implements MMPageBuilder.OnPageBuilderListener{
 
     private static final String ARG_ROOT_ID = "ARG_ROOT_ID";
 
     private int mRootID;
+    private MMPageBuilder mPageBuilder;
 
     private OnFragmentInteractionListener mListener;
 
     private RecyclerView mRecycler;
     private FloatingActionButton mFAB;
 
-    public MenuFragment() {
+    public MMFragment() {
         // Required empty public constructor
     }
 
-    public static MenuFragment newInstance(int rootID) {
-        MenuFragment fragment = new MenuFragment();
+    public static MMFragment newInstance(int rootID) {
+        MMFragment fragment = new MMFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_ROOT_ID, rootID);
         fragment.setArguments(args);
@@ -82,45 +81,54 @@ public class MenuFragment extends Fragment {
         updateUI();
     }
 
+    @Override
+    public FloatingActionButton onRequestFAB() {
+        return mFAB;
+    }
+
     public interface OnFragmentInteractionListener {
-        List<IMenuItem> onRequestMenuItems(int pageID);
+        MMPageBuilder onRequestPage(int pageID);
         IMenuItem onMenuItemClick(IMenuItem menuItem);
-        String onRequestTitle(int pageID);
-        boolean isFloatingActionButtonEnabled(int pageID);
-        void onFloatingActionButtonClick(int pageID);
     }
 
     private void updateUI(){
-        // Set title
-        if (mListener.onRequestTitle(mRootID) != null){
-            getActivity().setTitle(mListener.onRequestTitle(mRootID));
-        }
+        mPageBuilder = mListener.onRequestPage(mRootID);
 
-        // Configure FAB
-        if (mListener.isFloatingActionButtonEnabled(mRootID)){
-            mFAB.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mListener.onFloatingActionButtonClick(mRootID);
-                }
-            });
-        } else mFAB.setVisibility(View.GONE);
-
-        // Retrieve menu items
-        List<IMenuItem> menuItems = mListener.onRequestMenuItems(mRootID);
-
-        // Configure recycler
-        mRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                if (dy > 0){
-                    mFAB.hide();
-                } else mFAB.show();
+        if (mPageBuilder == null){
+            throw new RuntimeException("PageBuilder is null!");
+        } else {
+            // Set title
+            if (mPageBuilder.getPageTitle() != null) {
+                getActivity().setTitle(mPageBuilder.getPageTitle());
             }
-        });
-        // TODO SETUP RECYCLER ADAPTER
-        mRecycler.setAdapter(new MenuFragmentRecyclerAdapter(getContext(), menuItems, mListener));
+
+            // Configure FAB
+            mFAB = mPageBuilder.buildFAB(mFAB);
+            /*if (mPageBuilder.isFABEnabled()) {
+                mFAB.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mPageBuilder;
+                    }
+                });
+            } else mFAB.setVisibility(View.GONE);*/
+
+            // Configure recycler
+            mRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+            if (mPageBuilder.isFABEnabled()) {
+                mRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                    @Override
+                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                        super.onScrolled(recyclerView, dx, dy);
+                        if (dy > 0) {
+                            mFAB.hide();
+                        } else mFAB.show();
+                    }
+                });
+            }
+
+            // TODO SETUP RECYCLER ADAPTER
+            mRecycler.setAdapter(new MenuFragmentRecyclerAdapter(getContext(), mPageBuilder.build(), mListener));
+        }
     }
 }

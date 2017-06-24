@@ -3,7 +3,7 @@ package com.studios.holtzapfel.menumaker.model.interfaces;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 
-import com.studios.holtzapfel.menumaker.MenuFragment;
+import com.studios.holtzapfel.menumaker.MMFragment;
 
 /**
  * Created by holtzapfel on 6/19/17.
@@ -26,7 +26,7 @@ public interface IMenuItem<T, VH extends RecyclerView.ViewHolder> {
 
     T withEnabled(boolean isEnabled);
 
-    void bindView(Context context, VH holder, MenuFragment.OnFragmentInteractionListener listener);
+    void bindView(Context context, VH holder, MMFragment.OnFragmentInteractionListener listener);
 
     void unbindView(VH holder);
 }

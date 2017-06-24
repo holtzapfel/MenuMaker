@@ -1,9 +1,11 @@
 package com.studios.holtzapfel.menumakerexample;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import com.studios.holtzapfel.menumaker.MMActivity;
+import com.studios.holtzapfel.menumaker.MMMenuBuilder;
 import com.studios.holtzapfel.menumaker.MMPageBuilder;
 import com.studios.holtzapfel.menumaker.model.BaseBodyMenuItem;
 import com.studios.holtzapfel.menumaker.model.BodyDefaultMenuItem;
@@ -11,8 +13,6 @@ import com.studios.holtzapfel.menumaker.model.BodySwitchMenuItem;
 import com.studios.holtzapfel.menumaker.model.FooterMenuItem;
 import com.studios.holtzapfel.menumaker.model.HeaderMenuItem;
 import com.studios.holtzapfel.menumaker.model.interfaces.IMenuItem;
-
-import java.util.List;
 
 public class MainActivity extends MMActivity{
 
@@ -36,45 +36,9 @@ public class MainActivity extends MMActivity{
     }
 
     @Override
-    public int onRequestFragmentContainerResource() {
-        return R.id.frame;
-    }
-
-    @Override
-    public int getInitialMenuPageID() {
-        return PAGE_ROOT;
-    }
-
-    @Override
-    public String onRequestTitle(int pageID) {
-        switch (pageID){
-            case PAGE_ROOT:
-                return "Menu Maker Example App";
-            case PAGE_ITEM1:
-                return "Item 1";
-        }
-        return "Test";
-    }
-
-    @Override
-    public boolean isFloatingActionButtonEnabled(int pageID) {
-        switch (pageID){
-            case PAGE_ROOT:
-                return false;
-            case PAGE_ITEM1:
-                return true;
-        }
-        return true;
-    }
-
-    @Override
-    public void onFloatingActionButtonClick(int pageID) {
-        Toast.makeText(this, "Yay!", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public List<IMenuItem> onRequestMenuItems(int pageID) {
-        MMPageBuilder pageRoot = new MMPageBuilder(this)
+    public MMMenuBuilder configureMenu() {
+        MMPageBuilder pageRoot = new MMPageBuilder(PAGE_ROOT)
+                .withPageTitle("Menu Maker Example App")
                 .addMenuItems(
                         new HeaderMenuItem("General Options"),
                         new BodyDefaultMenuItem(ID_ITEM1).withTitle("Item 1").withDescription("This is a sample description").withIcon(android.R.mipmap.sym_def_app_icon),
@@ -89,9 +53,16 @@ public class MainActivity extends MMActivity{
                         new FooterMenuItem()
 
                 )
+                .withFABClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Toast.makeText(MainActivity.this, "Yay!", Toast.LENGTH_SHORT).show();
+                    }
+                })
                 .setHeaderTitleTextColor(R.color.colorPrimary);
 
-        MMPageBuilder pageItem1 = new MMPageBuilder(this)
+        MMPageBuilder pageItem1 = new MMPageBuilder(PAGE_ITEM1)
+                .withPageTitle("Page 1 Menu")
                 .addMenuItems(
                         new HeaderMenuItem("Page 1"),
                         new BodySwitchMenuItem(ID_SWITCH2, "Switch 2", "This is a sample description", true).withIcon(android.R.drawable.ic_menu_directions),
@@ -99,20 +70,24 @@ public class MainActivity extends MMActivity{
                         new BodySwitchMenuItem(ID_SWITCH4, "Switch 4", "This is a sample description", false).withIcon(android.R.drawable.ic_menu_camera),
                         new BodySwitchMenuItem(ID_SWITCH5, "Switch 5", "This is a sample description", true).withIcon(android.R.drawable.ic_menu_day).withLastItem(true),
                         new FooterMenuItem()
-                );
+                )
+                .withFABClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Toast.makeText(MainActivity.this, "Do you see this?", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
-        switch (pageID){
-            case PAGE_ROOT:
-                return pageRoot.build();
-            case PAGE_ITEM1:
-                return pageItem1.build();
-        }
-
-        return null;
+        return new MMMenuBuilder(this, R.id.frame)
+                .addPages(
+                        pageRoot,
+                        pageItem1
+                )
+                .setInitialPageID(PAGE_ROOT);
     }
 
     @Override
-    public IMenuItem onMenuItemClick(IMenuItem menuItem) {
+    public IMenuItem configureMenuItemClick(IMenuItem menuItem) {
         if (menuItem.getID() == ID_ITEM1){
             showPage(PAGE_ITEM1);
         } else {

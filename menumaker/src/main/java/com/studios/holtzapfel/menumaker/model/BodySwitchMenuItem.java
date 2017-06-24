@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.studios.holtzapfel.menumaker.MenuFragment;
+import com.studios.holtzapfel.menumaker.MMFragment;
 import com.studios.holtzapfel.menumaker.R;
 import com.studios.holtzapfel.menumaker.model.interfaces.IBodySwitchItem;
 
@@ -73,7 +73,7 @@ public class BodySwitchMenuItem extends BaseBodyMenuItem<BodySwitchMenuItem, Bod
     }
 
     @Override
-    public void bindView(Context context, final BodySwitchViewHolder holder, final MenuFragment.OnFragmentInteractionListener listener) {
+    public void bindView(Context context, final BodySwitchViewHolder holder, final MMFragment.OnFragmentInteractionListener listener) {
         // Configure card
         if (isEnabled) {
             holder.cardView.setOnClickListener(new View.OnClickListener() {

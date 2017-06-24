@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.studios.holtzapfel.menumaker.MenuFragment;
+import com.studios.holtzapfel.menumaker.MMFragment;
 import com.studios.holtzapfel.menumaker.R;
 import com.studios.holtzapfel.menumaker.model.interfaces.IBodyDefaultItem;
 
@@ -41,7 +41,7 @@ public class BodyDefaultMenuItem extends BaseBodyMenuItem<BodyDefaultMenuItem, B
     }
 
     @Override
-    public void bindView(Context context, BodyDefaultViewHolder holder, final MenuFragment.OnFragmentInteractionListener listener) {
+    public void bindView(Context context, BodyDefaultViewHolder holder, final MMFragment.OnFragmentInteractionListener listener) {
         // Configure card
         if (isEnabled) {
             holder.cardView.setOnClickListener(new View.OnClickListener() {

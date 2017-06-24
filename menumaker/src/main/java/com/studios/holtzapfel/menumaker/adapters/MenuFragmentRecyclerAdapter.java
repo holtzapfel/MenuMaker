@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import com.studios.holtzapfel.menumaker.MenuFragment.OnFragmentInteractionListener;
+import com.studios.holtzapfel.menumaker.MMFragment.OnFragmentInteractionListener;
 import com.studios.holtzapfel.menumaker.R;
 import com.studios.holtzapfel.menumaker.model.BodyDefaultMenuItem;
 import com.studios.holtzapfel.menumaker.model.BodySwitchMenuItem;

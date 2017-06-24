@@ -1,6 +1,7 @@
 package com.studios.holtzapfel.menumaker;
 
-import android.content.Context;
+import android.support.design.widget.FloatingActionButton;
+import android.view.View;
 
 import com.studios.holtzapfel.menumaker.model.BodyDefaultMenuItem;
 import com.studios.holtzapfel.menumaker.model.HeaderMenuItem;
@@ -16,19 +17,33 @@ import java.util.List;
 
 public class MMPageBuilder {
 
-    private Context mContext;
+    private int mPageID;
     private List<IMenuItem> mMenuItems;
+    private View.OnClickListener mFABOnClickListener;
 
     private int mPrefHeaderTitleTextColorRes = -1;
     private int mPrefBodyTitleTextColorRes = -1;
+    private String mPageTitle;
+    private boolean isFABEnabled = false;
 
-    public MMPageBuilder(Context context){
-        this.mContext = context;
-        mMenuItems = new ArrayList<>();
+    public MMPageBuilder(int pageID){
+        this.mPageID = pageID;
+    }
+
+    interface OnPageBuilderListener{
+        FloatingActionButton onRequestFAB();
+    }
+
+    public int getPageID(){
+        return mPageID;
     }
 
     public MMPageBuilder addMenuItems(IMenuItem... items){
-        Collections.addAll(mMenuItems, items);
+        if (items != null) {
+            mMenuItems = new ArrayList<>();
+
+            Collections.addAll(mMenuItems, items);
+        }
         return this;
     }
 
@@ -40,6 +55,42 @@ public class MMPageBuilder {
     public MMPageBuilder setBodyTitleTextColor(int colorRes){
         this.mPrefBodyTitleTextColorRes = colorRes;
         return this;
+    }
+
+    public MMPageBuilder withPageTitle(String title){
+        this.mPageTitle = title;
+        return this;
+    }
+
+    public String getPageTitle(){
+        return mPageTitle;
+    }
+
+    public MMPageBuilder withFABEnabled(boolean isFABEnabled){
+        this.isFABEnabled = isFABEnabled;
+        return this;
+    }
+
+    public boolean isFABEnabled(){
+        return isFABEnabled;
+    }
+
+    public MMPageBuilder withFABClickListener(View.OnClickListener onClickListener){
+        if (onClickListener != null){
+            isFABEnabled = true;
+            this.mFABOnClickListener = onClickListener;
+        } else isFABEnabled = false;
+        return this;
+    }
+
+    FloatingActionButton buildFAB(FloatingActionButton fab){
+        if (isFABEnabled){
+            fab.setVisibility(View.VISIBLE);
+            if (mFABOnClickListener != null){
+                fab.setOnClickListener(mFABOnClickListener);
+            }
+        } else fab.setVisibility(View.GONE);
+        return fab;
     }
 
     private IMenuItem prepareMenuItem(IMenuItem item){
@@ -71,7 +122,7 @@ public class MMPageBuilder {
         return item;
     }
 
-    public List<IMenuItem> build(){
+    List<IMenuItem> build(){
         for (int x = 0; x < mMenuItems.size(); x++){
             IMenuItem item = mMenuItems.get(x);
             mMenuItems.remove(x);
