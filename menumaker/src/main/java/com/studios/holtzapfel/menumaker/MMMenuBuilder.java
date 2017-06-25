@@ -14,7 +14,7 @@ public class MMMenuBuilder {
 
     Context mContext;
     int mFrameRes;
-    List<MMPageBuilder> mPages;
+    private List<MMPage> mPages;
 
     private int mInitialPageID = -1;
 
@@ -23,7 +23,7 @@ public class MMMenuBuilder {
         this.mFrameRes = fragmentFrameContainerResource;
     }
 
-    public MMMenuBuilder addPages(MMPageBuilder... pages){
+    public MMMenuBuilder addPages(MMPage... pages){
         if (pages != null) {
             mPages = new ArrayList<>();
             Collections.addAll(mPages, pages);
@@ -31,21 +31,34 @@ public class MMMenuBuilder {
         return this;
     }
 
-    public MMMenuBuilder setInitialPageID(int pageID){
-        this.mInitialPageID = pageID;
-        return this;
-    }
-
-    public MMPageBuilder getPage(int pageID){
-        MMPageBuilder pageBuilder = null;
+    public MMPage getPage(int pageID){
         if (mPages != null){
             for (int x = 0; x < mPages.size(); x++){
                 if (mPages.get(x).getPageID() == pageID){
-                    pageBuilder = mPages.get(x);
+                    return mPages.get(x);
                 }
             }
         }
-        return pageBuilder;
+        return null;
+    }
+
+    public boolean replacePage(MMPage page){
+        boolean isSuccessful = false;
+        if (mPages != null){
+            for (int x = 0; x < mPages.size(); x++){
+                if (mPages.get(x).getPageID() == page.getPageID()){
+                    mPages.remove(x);
+                    mPages.add(x, page);
+                    isSuccessful = true;
+                }
+            }
+        }
+        return isSuccessful;
+    }
+
+    public MMMenuBuilder setInitialPageID(int pageID){
+        this.mInitialPageID = pageID;
+        return this;
     }
 
     int getInitialPageID(){

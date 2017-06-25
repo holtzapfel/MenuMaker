@@ -6,8 +6,8 @@ import android.widget.Toast;
 
 import com.studios.holtzapfel.menumaker.MMActivity;
 import com.studios.holtzapfel.menumaker.MMMenuBuilder;
+import com.studios.holtzapfel.menumaker.MMPage;
 import com.studios.holtzapfel.menumaker.MMPageBuilder;
-import com.studios.holtzapfel.menumaker.model.BaseBodyMenuItem;
 import com.studios.holtzapfel.menumaker.model.BodyDefaultMenuItem;
 import com.studios.holtzapfel.menumaker.model.BodySwitchMenuItem;
 import com.studios.holtzapfel.menumaker.model.FooterMenuItem;
@@ -29,6 +29,9 @@ public class MainActivity extends MMActivity{
     private static final int ID_SWITCH4 = 202;
     private static final int ID_SWITCH5 = 203;
 
+    private MMPage mPageRoot;
+    private MMPage mPageItem1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,9 +40,9 @@ public class MainActivity extends MMActivity{
 
     @Override
     public MMMenuBuilder configureMenu() {
-        MMPageBuilder pageRoot = new MMPageBuilder(PAGE_ROOT)
+        mPageRoot = new MMPageBuilder(PAGE_ROOT)
                 .withPageTitle("Menu Maker Example App")
-                .addMenuItems(
+                .withMenuItems(
                         new HeaderMenuItem("General Options"),
                         new BodyDefaultMenuItem(ID_ITEM1).withTitle("Item 1").withDescription("This is a sample description").withIcon(android.R.mipmap.sym_def_app_icon),
                         new BodyDefaultMenuItem(ID_ITEM2).withTitle("Title 2").withDescription("This is a sample description").withIcon(android.R.mipmap.sym_def_app_icon),
@@ -53,17 +56,18 @@ public class MainActivity extends MMActivity{
                         new FooterMenuItem()
 
                 )
-                .withFABClickListener(new View.OnClickListener() {
+                .withFABOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Toast.makeText(MainActivity.this, "Yay!", Toast.LENGTH_SHORT).show();
                     }
                 })
-                .setHeaderTitleTextColor(R.color.colorPrimary);
+                .withHeaderTitleTextColor(R.color.colorPrimary)
+                .build();
 
-        MMPageBuilder pageItem1 = new MMPageBuilder(PAGE_ITEM1)
+        mPageItem1 = new MMPageBuilder(PAGE_ITEM1)
                 .withPageTitle("Page 1 Menu")
-                .addMenuItems(
+                .withMenuItems(
                         new HeaderMenuItem("Page 1"),
                         new BodySwitchMenuItem(ID_SWITCH2, "Switch 2", "This is a sample description", true).withIcon(android.R.drawable.ic_menu_directions),
                         new BodySwitchMenuItem(ID_SWITCH3, "Switch 3", "This is a sample description", true).withIcon(android.R.drawable.ic_menu_crop),
@@ -71,31 +75,37 @@ public class MainActivity extends MMActivity{
                         new BodySwitchMenuItem(ID_SWITCH5, "Switch 5", "This is a sample description", true).withIcon(android.R.drawable.ic_menu_day).withLastItem(true),
                         new FooterMenuItem()
                 )
-                .withFABClickListener(new View.OnClickListener() {
+                .withFABOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Toast.makeText(MainActivity.this, "Do you see this?", Toast.LENGTH_SHORT).show();
                     }
-                });
+                })
+                .build();
 
         return new MMMenuBuilder(this, R.id.frame)
                 .addPages(
-                        pageRoot,
-                        pageItem1
+                        mPageRoot,
+                        mPageItem1
                 )
                 .setInitialPageID(PAGE_ROOT);
     }
 
     @Override
     public IMenuItem configureMenuItemClick(IMenuItem menuItem) {
-        if (menuItem.getID() == ID_ITEM1){
-            showPage(PAGE_ITEM1);
-        } else {
-            if (menuItem instanceof BaseBodyMenuItem) {
-                if (menuItem.getMenuType() != IMenuItem.MENU_ITEM_TYPE_BODY_SWITCH) {
-                    Toast.makeText(this, ((BaseBodyMenuItem) menuItem).getTitle(), Toast.LENGTH_SHORT).show();
-                } else Toast.makeText(this, String.valueOf(((BodySwitchMenuItem) menuItem).getBooleanValue()), Toast.LENGTH_SHORT).show();
-            }
+        switch (menuItem.getID()){
+            case ID_ITEM1:
+                showPage(PAGE_ITEM1);
+                break;
+            case ID_ITEM2:
+                BodyDefaultMenuItem item2 = (BodyDefaultMenuItem) mPageRoot.getMenuItem(menuItem.getID());
+                if (item2 != null){
+                    item2.withDescription("Did this get updated?");
+                    if (mPageRoot.replaceMenuItem(item2)){
+                        updatePage(mPageRoot, true);
+                    }
+                }
+                break;
         }
         return null;
     }

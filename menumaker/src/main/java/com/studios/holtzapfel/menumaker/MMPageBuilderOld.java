@@ -15,56 +15,75 @@ import java.util.List;
  * Created by holtzapfel on 6/21/17.
  */
 
-public class MMPageBuilder {
+public class MMPageBuilderOld {
 
-    private MMPage mPage;
+    private int mPageID;
+    private List<IMenuItem> mMenuItems;
+    private View.OnClickListener mFABOnClickListener;
 
-    public MMPageBuilder(int pageID){
-        this.mPage = new MMPage(pageID);
+    private int mHeaderTitleTextColorRes = -1;
+    private int mBodyTitleTextColorRes = -1;
+    private String mPageTitle;
+    private boolean isFABEnabled = false;
+
+    public MMPageBuilderOld(int pageID){
+        this.mPageID = pageID;
     }
 
     interface OnPageBuilderListener{
         FloatingActionButton onRequestFAB();
     }
 
-    public MMPageBuilder withMenuItems(IMenuItem... items){
+    public int getPageID(){
+        return mPageID;
+    }
+
+    public MMPageBuilderOld withMenuItems(IMenuItem... items){
         if (items != null) {
-            if (mPage.getMenuItems().size() > 0){
-                throw new RuntimeException("Menu items cannot be declared more than once!");
-            }
-            List<IMenuItem> menuItems = new ArrayList<>();
-            Collections.addAll(menuItems, items);
-            mPage.setMenuItems(menuItems);
+            mMenuItems = new ArrayList<>();
+
+            Collections.addAll(mMenuItems, items);
         }
         return this;
     }
 
-    public MMPageBuilder withHeaderTitleTextColor(int colorRes){
-        mPage.setHeaderTitleTextColor(colorRes);
+    public MMPageBuilderOld withHeaderTitleTextColor(int colorRes){
+        this.mHeaderTitleTextColorRes = colorRes;
         return this;
     }
 
-    public MMPageBuilder withBodyTitleTextColor(int colorRes){
-        mPage.setBodyTitleTextColor(colorRes);
+    public MMPageBuilderOld withBodyTitleTextColor(int colorRes){
+        this.mBodyTitleTextColorRes = colorRes;
         return this;
     }
 
-    public MMPageBuilder withPageTitle(String title){
-        mPage.setPageTitle(title);
+    public MMPageBuilderOld withPageTitle(String title){
+        this.mPageTitle = title;
         return this;
     }
 
-    public MMPageBuilder withFABEnabled(boolean isFABEnabled){
-        mPage.setFABEnabled(isFABEnabled);
+    public String getPageTitle(){
+        return mPageTitle;
+    }
+
+    public MMPageBuilderOld withFABEnabled(boolean isFABEnabled){
+        this.isFABEnabled = isFABEnabled;
         return this;
     }
 
-    public MMPageBuilder withFABOnClickListener(View.OnClickListener onClickListener){
-        mPage.setFABOnClickListener(onClickListener);
+    public boolean isFABEnabled(){
+        return isFABEnabled;
+    }
+
+    public MMPageBuilderOld withFABOnClickListener(View.OnClickListener onClickListener){
+        if (onClickListener != null){
+            isFABEnabled = true;
+            this.mFABOnClickListener = onClickListener;
+        } else isFABEnabled = false;
         return this;
     }
 
-    /*FloatingActionButton buildFAB(FloatingActionButton fab){
+    FloatingActionButton buildFAB(FloatingActionButton fab){
         if (isFABEnabled){
             fab.setVisibility(View.VISIBLE);
             if (mFABOnClickListener != null){
@@ -72,7 +91,7 @@ public class MMPageBuilder {
             }
         } else fab.setVisibility(View.GONE);
         return fab;
-    }*/
+    }
 
     private IMenuItem prepareMenuItem(IMenuItem item){
         switch (item.getMenuType()){
@@ -80,9 +99,9 @@ public class MMPageBuilder {
                 HeaderMenuItem headerMenuItem = (HeaderMenuItem) item;
 
                 // Set custom header title text color if not already defined
-                if (mPage.getHeaderTitleTextColor() != -1){
+                if (mHeaderTitleTextColorRes != -1){
                     if (headerMenuItem.getTitleTextColorRes() == -1){
-                        headerMenuItem.withTitleTextColor(mPage.getHeaderTitleTextColor());
+                        headerMenuItem.withTitleTextColor(mHeaderTitleTextColorRes);
                     }
                 }
 
@@ -91,9 +110,9 @@ public class MMPageBuilder {
                 BodyDefaultMenuItem bodyDefaultMenuItem = (BodyDefaultMenuItem) item;
 
                 // Set custom body title text color if not already defined
-                if (mPage.getBodyTitleTextColor() != -1){
+                if (mBodyTitleTextColorRes != -1){
                     if (bodyDefaultMenuItem.getTitleTextColorRes() == -1){
-                        bodyDefaultMenuItem.withTitleTextColor(mPage.getBodyTitleTextColor());
+                        bodyDefaultMenuItem.withTitleTextColor(mBodyTitleTextColorRes);
                     }
                 }
 
@@ -103,7 +122,7 @@ public class MMPageBuilder {
         return item;
     }
 
-    /*List<IMenuItem> build(){
+    List<IMenuItem> build(){
         for (int x = 0; x < mMenuItems.size(); x++){
             IMenuItem item = mMenuItems.get(x);
             mMenuItems.remove(x);
@@ -112,16 +131,5 @@ public class MMPageBuilder {
         }
 
         return mMenuItems;
-    }*/
-
-    public MMPage build(){
-        for (int x = 0; x < mPage.getMenuItems().size(); x++){
-            IMenuItem item = mPage.getMenuItems().get(x);
-            mPage.getMenuItems().remove(x);
-            item = prepareMenuItem(item);
-            mPage.getMenuItems().add(x, item);
-        }
-
-        return mPage;
     }
 }

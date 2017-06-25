@@ -17,8 +17,8 @@ public class MMFragment extends Fragment implements MMPageBuilder.OnPageBuilderL
 
     private static final String ARG_ROOT_ID = "ARG_ROOT_ID";
 
-    private int mRootID;
-    private MMPageBuilder mPageBuilder;
+    private int mPageID;
+    private MMPage mPage;
 
     private OnFragmentInteractionListener mListener;
 
@@ -41,7 +41,7 @@ public class MMFragment extends Fragment implements MMPageBuilder.OnPageBuilderL
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mRootID = getArguments().getInt(ARG_ROOT_ID);
+            mPageID = getArguments().getInt(ARG_ROOT_ID);
         }
     }
 
@@ -87,35 +87,32 @@ public class MMFragment extends Fragment implements MMPageBuilder.OnPageBuilderL
     }
 
     public interface OnFragmentInteractionListener {
-        MMPageBuilder onRequestPage(int pageID);
+        MMPage onRequestPage(int pageID);
         IMenuItem onMenuItemClick(IMenuItem menuItem);
     }
 
     private void updateUI(){
-        mPageBuilder = mListener.onRequestPage(mRootID);
+        mPage = mListener.onRequestPage(mPageID);
 
-        if (mPageBuilder == null){
+        if (mPage == null){
             throw new RuntimeException("PageBuilder is null!");
         } else {
             // Set title
-            if (mPageBuilder.getPageTitle() != null) {
-                getActivity().setTitle(mPageBuilder.getPageTitle());
+            if (mPage.getPageTitle() != null) {
+                getActivity().setTitle(mPage.getPageTitle());
             }
 
             // Configure FAB
-            mFAB = mPageBuilder.buildFAB(mFAB);
-            /*if (mPageBuilder.isFABEnabled()) {
-                mFAB.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        mPageBuilder;
-                    }
-                });
-            } else mFAB.setVisibility(View.GONE);*/
+            if (mPage.isFABEnabled()) {
+                mFAB.setVisibility(View.VISIBLE);
+                if (mPage.getFABOnClickListener() != null) {
+                    mFAB.setOnClickListener(mPage.getFABOnClickListener());
+                }
+            } else mFAB.setVisibility(View.GONE);
 
             // Configure recycler
             mRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
-            if (mPageBuilder.isFABEnabled()) {
+            if (mPage.isFABEnabled()) {
                 mRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
                     @Override
                     public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -127,8 +124,7 @@ public class MMFragment extends Fragment implements MMPageBuilder.OnPageBuilderL
                 });
             }
 
-            // TODO SETUP RECYCLER ADAPTER
-            mRecycler.setAdapter(new MenuFragmentRecyclerAdapter(getContext(), mPageBuilder.build(), mListener));
+            mRecycler.setAdapter(new MenuFragmentRecyclerAdapter(getContext(), mPage.getMenuItems(), mListener));
         }
     }
 }

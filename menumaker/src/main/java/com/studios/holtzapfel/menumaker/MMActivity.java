@@ -41,7 +41,7 @@ public abstract class MMActivity extends AppCompatActivity implements MMFragment
     public abstract IMenuItem configureMenuItemClick(IMenuItem menuItem);
 
     @Override
-    public MMPageBuilder onRequestPage(int pageID) {
+    public MMPage onRequestPage(int pageID) {
         if (mMenu != null){
             return mMenu.getPage(pageID);
         }
@@ -67,5 +67,16 @@ public abstract class MMActivity extends AppCompatActivity implements MMFragment
                     .replace(mMenu.mFrameRes, MMFragment.newInstance(pageID))
                     .commit();
         } else showPage(pageID);
+    }
+
+    public boolean updatePage(MMPage page){
+        return mMenu.replacePage(page);
+    }
+
+    public boolean updatePage(MMPage page, boolean showPage){
+        if (mMenu.replacePage(page) && showPage){
+            showPage(page.getPageID(), true);
+            return true;
+        } else return false;
     }
 }
