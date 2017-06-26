@@ -11,6 +11,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.studios.holtzapfel.menumaker.MMFragment;
+import com.studios.holtzapfel.menumaker.Master;
 import com.studios.holtzapfel.menumaker.R;
 import com.studios.holtzapfel.menumaker.model.interfaces.IBodySwitchItem;
 
@@ -87,14 +88,14 @@ public class BodySwitchMenuItem extends BaseBodyMenuItem<BodySwitchMenuItem, Bod
         // Configure title
         if (mTitle != null){
             holder.title.setVisibility(View.VISIBLE);
-            holder.title.setText(mTitle);
+            holder.title.setText(Master.fromHtml(mTitle));
         } else holder.title.setVisibility(View.GONE);
         holder.title.setEnabled(isEnabled);
 
         // Configure description
         if (mDescription != null){
             holder.description.setVisibility(View.VISIBLE);
-            holder.description.setText(mDescription);
+            holder.description.setText(Master.fromHtml(mDescription));
         } else holder.description.setVisibility(View.GONE);
         holder.description.setEnabled(isEnabled);
 

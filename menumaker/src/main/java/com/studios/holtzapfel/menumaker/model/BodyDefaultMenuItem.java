@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.studios.holtzapfel.menumaker.MMFragment;
+import com.studios.holtzapfel.menumaker.Master;
 import com.studios.holtzapfel.menumaker.R;
 import com.studios.holtzapfel.menumaker.model.interfaces.IBodyDefaultItem;
 
@@ -55,7 +56,7 @@ public class BodyDefaultMenuItem extends BaseBodyMenuItem<BodyDefaultMenuItem, B
         // Configure title
         if (mTitle != null){
             holder.title.setVisibility(View.VISIBLE);
-            holder.title.setText(mTitle);
+            holder.title.setText(Master.fromHtml(mTitle));
         } else holder.title.setVisibility(View.GONE);
         if (mTitleTextColorRes != -1){
             holder.title.setTextColor(ResourcesCompat.getColor(context.getResources(), mTitleTextColorRes, context.getTheme()));
@@ -65,14 +66,14 @@ public class BodyDefaultMenuItem extends BaseBodyMenuItem<BodyDefaultMenuItem, B
         // Configure description
         if (mDescription != null){
             holder.description.setVisibility(View.VISIBLE);
-            holder.description.setText(mDescription);
+            holder.description.setText(Master.fromHtml(mDescription));
         } else holder.description.setVisibility(View.GONE);
         holder.description.setEnabled(isEnabled);
 
         // Configure value
         if (mValue != null){
             holder.value.setVisibility(View.VISIBLE);
-            holder.value.setText(mValue);
+            holder.value.setText(Master.fromHtml(mValue));
         } else holder.value.setVisibility(View.GONE);
         holder.value.setEnabled(isEnabled);
 
