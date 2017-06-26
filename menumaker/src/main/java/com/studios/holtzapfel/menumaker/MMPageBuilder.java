@@ -39,6 +39,16 @@ public class MMPageBuilder {
         return this;
     }
 
+    public MMPageBuilder withMenuItems(List<IMenuItem> items){
+        if (items != null){
+            if (mPage.getMenuItems().size() > 0){
+                throw new RuntimeException("Menu items cannot be declared more than once!");
+            }
+            mPage.setMenuItems(items);
+        }
+        return this;
+    }
+
     public MMPageBuilder withHeaderTitleTextColor(int colorRes){
         mPage.setHeaderTitleTextColor(colorRes);
         return this;
