@@ -1,7 +1,5 @@
 package com.studios.holtzapfel.menumaker;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
@@ -16,19 +14,13 @@ public abstract class MMActivity extends AppCompatActivity implements MMFragment
     private MMMenuBuilder mMenu;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        mMenu = configureMenu();
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
         updateUI();
     }
 
     private void updateUI(){
+        mMenu = configureMenu();
         if (mMenu == null){
             throw new RuntimeException("Please create a menu object");
         } else {
