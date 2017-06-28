@@ -15,8 +15,8 @@ abstract class BaseMenuItem<T, VH extends RecyclerView.ViewHolder> extends Abstr
     String mTitle;
     Drawable mIcon;
     int mIconRes = -1;
+    int mIconColorRes = -1;
     boolean isIconVisible = true;
-    boolean isLastItem = false;
     int mTitleTextColorRes = -1;
 
     @Override
@@ -53,6 +53,17 @@ abstract class BaseMenuItem<T, VH extends RecyclerView.ViewHolder> extends Abstr
     }
 
     @Override
+    public T withIconColor(int colorRes) {
+        this.mIconColorRes = colorRes;
+        return (T) this;
+    }
+
+    @Override
+    public int getIconColorRes() {
+        return mIconColorRes;
+    }
+
+    @Override
     public T withIconVisible(boolean isVisible) {
         this.isIconVisible = isVisible;
         return (T) this;
@@ -61,17 +72,6 @@ abstract class BaseMenuItem<T, VH extends RecyclerView.ViewHolder> extends Abstr
     @Override
     public boolean isIconVisible() {
         return isIconVisible;
-    }
-
-    @Override
-    public T withLastItem(boolean isLastItem) {
-        this.isLastItem = isLastItem;
-        return (T) this;
-    }
-
-    @Override
-    public boolean isLastItem() {
-        return isLastItem;
     }
 
     @Override

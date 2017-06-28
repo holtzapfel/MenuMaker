@@ -13,6 +13,7 @@ abstract class AbstractMenuItem<T, VH extends RecyclerView.ViewHolder> implement
 
     int mID = -1;
     boolean isEnabled = true;
+    boolean isLastItem = false;
 
     @Override
     public int getID() {
@@ -31,12 +32,19 @@ abstract class AbstractMenuItem<T, VH extends RecyclerView.ViewHolder> implement
     }
 
     @Override
-    public T withEnabled(boolean enabled) {
-        isEnabled = enabled;
+    public T withEnabled(boolean isEnabled) {
+        this.isEnabled = isEnabled;
         return (T) this;
     }
 
-    /*ImageView holderSetupIcon(ImageView icon){
+    @Override
+    public boolean isLastItem() {
+        return isLastItem;
+    }
 
-    }*/
+    @Override
+    public T withLastItem(boolean isLastItem) {
+        this.isLastItem = isLastItem;
+        return (T) this;
+    }
 }

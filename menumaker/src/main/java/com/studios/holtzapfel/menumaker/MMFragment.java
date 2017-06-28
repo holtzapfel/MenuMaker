@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import com.studios.holtzapfel.menumaker.adapters.MenuFragmentRecyclerAdapter;
 import com.studios.holtzapfel.menumaker.model.interfaces.IMenuItem;
 
-public class MMFragment extends Fragment implements MMPageBuilder.OnPageBuilderListener{
+public class MMFragment extends Fragment{
 
     private static final String ARG_ROOT_ID = "ARG_ROOT_ID";
 
@@ -79,11 +79,6 @@ public class MMFragment extends Fragment implements MMPageBuilder.OnPageBuilderL
     public void onResume() {
         super.onResume();
         updateUI();
-    }
-
-    @Override
-    public FloatingActionButton onRequestFAB() {
-        return mFAB;
     }
 
     public interface OnFragmentInteractionListener {

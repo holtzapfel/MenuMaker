@@ -118,6 +118,10 @@ public class BodySwitchMenuItem extends BaseBodyMenuItem<BodySwitchMenuItem, Bod
             } else if (mIconRes != -1){
                 holder.icon.setImageDrawable(ResourcesCompat.getDrawable(context.getResources(), mIconRes, context.getTheme()));
             } else holder.icon.setVisibility(View.GONE);
+
+            if (mIconColorRes != -1){
+                holder.icon.setColorFilter(ResourcesCompat.getColor(context.getResources(), mIconColorRes, context.getTheme()));
+            }
         } else holder.icon.setVisibility(View.GONE);
         holder.icon.setEnabled(isEnabled);
 

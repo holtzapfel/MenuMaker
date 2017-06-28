@@ -8,7 +8,7 @@ import com.studios.holtzapfel.menumaker.MMActivity;
 import com.studios.holtzapfel.menumaker.MMMenuBuilder;
 import com.studios.holtzapfel.menumaker.MMPage;
 import com.studios.holtzapfel.menumaker.MMPageBuilder;
-import com.studios.holtzapfel.menumaker.model.BodyDefaultMenuItem;
+import com.studios.holtzapfel.menumaker.model.BodyMenuItem;
 import com.studios.holtzapfel.menumaker.model.BodySwitchMenuItem;
 import com.studios.holtzapfel.menumaker.model.FooterMenuItem;
 import com.studios.holtzapfel.menumaker.model.HeaderMenuItem;
@@ -44,17 +44,17 @@ public class MainActivity extends MMActivity{
                 .withPageTitle("Menu Maker Example App")
                 .withMenuItems(
                         new HeaderMenuItem("General Options"),
-                        new BodyDefaultMenuItem(ID_ITEM1).withTitle("Item 1").withDescription("This is a sample description").withIcon(android.R.mipmap.sym_def_app_icon),
-                        new BodyDefaultMenuItem(ID_ITEM2).withTitle("Title 2").withDescription("This is a sample description").withIcon(android.R.mipmap.sym_def_app_icon),
-                        new BodyDefaultMenuItem(ID_ITEM3).withTitle("Title 3").withDescription("This is a sample description").withIcon(android.R.mipmap.sym_def_app_icon),
-                        new BodyDefaultMenuItem(ID_ITEM4).withTitle("Title 4").withDescription("This is a sample description").withIcon(android.R.mipmap.sym_def_app_icon).withLastItem(true),
+                        new BodyMenuItem(ID_ITEM1).withTitle("Item 1").withDescription("This is a sample description").withIconLeft(android.R.mipmap.sym_def_app_icon),
+                        new BodyMenuItem(ID_ITEM2).withTitle("Title 2").withDescription("This is a sample description").withIconLeft(android.R.mipmap.sym_def_app_icon),
+                        new BodyMenuItem(ID_ITEM3).withTitle("Title 3").withDescription("This is a sample description").withIconLeft(android.R.mipmap.sym_def_app_icon),
+                        new BodyMenuItem(ID_ITEM4).withTitle("Title 4").withDescription("This is a sample description").withIconLeft(android.R.mipmap.sym_def_app_icon),
                         new FooterMenuItem(),
 
                         new HeaderMenuItem("General Options"),
-                        new BodyDefaultMenuItem(0).withTitle("Title 1").withDescription("This is a sample description"),
-                        new BodySwitchMenuItem(ID_SWITCH1, "Switch 1", "This is a sample description", true).withLastItem(true),
+                        new BodyMenuItem(0).withTitle("Title 1").withDescription("This is a sample description"),
+                        new BodyMenuItem(0).withTitle("Title 1").withLongValue("This is the best example of a long value that I can create on the spot.  I am very tired as I have worked 14 twelve hour shifts in the past 16 days."),
+                        new BodyMenuItem(ID_SWITCH1).withTitle("Switch 1").withDescription("This is a sample description").withSwitchValue(true),
                         new FooterMenuItem()
-
                 )
                 .withFABOnClickListener(new View.OnClickListener() {
                     @Override
@@ -72,7 +72,7 @@ public class MainActivity extends MMActivity{
                         new BodySwitchMenuItem(ID_SWITCH2, "Switch 2", "This is a sample description", true).withIcon(android.R.drawable.ic_menu_directions),
                         new BodySwitchMenuItem(ID_SWITCH3, "Switch 3", "This is a sample description", true).withIcon(android.R.drawable.ic_menu_crop),
                         new BodySwitchMenuItem(ID_SWITCH4, "Switch 4", "This is a sample description", false).withIcon(android.R.drawable.ic_menu_camera),
-                        new BodySwitchMenuItem(ID_SWITCH5, "Switch 5", "This is a sample description", true).withIcon(android.R.drawable.ic_menu_day).withLastItem(true),
+                        new BodySwitchMenuItem(ID_SWITCH5, "Switch 5", "This is a sample description", true).withIcon(android.R.drawable.ic_menu_day),
                         new FooterMenuItem()
                 )
                 .withFABOnClickListener(new View.OnClickListener() {
@@ -93,19 +93,18 @@ public class MainActivity extends MMActivity{
 
     @Override
     public IMenuItem configureMenuItemClick(IMenuItem menuItem) {
-        switch (menuItem.getID()){
-            case ID_ITEM1:
-                showPage(PAGE_ITEM1);
-                break;
-            case ID_ITEM2:
-                BodyDefaultMenuItem item2 = (BodyDefaultMenuItem) mPageRoot.getMenuItem(menuItem.getID());
-                if (item2 != null){
-                    item2.withDescription("Did this get updated?");
-                    if (mPageRoot.replaceMenuItem(item2)){
+        if (menuItem instanceof BodyMenuItem) {
+            switch (menuItem.getID()) {
+                case ID_ITEM1:
+                    showPage(PAGE_ITEM1);
+                    break;
+                case ID_ITEM2:
+                    ((BodyMenuItem) menuItem).withDescription("Did this get updated?");
+                    if (mPageRoot.replaceMenuItem(menuItem)) {
                         updatePage(mPageRoot, true);
                     }
-                }
-                break;
+                    break;
+            }
         }
         return null;
     }

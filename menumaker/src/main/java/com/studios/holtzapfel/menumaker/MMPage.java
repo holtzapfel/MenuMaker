@@ -21,10 +21,9 @@ public class MMPage {
     private int mBodyTitleTextColorRes = -1;
     private boolean isFABEnabled = true;
     private View.OnClickListener mFABOnClickListener;
-
-    public MMPage(int pageID){
-        this.mID = pageID;
-    }
+    private int mIconColorRes = -1;
+    private boolean isDividersEnabled = true;
+    private int mDividerColorRes = -1;
 
     public void setPageID(int id){
         this.mID = id;
@@ -101,5 +100,29 @@ public class MMPage {
 
     public View.OnClickListener getFABOnClickListener(){
         return mFABOnClickListener;
+    }
+
+    public void setIconColor(int colorRes){
+        this.mIconColorRes = colorRes;
+    }
+
+    public int getIconColorRes(){
+        return mIconColorRes;
+    }
+
+    public void setDividersEnabled(boolean isEnabled){
+        this.isDividersEnabled = isEnabled;
+    }
+
+    public boolean isDividersEnabled(){
+        return isDividersEnabled;
+    }
+
+    public void setDividerColor(int colorRes){
+        this.mDividerColorRes = colorRes;
+    }
+
+    public int getDividerColorRes(){
+        return mDividerColorRes;
     }
 }

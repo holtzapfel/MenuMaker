@@ -1,9 +1,11 @@
 package com.studios.holtzapfel.menumaker;
 
-import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 
 import com.studios.holtzapfel.menumaker.model.BodyDefaultMenuItem;
+import com.studios.holtzapfel.menumaker.model.BodyMenuItem;
+import com.studios.holtzapfel.menumaker.model.BodySwitchMenuItem;
+import com.studios.holtzapfel.menumaker.model.FooterMenuItem;
 import com.studios.holtzapfel.menumaker.model.HeaderMenuItem;
 import com.studios.holtzapfel.menumaker.model.interfaces.IMenuItem;
 
@@ -20,11 +22,8 @@ public class MMPageBuilder {
     private MMPage mPage;
 
     public MMPageBuilder(int pageID){
-        this.mPage = new MMPage(pageID);
-    }
-
-    interface OnPageBuilderListener{
-        FloatingActionButton onRequestFAB();
+        this.mPage = new MMPage();
+        this.mPage.setPageID(pageID);
     }
 
     public MMPageBuilder withMenuItems(IMenuItem... items){
@@ -74,17 +73,28 @@ public class MMPageBuilder {
         return this;
     }
 
-    /*FloatingActionButton buildFAB(FloatingActionButton fab){
-        if (isFABEnabled){
-            fab.setVisibility(View.VISIBLE);
-            if (mFABOnClickListener != null){
-                fab.setOnClickListener(mFABOnClickListener);
-            }
-        } else fab.setVisibility(View.GONE);
-        return fab;
-    }*/
+    public MMPageBuilder withIconColor(int colorRes){
+        mPage.setIconColor(colorRes);
+        return this;
+    }
 
-    private IMenuItem prepareMenuItem(IMenuItem item){
+    public MMPageBuilder withDividersEnabled(boolean isEnabled){
+        mPage.setDividersEnabled(isEnabled);
+        return this;
+    }
+
+    public MMPageBuilder withDividerColor(int colorRes){
+        mPage.setDividerColor(colorRes);
+        return this;
+    }
+
+    private IMenuItem prepareMenuItem(IMenuItem item, IMenuItem nextItem){
+        if (nextItem != null){
+            if (nextItem instanceof FooterMenuItem){
+                item.withLastItem(true);
+            } else item.withLastItem(false);
+        }
+
         switch (item.getMenuType()){
             case IMenuItem.MENU_ITEM_TYPE_HEADER:
                 HeaderMenuItem headerMenuItem = (HeaderMenuItem) item;
@@ -97,38 +107,83 @@ public class MMPageBuilder {
                 }
 
                 return headerMenuItem;
+            case IMenuItem.MENU_ITEM_TYPE_BODY:
+                BodyMenuItem bodyMenuItem = (BodyMenuItem) item;
+
+                if (mPage.getBodyTitleTextColor() != -1){
+                    if (bodyMenuItem.getTitleTextColorRes() == -1){
+                        bodyMenuItem.withTitleTextColor(mPage.getBodyTitleTextColor());
+                    }
+                }
+
+                if (mPage.getIconColorRes() != -1){
+                    if (bodyMenuItem.getIconLeftColorRes() == -1){
+                        bodyMenuItem.withIconLeftColor(mPage.getIconColorRes());
+                    }
+
+                    if (bodyMenuItem.getIconRightColorRes() == -1){
+                        bodyMenuItem.withIconRightColor(mPage.getIconColorRes());
+                    }
+                }
+
+                bodyMenuItem.withDividerEnabled(mPage.isDividersEnabled());
+                if (mPage.getDividerColorRes() != -1){
+                    if (bodyMenuItem.getDividerColorRes() == -1) {
+                        bodyMenuItem.withDividerColor(mPage.getDividerColorRes());
+                    }
+                }
+
+                return bodyMenuItem;
             case IMenuItem.MENU_ITEM_TYPE_BODY_DEFAULT:
                 BodyDefaultMenuItem bodyDefaultMenuItem = (BodyDefaultMenuItem) item;
 
-                // Set custom body title text color if not already defined
+                // Set custom body default title text color if not already defined
                 if (mPage.getBodyTitleTextColor() != -1){
                     if (bodyDefaultMenuItem.getTitleTextColorRes() == -1){
                         bodyDefaultMenuItem.withTitleTextColor(mPage.getBodyTitleTextColor());
                     }
                 }
 
+                // Set icon color if not already defined
+                if (mPage.getIconColorRes() != -1){
+                    if (bodyDefaultMenuItem.getIconColorRes() == -1){
+                        bodyDefaultMenuItem.withIconColor(mPage.getIconColorRes());
+                    }
+                }
+
                 return bodyDefaultMenuItem;
+            case IMenuItem.MENU_ITEM_TYPE_BODY_SWITCH:
+                BodySwitchMenuItem bodySwitchMenuItem = (BodySwitchMenuItem) item;
+
+                // Set custom body switch title text color if not already defined
+                if (mPage.getBodyTitleTextColor() != -1){
+                    if (bodySwitchMenuItem.getTitleTextColorRes() == -1){
+                        bodySwitchMenuItem.withTitleTextColor(mPage.getBodyTitleTextColor());
+                    }
+                }
+
+                // Set icon color if not already defined
+                if (mPage.getIconColorRes() != -1){
+                    if (bodySwitchMenuItem.getIconColorRes() == -1){
+                        bodySwitchMenuItem.withIconColor(mPage.getIconColorRes());
+                    }
+                }
+
+                return bodySwitchMenuItem;
         }
 
         return item;
     }
 
-    /*List<IMenuItem> build(){
-        for (int x = 0; x < mMenuItems.size(); x++){
-            IMenuItem item = mMenuItems.get(x);
-            mMenuItems.remove(x);
-            item = prepareMenuItem(item);
-            mMenuItems.add(x, item);
-        }
-
-        return mMenuItems;
-    }*/
-
     public MMPage build(){
         for (int x = 0; x < mPage.getMenuItems().size(); x++){
             IMenuItem item = mPage.getMenuItems().get(x);
+            IMenuItem nextItem = null;
+            if ((x + 1) != mPage.getMenuItems().size()){
+                nextItem = mPage.getMenuItems().get(x + 1);
+            }
             mPage.getMenuItems().remove(x);
-            item = prepareMenuItem(item);
+            item = prepareMenuItem(item, nextItem);
             mPage.getMenuItems().add(x, item);
         }
 

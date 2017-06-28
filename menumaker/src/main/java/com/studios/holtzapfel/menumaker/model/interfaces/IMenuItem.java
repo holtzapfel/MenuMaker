@@ -12,8 +12,9 @@ import com.studios.holtzapfel.menumaker.MMFragment;
 public interface IMenuItem<T, VH extends RecyclerView.ViewHolder> {
 
     int MENU_ITEM_TYPE_HEADER = 100;
-    int MENU_ITEM_TYPE_BODY_DEFAULT = 200;
-    int MENU_ITEM_TYPE_BODY_SWITCH = 201;
+    int MENU_ITEM_TYPE_BODY = 200;
+    int MENU_ITEM_TYPE_BODY_DEFAULT = 201;
+    int MENU_ITEM_TYPE_BODY_SWITCH = 202;
     int MENU_ITEM_TYPE_FOOTER = 300;
 
     int getID();
@@ -29,4 +30,8 @@ public interface IMenuItem<T, VH extends RecyclerView.ViewHolder> {
     void bindView(Context context, VH holder, MMFragment.OnFragmentInteractionListener listener);
 
     void unbindView(VH holder);
+
+    T withLastItem(boolean isLastItem);
+
+    boolean isLastItem();
 }

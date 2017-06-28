@@ -25,9 +25,9 @@ public interface IBaseMenuItem<T, VH extends RecyclerView.ViewHolder> extends IM
 
     boolean isIconVisible();
 
-    T withLastItem(boolean isLastItem);
+    T withIconColor(int colorRes);
 
-    boolean isLastItem();
+    int getIconColorRes();
 
     T withTitleTextColor(int colorRes);
 

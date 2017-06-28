@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import com.studios.holtzapfel.menumaker.MMFragment.OnFragmentInteractionListener;
 import com.studios.holtzapfel.menumaker.R;
 import com.studios.holtzapfel.menumaker.model.BodyDefaultMenuItem;
+import com.studios.holtzapfel.menumaker.model.BodyMenuItem;
 import com.studios.holtzapfel.menumaker.model.BodySwitchMenuItem;
 import com.studios.holtzapfel.menumaker.model.FooterMenuItem;
 import com.studios.holtzapfel.menumaker.model.HeaderMenuItem;
@@ -37,6 +38,8 @@ public class MenuFragmentRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
         switch (viewType){
             case IMenuItem.MENU_ITEM_TYPE_HEADER:
                 return new HeaderMenuItem.HeaderViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.mm_item_header, parent, false));
+            case IMenuItem.MENU_ITEM_TYPE_BODY:
+                return new BodyMenuItem.BodyMenuItemViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.mm_item_body, parent, false));
             case IMenuItem.MENU_ITEM_TYPE_BODY_DEFAULT:
                 return new BodyDefaultMenuItem.BodyDefaultViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.mm_item_body_default, parent, false));
             case IMenuItem.MENU_ITEM_TYPE_BODY_SWITCH:
@@ -61,6 +64,10 @@ public class MenuFragmentRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
             case IMenuItem.MENU_ITEM_TYPE_HEADER:
                 HeaderMenuItem headerMenuItem = (HeaderMenuItem) menuItem;
                 headerMenuItem.bindView(mContext, (HeaderMenuItem.HeaderViewHolder) holder, mListener);
+                break;
+            case IMenuItem.MENU_ITEM_TYPE_BODY:
+                BodyMenuItem bodyMenuItem = (BodyMenuItem) menuItem;
+                bodyMenuItem.bindView(mContext, (BodyMenuItem.BodyMenuItemViewHolder) holder, mListener);
                 break;
             case IMenuItem.MENU_ITEM_TYPE_BODY_DEFAULT:
                 BodyDefaultMenuItem bodyDefaultMenuItem = (BodyDefaultMenuItem) menuItem;
