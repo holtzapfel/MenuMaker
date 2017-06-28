@@ -46,15 +46,6 @@ public class HeaderMenuItem extends AbstractMenuItem<HeaderMenuItem, HeaderMenuI
         if (mTitleTextColorRes != -1){
             holder.title.setTextColor(ResourcesCompat.getColor(context.getApplicationContext().getResources(), mTitleTextColorRes, context.getTheme()));
         }
-
-        if (mID != -1) {
-            holder.cardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    listener.onMenuItemClick(HeaderMenuItem.this);
-                }
-            });
-        }
     }
 
     @Override

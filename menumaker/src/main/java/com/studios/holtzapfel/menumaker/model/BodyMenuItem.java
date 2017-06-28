@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -15,6 +16,8 @@ import com.studios.holtzapfel.menumaker.Master;
 import com.studios.holtzapfel.menumaker.R;
 import com.studios.holtzapfel.menumaker.model.interfaces.IBodyItem;
 import com.studios.holtzapfel.menumaker.model.interfaces.IMenuItem;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by holtzapfel on 6/27/17.
@@ -213,9 +216,10 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
             holder.cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    Log.d(TAG, "onClick: isSwitchUsed = " + isSwitchUsed);
                     if (isSwitchUsed){
-                        holder.booleanValue.setChecked(!getBooleanValue());
-                    } else listener.onMenuItemClick(BodyMenuItem.this);
+                        holder.booleanValue.performClick();
+                    } else listener.onBodyItemClick(BodyMenuItem.this);
                 }
             });
         }
@@ -245,7 +249,7 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                     withBooleanValue(b);
-                    listener.onMenuItemClick(BodyMenuItem.this);
+                    listener.onBodyItemClick(BodyMenuItem.this);
                 }
             });
         } else holder.booleanValue.setVisibility(View.GONE);

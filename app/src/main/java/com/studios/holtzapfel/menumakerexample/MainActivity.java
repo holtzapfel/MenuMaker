@@ -11,7 +11,6 @@ import com.studios.holtzapfel.menumaker.MMPageBuilder;
 import com.studios.holtzapfel.menumaker.model.BodyMenuItem;
 import com.studios.holtzapfel.menumaker.model.FooterMenuItem;
 import com.studios.holtzapfel.menumaker.model.HeaderMenuItem;
-import com.studios.holtzapfel.menumaker.model.interfaces.IMenuItem;
 
 public class MainActivity extends MMActivity{
 
@@ -91,20 +90,17 @@ public class MainActivity extends MMActivity{
     }
 
     @Override
-    public IMenuItem configureMenuItemClick(IMenuItem menuItem) {
-        if (menuItem instanceof BodyMenuItem) {
-            switch (menuItem.getID()) {
-                case ID_ITEM1:
-                    showPage(PAGE_ITEM1);
-                    break;
-                case ID_ITEM2:
-                    ((BodyMenuItem) menuItem).withDescription("Did this get updated?");
-                    if (mPageRoot.replaceMenuItem(menuItem)) {
-                        updatePage(mPageRoot, true);
-                    }
-                    break;
-            }
+    public void configBodyItemClick(BodyMenuItem bodyItem) {
+        switch (bodyItem.getID()) {
+            case ID_ITEM1:
+                showPage(PAGE_ITEM1);
+                break;
+            case ID_ITEM2:
+                bodyItem.withDescription("Did this get updated?");
+                if (mPageRoot.replaceMenuItem(bodyItem)) {
+                    updatePage(mPageRoot, true);
+                }
+                break;
         }
-        return null;
     }
 }

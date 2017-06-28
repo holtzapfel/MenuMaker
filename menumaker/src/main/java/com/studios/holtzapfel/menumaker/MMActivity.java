@@ -3,7 +3,7 @@ package com.studios.holtzapfel.menumaker;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
-import com.studios.holtzapfel.menumaker.model.interfaces.IMenuItem;
+import com.studios.holtzapfel.menumaker.model.BodyMenuItem;
 
 /**
  * Created by holtzapfel on 6/21/17.
@@ -22,13 +22,15 @@ public abstract class MMActivity extends AppCompatActivity implements MMFragment
         if (mMenu == null){
             throw new RuntimeException("Please create a menu object");
         } else {
-            showPage(mMenu.getInitialPageID(), true);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(mMenu.mFrameRes, MMFragment.newInstance(mMenu.getInitialPageID()))
+                    .commit();
         }
     }
 
     public abstract MMMenuBuilder configureMenu();
 
-    public abstract IMenuItem configureMenuItemClick(IMenuItem menuItem);
+    public abstract void configBodyItemClick(BodyMenuItem bodyItem);
 
     @Override
     public MMPage onRequestPage(int pageID) {
@@ -39,8 +41,8 @@ public abstract class MMActivity extends AppCompatActivity implements MMFragment
     }
 
     @Override
-    public IMenuItem onMenuItemClick(IMenuItem menuItem) {
-        return configureMenuItemClick(menuItem);
+    public void onBodyItemClick(BodyMenuItem bodyItem) {
+        configBodyItemClick(bodyItem);
     }
 
     public void showPage(int pageID){
@@ -53,8 +55,10 @@ public abstract class MMActivity extends AppCompatActivity implements MMFragment
 
     public void showPage(int pageID, boolean isRefresh){
         if (isRefresh) {
+            getSupportFragmentManager().popBackStack();
             getSupportFragmentManager().beginTransaction()
                     .replace(mMenu.mFrameRes, MMFragment.newInstance(pageID))
+                    .addToBackStack(null)
                     .commit();
         } else showPage(pageID);
     }

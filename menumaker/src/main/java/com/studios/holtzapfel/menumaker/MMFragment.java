@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.studios.holtzapfel.menumaker.adapters.MenuFragmentRecyclerAdapter;
-import com.studios.holtzapfel.menumaker.model.interfaces.IMenuItem;
+import com.studios.holtzapfel.menumaker.model.BodyMenuItem;
 
 public class MMFragment extends Fragment{
 
@@ -83,7 +83,7 @@ public class MMFragment extends Fragment{
 
     public interface OnFragmentInteractionListener {
         MMPage onRequestPage(int pageID);
-        IMenuItem onMenuItemClick(IMenuItem menuItem);
+        void onBodyItemClick(BodyMenuItem bodyItem);
     }
 
     private void updateUI(){

@@ -24,12 +24,7 @@ public class FooterMenuItem extends AbstractMenuItem<FooterMenuItem, FooterMenuI
 
     @Override
     public void bindView(Context context, FooterMenuItem.FooterViewHolder holder, final MMFragment.OnFragmentInteractionListener listener) {
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                listener.onMenuItemClick(FooterMenuItem.this);
-            }
-        });
+
     }
 
     @Override
