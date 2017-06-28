@@ -13,9 +13,7 @@ public abstract class MMActivity extends AppCompatActivity implements MMFragment
 
     private MMMenuBuilder mMenu;
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+    public void initiateMenu(){
         updateUI();
     }
 

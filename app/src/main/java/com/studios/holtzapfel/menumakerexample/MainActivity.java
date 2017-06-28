@@ -38,6 +38,12 @@ public class MainActivity extends MMActivity{
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        initiateMenu();
+    }
+
+    @Override
     public MMMenuBuilder configureMenu() {
         mPageRoot = new MMPageBuilder(PAGE_ROOT)
                 .withPageTitle("Menu Maker Example App")
