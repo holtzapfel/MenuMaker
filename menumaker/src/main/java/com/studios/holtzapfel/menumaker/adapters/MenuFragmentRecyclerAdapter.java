@@ -7,9 +7,7 @@ import android.view.ViewGroup;
 
 import com.studios.holtzapfel.menumaker.MMFragment.OnFragmentInteractionListener;
 import com.studios.holtzapfel.menumaker.R;
-import com.studios.holtzapfel.menumaker.model.BodyDefaultMenuItem;
 import com.studios.holtzapfel.menumaker.model.BodyMenuItem;
-import com.studios.holtzapfel.menumaker.model.BodySwitchMenuItem;
 import com.studios.holtzapfel.menumaker.model.FooterMenuItem;
 import com.studios.holtzapfel.menumaker.model.HeaderMenuItem;
 import com.studios.holtzapfel.menumaker.model.interfaces.IMenuItem;
@@ -40,10 +38,6 @@ public class MenuFragmentRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
                 return new HeaderMenuItem.HeaderViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.mm_item_header, parent, false));
             case IMenuItem.MENU_ITEM_TYPE_BODY:
                 return new BodyMenuItem.BodyMenuItemViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.mm_item_body, parent, false));
-            case IMenuItem.MENU_ITEM_TYPE_BODY_DEFAULT:
-                return new BodyDefaultMenuItem.BodyDefaultViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.mm_item_body_default, parent, false));
-            case IMenuItem.MENU_ITEM_TYPE_BODY_SWITCH:
-                return new BodySwitchMenuItem.BodySwitchViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.mm_item_body_switch, parent, false));
             case IMenuItem.MENU_ITEM_TYPE_FOOTER:
                 return new FooterMenuItem.FooterViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.mm_item_footer, parent, false));
         }
@@ -68,14 +62,6 @@ public class MenuFragmentRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
             case IMenuItem.MENU_ITEM_TYPE_BODY:
                 BodyMenuItem bodyMenuItem = (BodyMenuItem) menuItem;
                 bodyMenuItem.bindView(mContext, (BodyMenuItem.BodyMenuItemViewHolder) holder, mListener);
-                break;
-            case IMenuItem.MENU_ITEM_TYPE_BODY_DEFAULT:
-                BodyDefaultMenuItem bodyDefaultMenuItem = (BodyDefaultMenuItem) menuItem;
-                bodyDefaultMenuItem.bindView(mContext, (BodyDefaultMenuItem.BodyDefaultViewHolder) holder, mListener);
-                break;
-            case IMenuItem.MENU_ITEM_TYPE_BODY_SWITCH:
-                BodySwitchMenuItem bodySwitchMenuItem = (BodySwitchMenuItem) menuItem;
-                bodySwitchMenuItem.bindView(mContext, (BodySwitchMenuItem.BodySwitchViewHolder) holder, mListener);
                 break;
             case IMenuItem.MENU_ITEM_TYPE_FOOTER:
                 FooterMenuItem footerMenuItem = (FooterMenuItem) menuItem;

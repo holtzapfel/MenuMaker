@@ -26,10 +26,10 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
     private int mTitleColorRes = -1;
 
     private String mDescription;
-    private String mShortValue;
-    private boolean mSwitchValue = false;
+    private String mValue;
+    private boolean mBooleanValue = false;
     private boolean isSwitchUsed = false;
-    private String mLongValue;
+    private String mContent;
 
     private int mIconLeftRes = -1;
     private boolean isIconLeftVisible = true;
@@ -80,37 +80,37 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
     }
 
     @Override
-    public BodyMenuItem withShortValue(String value) {
-        this.mShortValue = value;
+    public BodyMenuItem withValue(String value) {
+        this.mValue = value;
         return this;
     }
 
     @Override
-    public String getShortValue() {
-        return mShortValue;
+    public String getValue() {
+        return mValue;
     }
 
     @Override
-    public BodyMenuItem withSwitchValue(boolean value) {
-        this.mSwitchValue = value;
+    public BodyMenuItem withBooleanValue(boolean value) {
+        this.mBooleanValue = value;
         this.isSwitchUsed = true;
         return this;
     }
 
     @Override
-    public boolean getSwitchValue() {
-        return mSwitchValue;
+    public boolean getBooleanValue() {
+        return mBooleanValue;
     }
 
     @Override
-    public BodyMenuItem withLongValue(String value) {
-        this.mLongValue = value;
+    public BodyMenuItem withContent(String content) {
+        this.mContent = content;
         return this;
     }
 
     @Override
-    public String getLongValue() {
-        return mLongValue;
+    public String getContent() {
+        return mContent;
     }
 
     @Override
@@ -214,7 +214,7 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
                 @Override
                 public void onClick(View view) {
                     if (isSwitchUsed){
-                        holder.switchValue.setChecked(!getSwitchValue());
+                        holder.booleanValue.setChecked(!getBooleanValue());
                     } else listener.onMenuItemClick(BodyMenuItem.this);
                 }
             });
@@ -239,28 +239,28 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
 
         // Configure switch
         if (isSwitchUsed){
-            holder.switchValue.setVisibility(View.VISIBLE);
-            holder.switchValue.setChecked(!getSwitchValue());
-            holder.switchValue.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            holder.booleanValue.setVisibility(View.VISIBLE);
+            holder.booleanValue.setChecked(!getBooleanValue());
+            holder.booleanValue.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    withSwitchValue(b);
+                    withBooleanValue(b);
                     listener.onMenuItemClick(BodyMenuItem.this);
                 }
             });
-        } else holder.switchValue.setVisibility(View.GONE);
+        } else holder.booleanValue.setVisibility(View.GONE);
 
         // Configure short value
-        if (getShortValue() != null){
-            holder.shortValue.setVisibility(View.VISIBLE);
-            holder.shortValue.setText(Master.fromHtml(getShortValue()));
-        } else holder.shortValue.setVisibility(View.GONE);
+        if (getValue() != null){
+            holder.value.setVisibility(View.VISIBLE);
+            holder.value.setText(Master.fromHtml(getValue()));
+        } else holder.value.setVisibility(View.GONE);
 
         // Configure long value
-        if (getLongValue() != null){
-            holder.longValue.setVisibility(View.VISIBLE);
-            holder.longValue.setText(Master.fromHtml(getLongValue()));
-        } else holder.longValue.setVisibility(View.GONE);
+        if (getContent() != null){
+            holder.content.setVisibility(View.VISIBLE);
+            holder.content.setText(Master.fromHtml(getContent()));
+        } else holder.content.setVisibility(View.GONE);
 
         // Configure left icon
         if (getIconLeftRes() != -1){
@@ -300,9 +300,9 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
         holder.cardView.setEnabled(isEnabled());
         holder.title.setEnabled(isEnabled());
         holder.description.setEnabled(isEnabled());
-        holder.switchValue.setEnabled(isEnabled());
-        holder.shortValue.setEnabled(isEnabled());
-        holder.longValue.setEnabled(isEnabled());
+        holder.booleanValue.setEnabled(isEnabled());
+        holder.value.setEnabled(isEnabled());
+        holder.content.setEnabled(isEnabled());
         holder.iconLeft.setEnabled(isEnabled());
         holder.iconRight.setEnabled(isEnabled());
     }
@@ -318,10 +318,10 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
         private ImageView iconLeft;
         private TextView title;
         private TextView description;
-        private TextView shortValue;
-        private Switch switchValue;
+        private TextView value;
+        private Switch booleanValue;
         private ImageView iconRight;
-        private TextView longValue;
+        private TextView content;
         private TextView divider;
 
         public BodyMenuItemViewHolder(View v) {
@@ -330,10 +330,10 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
             this.iconLeft = v.findViewById(R.id.mm_item_body_icon_left);
             this.title = v.findViewById(R.id.mm_item_body_title);
             this.description = v.findViewById(R.id.mm_item_body_description);
-            this.shortValue = v.findViewById(R.id.mm_item_body_short_value);
-            this.switchValue = v.findViewById(R.id.mm_item_body_switch);
+            this.value = v.findViewById(R.id.mm_item_body_value);
+            this.booleanValue = v.findViewById(R.id.mm_item_body_switch);
             this.iconRight = v.findViewById(R.id.mm_item_body_icon_right);
-            this.longValue = v.findViewById(R.id.mm_item_body_long_value);
+            this.content = v.findViewById(R.id.mm_item_body_content);
             this.divider = v.findViewById(R.id.mm_item_body_divider);
         }
     }

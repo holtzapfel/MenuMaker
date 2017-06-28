@@ -2,9 +2,7 @@ package com.studios.holtzapfel.menumaker;
 
 import android.view.View;
 
-import com.studios.holtzapfel.menumaker.model.BodyDefaultMenuItem;
 import com.studios.holtzapfel.menumaker.model.BodyMenuItem;
-import com.studios.holtzapfel.menumaker.model.BodySwitchMenuItem;
 import com.studios.holtzapfel.menumaker.model.FooterMenuItem;
 import com.studios.holtzapfel.menumaker.model.HeaderMenuItem;
 import com.studios.holtzapfel.menumaker.model.interfaces.IMenuItem;
@@ -134,42 +132,6 @@ public class MMPageBuilder {
                 }
 
                 return bodyMenuItem;
-            case IMenuItem.MENU_ITEM_TYPE_BODY_DEFAULT:
-                BodyDefaultMenuItem bodyDefaultMenuItem = (BodyDefaultMenuItem) item;
-
-                // Set custom body default title text color if not already defined
-                if (mPage.getBodyTitleTextColor() != -1){
-                    if (bodyDefaultMenuItem.getTitleTextColorRes() == -1){
-                        bodyDefaultMenuItem.withTitleTextColor(mPage.getBodyTitleTextColor());
-                    }
-                }
-
-                // Set icon color if not already defined
-                if (mPage.getIconColorRes() != -1){
-                    if (bodyDefaultMenuItem.getIconColorRes() == -1){
-                        bodyDefaultMenuItem.withIconColor(mPage.getIconColorRes());
-                    }
-                }
-
-                return bodyDefaultMenuItem;
-            case IMenuItem.MENU_ITEM_TYPE_BODY_SWITCH:
-                BodySwitchMenuItem bodySwitchMenuItem = (BodySwitchMenuItem) item;
-
-                // Set custom body switch title text color if not already defined
-                if (mPage.getBodyTitleTextColor() != -1){
-                    if (bodySwitchMenuItem.getTitleTextColorRes() == -1){
-                        bodySwitchMenuItem.withTitleTextColor(mPage.getBodyTitleTextColor());
-                    }
-                }
-
-                // Set icon color if not already defined
-                if (mPage.getIconColorRes() != -1){
-                    if (bodySwitchMenuItem.getIconColorRes() == -1){
-                        bodySwitchMenuItem.withIconColor(mPage.getIconColorRes());
-                    }
-                }
-
-                return bodySwitchMenuItem;
         }
 
         return item;

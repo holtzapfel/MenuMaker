@@ -9,7 +9,6 @@ import com.studios.holtzapfel.menumaker.MMMenuBuilder;
 import com.studios.holtzapfel.menumaker.MMPage;
 import com.studios.holtzapfel.menumaker.MMPageBuilder;
 import com.studios.holtzapfel.menumaker.model.BodyMenuItem;
-import com.studios.holtzapfel.menumaker.model.BodySwitchMenuItem;
 import com.studios.holtzapfel.menumaker.model.FooterMenuItem;
 import com.studios.holtzapfel.menumaker.model.HeaderMenuItem;
 import com.studios.holtzapfel.menumaker.model.interfaces.IMenuItem;
@@ -52,16 +51,10 @@ public class MainActivity extends MMActivity{
 
                         new HeaderMenuItem("General Options"),
                         new BodyMenuItem(0).withTitle("Title 1").withDescription("This is a sample description"),
-                        new BodyMenuItem(0).withTitle("Title 1").withLongValue("This is the best example of a long value that I can create on the spot.  I am very tired as I have worked 14 twelve hour shifts in the past 16 days."),
-                        new BodyMenuItem(ID_SWITCH1).withTitle("Switch 1").withDescription("This is a sample description").withSwitchValue(true),
+                        new BodyMenuItem(0).withTitle("Title 1").withContent("This is the best example of a long value that I can create on the spot.  I am very tired as I have worked 14 twelve hour shifts in the past 16 days."),
+                        new BodyMenuItem(ID_SWITCH1).withTitle("Switch 1").withDescription("This is a sample description").withBooleanValue(true),
                         new FooterMenuItem()
                 )
-                .withFABOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Toast.makeText(MainActivity.this, "Yay!", Toast.LENGTH_SHORT).show();
-                    }
-                })
                 .withHeaderTitleTextColor(R.color.colorPrimary)
                 .build();
 
@@ -69,10 +62,10 @@ public class MainActivity extends MMActivity{
                 .withPageTitle("Page 1 Menu")
                 .withMenuItems(
                         new HeaderMenuItem("Page 1"),
-                        new BodySwitchMenuItem(ID_SWITCH2, "Switch 2", "This is a sample description", true).withIcon(android.R.drawable.ic_menu_directions),
-                        new BodySwitchMenuItem(ID_SWITCH3, "Switch 3", "This is a sample description", true).withIcon(android.R.drawable.ic_menu_crop),
-                        new BodySwitchMenuItem(ID_SWITCH4, "Switch 4", "This is a sample description", false).withIcon(android.R.drawable.ic_menu_camera),
-                        new BodySwitchMenuItem(ID_SWITCH5, "Switch 5", "This is a sample description", true).withIcon(android.R.drawable.ic_menu_day),
+                        new BodyMenuItem(ID_SWITCH2).withTitle("Switch 2").withDescription("This is a sample description").withBooleanValue(true).withIconLeft(android.R.drawable.ic_menu_directions),
+                        new BodyMenuItem(ID_SWITCH3).withTitle("Switch 3").withDescription("This is a sample description").withBooleanValue(true).withIconLeft(android.R.drawable.ic_menu_crop),
+                        new BodyMenuItem(ID_SWITCH4).withTitle("Switch 4").withDescription("This is a sample description").withBooleanValue(false).withIconLeft(android.R.drawable.ic_menu_camera),
+                        new BodyMenuItem(ID_SWITCH5).withTitle("Switch 5").withDescription("This is a sample description").withBooleanValue(true).withIconLeft(android.R.drawable.ic_menu_day),
                         new FooterMenuItem()
                 )
                 .withFABOnClickListener(new View.OnClickListener() {

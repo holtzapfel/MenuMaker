@@ -19,7 +19,7 @@ public class MMPage {
     private String mPageTitle;
     private int mHeaderTitleTextColorRes = -1;
     private int mBodyTitleTextColorRes = -1;
-    private boolean isFABEnabled = true;
+    private boolean isFABEnabled = false;
     private View.OnClickListener mFABOnClickListener;
     private int mIconColorRes = -1;
     private boolean isDividersEnabled = true;
@@ -96,6 +96,7 @@ public class MMPage {
 
     public void setFABOnClickListener(View.OnClickListener onClickListener){
         this.mFABOnClickListener = onClickListener;
+        this.isFABEnabled = true;
     }
 
     public View.OnClickListener getFABOnClickListener(){

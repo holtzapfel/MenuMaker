@@ -54,11 +54,11 @@
             </LinearLayout>
             
             <TextView
-                android:id="@+id/mm_item_body_short_value"
+                android:id="@+id/mm_item_body_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
-                android:text="Short Value"/>
+                android:text="Value"/>
 
             <Switch
                 android:id="@+id/mm_item_body_switch"
@@ -73,7 +73,7 @@
         </LinearLayout>
         
         <TextView
-            android:id="@+id/mm_item_body_long_value"
+            android:id="@+id/mm_item_body_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="0dp"

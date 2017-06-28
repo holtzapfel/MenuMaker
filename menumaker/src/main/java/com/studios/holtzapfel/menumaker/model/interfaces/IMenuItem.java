@@ -13,8 +13,6 @@ public interface IMenuItem<T, VH extends RecyclerView.ViewHolder> {
 
     int MENU_ITEM_TYPE_HEADER = 100;
     int MENU_ITEM_TYPE_BODY = 200;
-    int MENU_ITEM_TYPE_BODY_DEFAULT = 201;
-    int MENU_ITEM_TYPE_BODY_SWITCH = 202;
     int MENU_ITEM_TYPE_FOOTER = 300;
 
     int getID();

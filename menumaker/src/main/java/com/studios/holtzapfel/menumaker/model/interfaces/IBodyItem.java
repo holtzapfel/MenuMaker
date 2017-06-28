@@ -19,17 +19,17 @@ public interface IBodyItem<T, VH extends RecyclerView.ViewHolder> extends IMenuI
 
     String getDescription();
 
-    T withShortValue(String value);
+    T withValue(String value);
 
-    String getShortValue();
+    String getValue();
 
-    T withSwitchValue(boolean value);
+    T withBooleanValue(boolean value);
 
-    boolean getSwitchValue();
+    boolean getBooleanValue();
 
-    T withLongValue(String value);
+    T withContent(String content);
 
-    String getLongValue();
+    String getContent();
 
     T withIconLeft(int iconRes);
 
