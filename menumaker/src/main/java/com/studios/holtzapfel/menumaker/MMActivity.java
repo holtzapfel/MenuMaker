@@ -14,12 +14,8 @@ import com.studios.holtzapfel.menumaker.model.interfaces.IMenuItem;
 public abstract class MMActivity extends AppCompatActivity implements MMFragment.OnFragmentInteractionListener, MMMenu.OnMMMenuInteractionListener {
 
     private int mCurrentPageID;
-    private boolean isAlreadyInitiated = false;
 
     public void initiateMenu(){
-        if (isAlreadyInitiated){
-            throw new RuntimeException("Menu can only be initiated one time!");
-        } else isAlreadyInitiated = true;
         MMMenu menu = onRequestMenu();
         getSupportFragmentManager().beginTransaction()
                 .replace(menu.getFrameRes(), MMFragment.newInstance(menu.getInitialPageID()), String.valueOf(menu.getInitialPageID()))
@@ -62,10 +58,6 @@ public abstract class MMActivity extends AppCompatActivity implements MMFragment
         if (menu != null){
             return menu.getPage(pageID);
         }
-
-        /*if (mMenuBuilder != null){
-            return mMenuBuilder.getPage(pageID);
-        }*/
         return null;
     }
 

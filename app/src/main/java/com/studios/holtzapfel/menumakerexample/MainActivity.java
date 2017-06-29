@@ -1,5 +1,7 @@
 package com.studios.holtzapfel.menumakerexample;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
@@ -14,27 +16,39 @@ import com.studios.holtzapfel.menumaker.MMPageBuilder;
 import com.studios.holtzapfel.menumaker.model.BodyMenuItem;
 import com.studios.holtzapfel.menumaker.model.FooterMenuItem;
 import com.studios.holtzapfel.menumaker.model.HeaderMenuItem;
+import com.studios.holtzapfel.menumaker.model.interfaces.IMenuItem;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends MMActivity{
 
     private static final int PAGE_ROOT = 100;
-    private static final int ID_ITEM1 = 101;
-    private static final int ID_ITEM2 = 102;
-    private static final int ID_ITEM3 = 103;
-    private static final int ID_ITEM4 = 104;
-    private static final int ID_SWITCH1 = 105;
-    private static final int ID_SWITCH2 = 106;
+    private static final int ID_EXAMPLE_SWITCHES = 101;
+    private static final int ID_EXAMPLE_FORM = 102;
+    private static final int ID_EXAMPLE_DISPLAY_INFORMATION = 103;
+    private static final int ID_EXAMPLE_CUSTOM_ITEMS = 104;
+    private static final int ID_GITHUB = 105;
+    private static final int ID_CREDITS = 106;
 
-    private static final int PAGE_ITEM1 = 200;
-    private static final int ID_SWITCH3 = 201;
-    private static final int ID_SWITCH4 = 202;
-    private static final int ID_SWITCH5 = 203;
+    private static final int PAGE_SWITCHES = 200;
 
-    private static final int PAGE_ITEM2 = 300;
-    private static final int ID_TEXT_INPUT1 = 301;
+    private static final int PAGE_FORMS = 300;
+    private static final int ID_FORM_FIRST_NAME = 301;
+    private static final int ID_FORM_LAST_NAME = 302;
+    private static final int ID_FORM_EMAIL_ADDRESS = 303;
+    private static final int ID_FORM_RECEIVE_EMAILS = 304;
+
+    private static final int PAGE_DISPLAY_INFORMATION = 400;
+    private static final int ID_TOPIC = 401;
+
+    private static final int PAGE_CUSTOM_ITEMS = 500;
 
     private MMMenu mMenu;
-    private String mName;
+    private String mFirstName = "Drew";
+    private String mLastName = "Holtzapfel";
+    private String mEmailAddress = "holtzapfel.studios@gmail.com";
+    private boolean receiveEmails = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,31 +72,34 @@ public class MainActivity extends MMActivity{
 
     private void buildMenu(){
         MMPage pageRoot = new MMPageBuilder(PAGE_ROOT)
-                .withPageTitle("Menu Maker Example App")
+                .withPageTitle("Holtzapfel\'s Menu Maker")
                 .withMenuItems(
-                        new HeaderMenuItem("General Options"),
-                        new BodyMenuItem(ID_ITEM1).withTitle("Item 1").withDescription("This is a sample description").withIconLeft(android.R.mipmap.sym_def_app_icon),
-                        new BodyMenuItem(ID_ITEM2).withTitle("Title 2").withDescription("This is a sample description").withIconLeft(android.R.mipmap.sym_def_app_icon),
-                        new BodyMenuItem(ID_ITEM3).withTitle("Title 3").withDescription("This is a sample description").withIconLeft(android.R.mipmap.sym_def_app_icon),
-                        new BodyMenuItem(ID_ITEM4).withTitle("Title 4").withDescription("This is a sample description").withIconLeft(android.R.mipmap.sym_def_app_icon),
+                        new HeaderMenuItem("Examples"),
+                        new BodyMenuItem(ID_EXAMPLE_CUSTOM_ITEMS).withTitle("Custom Menu Items").withDescription("Need each item to appear differently?  No problem.").withIconLeft(android.R.mipmap.sym_def_app_icon),
+                        new BodyMenuItem(ID_EXAMPLE_FORM).withTitle("Forms").withDescription("Allow users to update and edit information").withIconLeft(android.R.mipmap.sym_def_app_icon),
+                        new BodyMenuItem(ID_EXAMPLE_DISPLAY_INFORMATION).withTitle("Display Information").withDescription("Menus do not have to be just about selecting preferences.  Sometimes, like in a Help section, information just needs to be displayed!").withIconLeft(android.R.mipmap.sym_def_app_icon),
+                        new BodyMenuItem(ID_EXAMPLE_SWITCHES).withTitle("Switches").withDescription("Create menus with switches for true/false properties").withIconLeft(android.R.mipmap.sym_def_app_icon),
                         new FooterMenuItem(),
 
-                        new HeaderMenuItem("General Options"),
-                        new BodyMenuItem(0).withTitle("Title 1").withDescription("This is a sample description"),
-                        new BodyMenuItem(0).withTitle("Title 1").withContent("This is the best example of a long value that I can create on the spot.  I am very tired as I have worked 14 twelve hour shifts in the past 16 days."),
-                        new BodyMenuItem(ID_SWITCH1).withTitle("Switch 1").withDescription("This is a sample description").withBooleanValue(true),
+                        new HeaderMenuItem("About"),
+                        new BodyMenuItem(ID_GITHUB).withTitle("GitHub").withDescription("Visit the GitHub page to integrate MenuMaker into your app"),
+                        new BodyMenuItem(ID_CREDITS).withTitle("Credits"),
+                        new BodyMenuItem(0).withTitle("Version").withValue("v1.0").withEnabled(false),
                         new FooterMenuItem()
                 )
                 .build();
 
-        MMPage pageItem1 = new MMPageBuilder(PAGE_ITEM1)
-                .withPageTitle("Page 1 Menu")
+        MMPage pageSwitches = new MMPageBuilder(PAGE_SWITCHES)
+                .withPageTitle("Switches")
                 .withMenuItems(
-                        new HeaderMenuItem("Page 1"),
-                        new BodyMenuItem(ID_SWITCH2).withTitle("Switch 2").withDescription("This is a sample description").withBooleanValue(true).withIconLeft(android.R.drawable.ic_menu_directions),
-                        new BodyMenuItem(ID_SWITCH3).withTitle("Switch 3").withDescription("This is a sample description").withBooleanValue(true).withIconLeft(android.R.drawable.ic_menu_crop),
-                        new BodyMenuItem(ID_SWITCH4).withTitle("Switch 4").withDescription("This is a sample description").withBooleanValue(false).withIconLeft(android.R.drawable.ic_menu_camera),
-                        new BodyMenuItem(ID_SWITCH5).withTitle("Switch 5").withDescription("This is a sample description").withBooleanValue(true).withIconLeft(android.R.drawable.ic_menu_day),
+                        new HeaderMenuItem("Group 1"),
+                        new BodyMenuItem(0).withTitle("Switch 1").withDescription("Switch 1 description").withBooleanValue(true).withIconLeft(android.R.drawable.ic_menu_crop),
+                        new BodyMenuItem(0).withTitle("Switch 2").withDescription("Switch 2 description").withBooleanValue(false).withIconLeft(android.R.drawable.ic_menu_camera),
+                        new BodyMenuItem(0).withTitle("Switch 3").withDescription("Switch 3 description").withBooleanValue(true).withIconLeft(android.R.drawable.ic_menu_day),
+                        new FooterMenuItem(),
+
+                        new HeaderMenuItem("Group 2"),
+                        new BodyMenuItem(0).withTitle("Switch 4").withBooleanValue(false),
                         new FooterMenuItem()
                 )
                 .withFABOnClickListener(new View.OnClickListener() {
@@ -93,20 +110,88 @@ public class MainActivity extends MMActivity{
                 })
                 .build();
 
-        MMPage pageItem2 = new MMPageBuilder(PAGE_ITEM2)
-                .withPageTitle("Page 2 Menu")
+        MMPage pageForms = new MMPageBuilder(PAGE_FORMS)
+                .withPageTitle("Forms")
                 .withMenuItems(
-                        new HeaderMenuItem("Page 2"),
-                        new BodyMenuItem(ID_TEXT_INPUT1).withTitle("Name").withValue(mName),
+                        new BodyMenuItem(0).withDescription("Click to edit information.").withEnabled(false),
+                        new FooterMenuItem(),
+                        new HeaderMenuItem("User Information"),
+                        new BodyMenuItem(ID_FORM_FIRST_NAME).withTitle("First Name").withValue(mFirstName),
+                        new BodyMenuItem(ID_FORM_LAST_NAME).withTitle("Last Name").withValue(mLastName),
+                        new BodyMenuItem(ID_FORM_EMAIL_ADDRESS).withTitle("Email Address").withValue(mEmailAddress),
+                        new FooterMenuItem(),
+
+                        new HeaderMenuItem("Preferences"),
+                        new BodyMenuItem(ID_FORM_RECEIVE_EMAILS).withTitle("Receive emails").withBooleanValue(receiveEmails),
                         new FooterMenuItem()
                 )
+                .build();
+
+        List<IMenuItem> sampleItems = new ArrayList<>();
+        sampleItems.add(new HeaderMenuItem("FAB Capable"));
+        sampleItems.add(new BodyMenuItem(0).withTitle("Floating Action Buttons").withDescription("Can be enabled and used easily!"));
+        sampleItems.add(new FooterMenuItem());
+        sampleItems.add(new HeaderMenuItem("Topics List"));
+        for (int x = 1; x < 11; x++){
+            sampleItems.add(new BodyMenuItem(ID_TOPIC).withTitle("Topic " + String.valueOf(x)).withContent("Here is some content surrounding topic " + String.valueOf(x) + ".  Hopefully this information does something really important for you"));
+        }
+        sampleItems.add(new FooterMenuItem());
+        sampleItems.add(new HeaderMenuItem("Did you notice that?"));
+        sampleItems.add(new BodyMenuItem(0).withTitle("The FAB disappeared when scrolling down!"));
+        sampleItems.add(new FooterMenuItem());
+
+
+        MMPage pageDisplayInformation = new MMPageBuilder(PAGE_DISPLAY_INFORMATION)
+                .withPageTitle("Display Information")
+                .withMenuItems(sampleItems)
+                .withFABEnabled(true)
+                .withFABOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Toast.makeText(MainActivity.this, "Customize me!", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .build();
+
+        MMPage pageCustomItems = new MMPageBuilder(PAGE_CUSTOM_ITEMS)
+                .withPageTitle("Custom Menu Items")
+                .withMenuItems(
+                        new HeaderMenuItem("Example Items"),
+                        new BodyMenuItem(0).withTitle("Simple Item").withTitleTextColor(android.R.color.holo_green_dark).withDescription("What would the world be like if we could divide by zero?").withValue("3.14"),
+                        new BodyMenuItem(0).withTitle("Divide by Zero").withDescription("Enabled dividing by zero").withBooleanValue(false),
+                        new BodyMenuItem(0).withTitle("Warning!").withTitleTextColor(android.R.color.holo_red_light).withContent("Dividing by zero is not a good thing.  Use only when necessary"),
+                        new FooterMenuItem(),
+
+                        new HeaderMenuItem("Individual Items").withTitleTextColor(android.R.color.holo_red_dark),
+                        new BodyMenuItem(0).withTitle("Title Only"),
+                        new BodyMenuItem(0).withDescription("Description Only"),
+                        new BodyMenuItem(0).withValue("Value Only"),
+                        new BodyMenuItem(0).withContent("Content Only"),
+                        new BodyMenuItem(0).withBooleanValue(true),
+                        new FooterMenuItem(),
+
+                        new HeaderMenuItem("Icon Customization").withTitleTextColor(R.color.colorAccent),
+                        new BodyMenuItem(0).withTitle("Left Icon").withIconLeft(R.drawable.ic_face),
+                        new BodyMenuItem(0).withTitle("Right Icon").withTitleTextColor(android.R.color.holo_blue_bright).withIconRight(R.drawable.ic_face),
+                        new BodyMenuItem(0).withTitle("Bilateral Icons").withDescription("Customize icon colors too!").withTitleTextColor(android.R.color.holo_orange_dark).withIconLeft(R.drawable.ic_face).withIconLeftColor(android.R.color.holo_purple).withIconRight(R.drawable.ic_face).withIconRightColor(android.R.color.holo_green_light),
+                        new FooterMenuItem()
+                )
+                .withFABEnabled(true)
+                .withFABOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Toast.makeText(MainActivity.this, "FAB!", Toast.LENGTH_SHORT).show();
+                    }
+                })
                 .build();
 
         mMenu = new MMMenuBuilder(this, R.id.frame)
                 .withPages(
                         pageRoot,
-                        pageItem1,
-                        pageItem2
+                        pageSwitches,
+                        pageForms,
+                        pageDisplayInformation,
+                        pageCustomItems
                 )
                 .withInitialPageID(PAGE_ROOT)
                 .withHeaderTitleTextColor(R.color.colorPrimary)
@@ -116,27 +201,65 @@ public class MainActivity extends MMActivity{
     @Override
     public void onBodyItemClick(final BodyMenuItem bodyItem) {
         switch (bodyItem.getID()) {
-            case ID_ITEM1:
-                mMenu.showPage(PAGE_ITEM1);
+            case ID_EXAMPLE_CUSTOM_ITEMS:
+                mMenu.showPage(PAGE_CUSTOM_ITEMS);
                 break;
-            case ID_ITEM2:
-                bodyItem.withDescription("Did this get updated?");
-                mMenu.updateItem(bodyItem, true);
+            case ID_EXAMPLE_DISPLAY_INFORMATION:
+                mMenu.showPage(PAGE_DISPLAY_INFORMATION);
                 break;
-            case ID_ITEM3:
-                mMenu.showPage(PAGE_ITEM2);
+            case ID_EXAMPLE_FORM:
+                mMenu.showPage(PAGE_FORMS);
                 break;
-            case ID_TEXT_INPUT1:
+            case ID_EXAMPLE_SWITCHES:
+                mMenu.showPage(PAGE_SWITCHES);
+                break;
+            case ID_FORM_EMAIL_ADDRESS:
                 new MaterialDialog.Builder(this)
-                        .input("Name", mName, true, new MaterialDialog.InputCallback() {
+                        .input("Email Address", mEmailAddress, true, new MaterialDialog.InputCallback() {
                             @Override
                             public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                                mName = input.toString();
-                                bodyItem.withValue(mName);
+                                mEmailAddress = input.toString();
+                                bodyItem.withValue(mEmailAddress);
                                 mMenu.updateItem(bodyItem, true);
                             }
                         })
                         .show();
+                break;
+            case ID_FORM_FIRST_NAME:
+                new MaterialDialog.Builder(this)
+                        .input("First Name", mFirstName, true, new MaterialDialog.InputCallback() {
+                            @Override
+                            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                                mFirstName = input.toString();
+                                bodyItem.withValue(mFirstName);
+                                mMenu.updateItem(bodyItem, true);
+                            }
+                        })
+                        .show();
+                break;
+            case ID_FORM_LAST_NAME:
+                new MaterialDialog.Builder(this)
+                        .input("Last Name", mLastName, true, new MaterialDialog.InputCallback() {
+                            @Override
+                            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                                mLastName = input.toString();
+                                bodyItem.withValue(mLastName);
+                                mMenu.updateItem(bodyItem, true);
+                            }
+                        })
+                        .show();
+                break;
+            case ID_FORM_RECEIVE_EMAILS:
+                receiveEmails = bodyItem.getBooleanValue();
+                break;
+            case ID_GITHUB:
+                String url = "https://github.com/holtzapfel/MenuMaker";
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
+                break;
+            case ID_TOPIC:
+                Toast.makeText(this, bodyItem.getTitle(), Toast.LENGTH_SHORT).show();
                 break;
         }
     }

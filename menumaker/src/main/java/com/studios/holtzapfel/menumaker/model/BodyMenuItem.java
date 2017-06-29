@@ -269,11 +269,11 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
         // Configure switch
         if (isSwitchUsed){
             holder.booleanValue.setVisibility(View.VISIBLE);
-            holder.booleanValue.setChecked(!getBooleanValue());
+            holder.booleanValue.setChecked(getBooleanValue());
             holder.booleanValue.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    withBooleanValue(b);
+                    BodyMenuItem.this.withBooleanValue(b);
                     listener.onMenuItemClick(BodyMenuItem.this);
                 }
             });

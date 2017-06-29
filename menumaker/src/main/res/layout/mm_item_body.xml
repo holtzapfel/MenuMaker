@@ -49,6 +49,7 @@
                     android:id="@+id/mm_item_body_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
                     android:text="Card item description and additional information"/>
 
             </LinearLayout>
@@ -67,8 +68,10 @@
             
             <ImageView
                 android:id="@+id/mm_item_body_icon_right"
-                android:layout_width="35dp"
-                android:layout_height="35dp"/>
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"/>
 
         </LinearLayout>
         
