@@ -11,14 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.studios.holtzapfel.menumaker.adapters.MenuFragmentRecyclerAdapter;
-import com.studios.holtzapfel.menumaker.model.BodyMenuItem;
+import com.studios.holtzapfel.menumaker.model.interfaces.IMenuItem;
 
 public class MMFragment extends Fragment{
 
-    private static final String ARG_ROOT_ID = "ARG_ROOT_ID";
+    private static final String ARG_PAGE_ID = "ARG_PAGE_ID";
 
     private int mPageID;
-    private MMPage mPage;
 
     private OnFragmentInteractionListener mListener;
 
@@ -29,10 +28,10 @@ public class MMFragment extends Fragment{
         // Required empty public constructor
     }
 
-    public static MMFragment newInstance(int rootID) {
+    public static MMFragment newInstance(int pageID) {
         MMFragment fragment = new MMFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_ROOT_ID, rootID);
+        args.putInt(ARG_PAGE_ID, pageID);
         fragment.setArguments(args);
         return fragment;
     }
@@ -41,7 +40,7 @@ public class MMFragment extends Fragment{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mPageID = getArguments().getInt(ARG_ROOT_ID);
+            mPageID = getArguments().getInt(ARG_PAGE_ID);
         }
     }
 
@@ -52,8 +51,8 @@ public class MMFragment extends Fragment{
         View v = inflater.inflate(R.layout.fragment_menu, container, false);
 
         // Associate views
-        mRecycler = (RecyclerView) v.findViewById(R.id.menu_maker_menu_fragment_recycler);
-        mFAB = (FloatingActionButton) v.findViewById(R.id.menu_maker_menu_fragment_fab);
+        mRecycler = v.findViewById(R.id.menu_maker_menu_fragment_recycler);
+        mFAB = v.findViewById(R.id.menu_maker_menu_fragment_fab);
 
         return v;
     }
@@ -83,31 +82,32 @@ public class MMFragment extends Fragment{
 
     public interface OnFragmentInteractionListener {
         MMPage onRequestPage(int pageID);
-        void onBodyItemClick(BodyMenuItem bodyItem);
+        void onMenuItemClick(IMenuItem menuItem);
+        void onNotifyCurrentPageID(int pageID);
     }
 
-    private void updateUI(){
-        mPage = mListener.onRequestPage(mPageID);
+    public void updateUI(){
+        MMPage page = mListener.onRequestPage(mPageID);
 
-        if (mPage == null){
+        if (page == null){
             throw new RuntimeException("PageBuilder is null!");
         } else {
             // Set title
-            if (mPage.getPageTitle() != null) {
-                getActivity().setTitle(mPage.getPageTitle());
+            if (page.getPageTitle() != null) {
+                getActivity().setTitle(page.getPageTitle());
             }
 
             // Configure FAB
-            if (mPage.isFABEnabled()) {
+            if (page.isFABEnabled()) {
                 mFAB.setVisibility(View.VISIBLE);
-                if (mPage.getFABOnClickListener() != null) {
-                    mFAB.setOnClickListener(mPage.getFABOnClickListener());
+                if (page.getFABOnClickListener() != null) {
+                    mFAB.setOnClickListener(page.getFABOnClickListener());
                 }
             } else mFAB.setVisibility(View.GONE);
 
             // Configure recycler
             mRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
-            if (mPage.isFABEnabled()) {
+            if (page.isFABEnabled()) {
                 mRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
                     @Override
                     public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -119,7 +119,9 @@ public class MMFragment extends Fragment{
                 });
             }
 
-            mRecycler.setAdapter(new MenuFragmentRecyclerAdapter(getContext(), mPage.getMenuItems(), mListener));
+            mRecycler.setAdapter(new MenuFragmentRecyclerAdapter(getContext(), page.getMenuItems(), mListener));
+
+            mListener.onNotifyCurrentPageID(mPageID);
         }
     }
 }

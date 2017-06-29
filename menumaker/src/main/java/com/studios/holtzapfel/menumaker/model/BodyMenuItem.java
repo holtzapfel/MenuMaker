@@ -219,7 +219,7 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
                     Log.d(TAG, "onClick: isSwitchUsed = " + isSwitchUsed);
                     if (isSwitchUsed){
                         holder.booleanValue.performClick();
-                    } else listener.onBodyItemClick(BodyMenuItem.this);
+                    } else listener.onMenuItemClick(BodyMenuItem.this);
                 }
             });
         }
@@ -249,7 +249,7 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                     withBooleanValue(b);
-                    listener.onBodyItemClick(BodyMenuItem.this);
+                    listener.onMenuItemClick(BodyMenuItem.this);
                 }
             });
         } else holder.booleanValue.setVisibility(View.GONE);

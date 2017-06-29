@@ -1,10 +1,13 @@
 package com.studios.holtzapfel.menumakerexample;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.studios.holtzapfel.menumaker.MMActivity;
+import com.studios.holtzapfel.menumaker.MMMenu;
 import com.studios.holtzapfel.menumaker.MMMenuBuilder;
 import com.studios.holtzapfel.menumaker.MMPage;
 import com.studios.holtzapfel.menumaker.MMPageBuilder;
@@ -27,8 +30,11 @@ public class MainActivity extends MMActivity{
     private static final int ID_SWITCH4 = 202;
     private static final int ID_SWITCH5 = 203;
 
-    private MMPage mPageRoot;
-    private MMPage mPageItem1;
+    private static final int PAGE_ITEM2 = 300;
+    private static final int ID_TEXT_INPUT1 = 301;
+
+    private MMMenu mMenu;
+    private String mName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +49,15 @@ public class MainActivity extends MMActivity{
     }
 
     @Override
-    public MMMenuBuilder configureMenu() {
-        mPageRoot = new MMPageBuilder(PAGE_ROOT)
+    public MMMenu onRequestMenu() {
+        if (mMenu == null){
+            buildMenu();
+        }
+        return mMenu;
+    }
+
+    private void buildMenu(){
+        MMPage pageRoot = new MMPageBuilder(PAGE_ROOT)
                 .withPageTitle("Menu Maker Example App")
                 .withMenuItems(
                         new HeaderMenuItem("General Options"),
@@ -60,10 +73,9 @@ public class MainActivity extends MMActivity{
                         new BodyMenuItem(ID_SWITCH1).withTitle("Switch 1").withDescription("This is a sample description").withBooleanValue(true),
                         new FooterMenuItem()
                 )
-                .withHeaderTitleTextColor(R.color.colorPrimary)
                 .build();
 
-        mPageItem1 = new MMPageBuilder(PAGE_ITEM1)
+        MMPage pageItem1 = new MMPageBuilder(PAGE_ITEM1)
                 .withPageTitle("Page 1 Menu")
                 .withMenuItems(
                         new HeaderMenuItem("Page 1"),
@@ -81,25 +93,50 @@ public class MainActivity extends MMActivity{
                 })
                 .build();
 
-        return new MMMenuBuilder(this, R.id.frame)
-                .addPages(
-                        mPageRoot,
-                        mPageItem1
+        MMPage pageItem2 = new MMPageBuilder(PAGE_ITEM2)
+                .withPageTitle("Page 2 Menu")
+                .withMenuItems(
+                        new HeaderMenuItem("Page 2"),
+                        new BodyMenuItem(ID_TEXT_INPUT1).withTitle("Name").withValue(mName),
+                        new FooterMenuItem()
                 )
-                .setInitialPageID(PAGE_ROOT);
+                .build();
+
+        mMenu = new MMMenuBuilder(this, R.id.frame)
+                .withPages(
+                        pageRoot,
+                        pageItem1,
+                        pageItem2
+                )
+                .withInitialPageID(PAGE_ROOT)
+                .withHeaderTitleTextColor(R.color.colorPrimary)
+                .build();
     }
 
     @Override
-    public void configBodyItemClick(BodyMenuItem bodyItem) {
+    public void onBodyItemClick(final BodyMenuItem bodyItem) {
         switch (bodyItem.getID()) {
             case ID_ITEM1:
-                showPage(PAGE_ITEM1);
+                mMenu.showPage(PAGE_ITEM1);
                 break;
             case ID_ITEM2:
                 bodyItem.withDescription("Did this get updated?");
-                if (mPageRoot.replaceMenuItem(bodyItem)) {
-                    updatePage(mPageRoot, true);
-                }
+                mMenu.updateItem(bodyItem, true);
+                break;
+            case ID_ITEM3:
+                mMenu.showPage(PAGE_ITEM2);
+                break;
+            case ID_TEXT_INPUT1:
+                new MaterialDialog.Builder(this)
+                        .input("Name", mName, true, new MaterialDialog.InputCallback() {
+                            @Override
+                            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                                mName = input.toString();
+                                bodyItem.withValue(mName);
+                                mMenu.updateItem(bodyItem, true);
+                            }
+                        })
+                        .show();
                 break;
         }
     }

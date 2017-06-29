@@ -1,76 +1,88 @@
 package com.studios.holtzapfel.menumaker;
 
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.studios.holtzapfel.menumaker.model.BodyMenuItem;
+import com.studios.holtzapfel.menumaker.model.interfaces.IMenuItem;
 
 /**
  * Created by holtzapfel on 6/21/17.
  */
 
-public abstract class MMActivity extends AppCompatActivity implements MMFragment.OnFragmentInteractionListener {
+public abstract class MMActivity extends AppCompatActivity implements MMFragment.OnFragmentInteractionListener, MMMenu.OnMMMenuInteractionListener {
 
-    private MMMenuBuilder mMenu;
+    private int mCurrentPageID;
+    private boolean isAlreadyInitiated = false;
 
     public void initiateMenu(){
-        updateUI();
+        if (isAlreadyInitiated){
+            throw new RuntimeException("Menu can only be initiated one time!");
+        } else isAlreadyInitiated = true;
+        MMMenu menu = onRequestMenu();
+        getSupportFragmentManager().beginTransaction()
+                .replace(menu.getFrameRes(), MMFragment.newInstance(menu.getInitialPageID()), String.valueOf(menu.getInitialPageID()))
+                .commit();
     }
 
-    private void updateUI(){
-        mMenu = configureMenu();
-        if (mMenu == null){
-            throw new RuntimeException("Please create a menu object");
+    public abstract MMMenu onRequestMenu();
+
+    public abstract void onBodyItemClick(BodyMenuItem bodyItem);
+
+    @Override
+    public void showPage(int frameRes, int pageID) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(frameRes, MMFragment.newInstance(pageID), String.valueOf(pageID))
+                .addToBackStack(null)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .commit();
+    }
+
+    @Override
+    public void refreshPage(int frameRes, int pageID) {
+        updateCurrentPage(frameRes, pageID);
+    }
+
+    private void updateCurrentPage(int frameRes, int pageID){
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(String.valueOf(pageID));
+        if (fragment != null) {
+            if (fragment instanceof MMFragment) {
+                ((MMFragment) fragment).updateUI();
+            }
         } else {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(mMenu.mFrameRes, MMFragment.newInstance(mMenu.getInitialPageID()))
-                    .commit();
+            showPage(frameRes, pageID);
         }
     }
 
-    public abstract MMMenuBuilder configureMenu();
-
-    public abstract void configBodyItemClick(BodyMenuItem bodyItem);
 
     @Override
     public MMPage onRequestPage(int pageID) {
-        if (mMenu != null){
-            return mMenu.getPage(pageID);
+        MMMenu menu = onRequestMenu();
+        if (menu != null){
+            return menu.getPage(pageID);
         }
+
+        /*if (mMenuBuilder != null){
+            return mMenuBuilder.getPage(pageID);
+        }*/
         return null;
     }
 
     @Override
-    public void onBodyItemClick(BodyMenuItem bodyItem) {
-        configBodyItemClick(bodyItem);
+    public void onMenuItemClick(IMenuItem menuItem) {
+        if (menuItem instanceof BodyMenuItem) {
+            onBodyItemClick((BodyMenuItem) menuItem);
+        }
     }
 
-    public void showPage(int pageID){
-        getSupportFragmentManager().beginTransaction()
-                .replace(mMenu.mFrameRes, MMFragment.newInstance(pageID))
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .addToBackStack(null)
-                .commit();
+    @Override
+    public void onNotifyCurrentPageID(int pageID) {
+        mCurrentPageID = pageID;
     }
 
-    public void showPage(int pageID, boolean isRefresh){
-        if (isRefresh) {
-            getSupportFragmentManager().popBackStack();
-            getSupportFragmentManager().beginTransaction()
-                    .replace(mMenu.mFrameRes, MMFragment.newInstance(pageID))
-                    .addToBackStack(null)
-                    .commit();
-        } else showPage(pageID);
-    }
-
-    public boolean updatePage(MMPage page){
-        return mMenu.replacePage(page);
-    }
-
-    public boolean updatePage(MMPage page, boolean showPage){
-        if (mMenu.replacePage(page) && showPage){
-            showPage(page.getPageID(), true);
-            return true;
-        } else return false;
+    @Override
+    public int requestCurrentID() {
+        return mCurrentPageID;
     }
 }
