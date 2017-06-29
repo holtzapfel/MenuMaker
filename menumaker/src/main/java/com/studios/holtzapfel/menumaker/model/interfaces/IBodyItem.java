@@ -1,5 +1,6 @@
 package com.studios.holtzapfel.menumaker.model.interfaces;
 
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 
 /**
@@ -33,11 +34,19 @@ public interface IBodyItem<T, VH extends RecyclerView.ViewHolder> extends IMenuI
 
     T withIconLeft(int iconRes);
 
+    T withIconLeft(Drawable icon);
+
     int getIconLeftRes();
+
+    Drawable getIconLeft();
 
     T withIconRight(int iconRes);
 
+    T withIconRight(Drawable icon);
+
     int getIconRightRes();
+
+    Drawable getIconRight();
 
     T withIconLeftVisible(boolean isVisible);
 

@@ -1,6 +1,7 @@
 package com.studios.holtzapfel.menumaker.model;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -35,10 +36,12 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
     private String mContent;
 
     private int mIconLeftRes = -1;
+    private Drawable mIconLeft;
     private boolean isIconLeftVisible = true;
     private int mIconLeftColorRes = -1;
 
     private int mIconRightRes = -1;
+    private Drawable mIconRight;
     private boolean isIconRightVisible = true;
     private int mIconRightColorRes = -1;
 
@@ -123,8 +126,19 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
     }
 
     @Override
+    public BodyMenuItem withIconLeft(Drawable icon) {
+        this.mIconLeft = icon;
+        return this;
+    }
+
+    @Override
     public int getIconLeftRes() {
         return mIconLeftRes;
+    }
+
+    @Override
+    public Drawable getIconLeft() {
+        return mIconLeft;
     }
 
     @Override
@@ -134,8 +148,19 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
     }
 
     @Override
+    public BodyMenuItem withIconRight(Drawable icon) {
+        this.mIconRight = icon;
+        return this;
+    }
+
+    @Override
     public int getIconRightRes() {
         return mIconRightRes;
+    }
+
+    @Override
+    public Drawable getIconRight() {
+        return mIconRight;
     }
 
     @Override
@@ -267,12 +292,16 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
         } else holder.content.setVisibility(View.GONE);
 
         // Configure left icon
-        if (getIconLeftRes() != -1){
+        if (getIconLeftRes() != -1 || getIconLeft() != null){
             if (isIconLeftVisible()) {
                 holder.iconLeft.setVisibility(View.VISIBLE);
             } else holder.iconLeft.setVisibility(View.GONE);
 
-            holder.iconLeft.setImageDrawable(ResourcesCompat.getDrawable(context.getResources(), getIconLeftRes(), context.getTheme()));
+            if (getIconLeftRes() != -1) {
+                holder.iconLeft.setImageDrawable(ResourcesCompat.getDrawable(context.getResources(), getIconLeftRes(), context.getTheme()));
+            } else if (getIconLeft() != null){
+                holder.iconLeft.setImageDrawable(getIconLeft());
+            }
 
             if (getIconLeftColorRes() != -1){
                 holder.iconLeft.setColorFilter(ResourcesCompat.getColor(context.getResources(), getIconLeftColorRes(), context.getTheme()));
@@ -280,12 +309,16 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
         } else holder.iconLeft.setVisibility(View.GONE);
 
         // Configure right icon
-        if (getIconRightRes() != -1){
+        if (getIconRightRes() != -1 || getIconRight() != null){
             if (isIconRightVisible()) {
                 holder.iconRight.setVisibility(View.VISIBLE);
             } else holder.iconRight.setVisibility(View.GONE);
 
-            holder.iconRight.setImageDrawable(ResourcesCompat.getDrawable(context.getResources(), getIconRightRes(), context.getTheme()));
+            if (getIconRightRes() != -1) {
+                holder.iconRight.setImageDrawable(ResourcesCompat.getDrawable(context.getResources(), getIconRightRes(), context.getTheme()));
+            } else if (getIconRight() != null){
+                holder.iconRight.setImageDrawable(getIconRight());
+            }
 
             if (getIconRightColorRes() != -1){
                 holder.iconRight.setColorFilter(ResourcesCompat.getColor(context.getResources(), getIconRightColorRes(), context.getTheme()));
