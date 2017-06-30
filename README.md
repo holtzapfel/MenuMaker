@@ -5,7 +5,7 @@ Tired of creating and recreating a settings menu?  Quit spending so much time on
 You will never have to design a menu again.
 
 ### Screenshots
-![Image](https://drive.google.com/open?id=0ByZ53NFUekadYWxCMlpQWnJVek0)
+<img src="https://github.com/holtzapfel/MenuMaker/raw/master/dev/screenshots/device-2017-06-30-112934.png" width="275"><img src="https://github.com/holtzapfel/MenuMaker/raw/master/dev/screenshots/device-2017-06-30-113659.png" width="275"><img src="https://github.com/holtzapfel/MenuMaker/raw/master/dev/screenshots/device-2017-06-30-113808.png" width="275">
 
 ### Some Ideas for Use
 - Settings Menu
