@@ -30,6 +30,7 @@ public class MainActivity extends MMActivity{
     private static final int ID_EXAMPLE_CUSTOM_ITEMS = 104;
     private static final int ID_GITHUB = 105;
     private static final int ID_CREDITS = 106;
+    private static final int ID_DEVELOPMENT = 107;
 
     private static final int PAGE_SWITCHES = 200;
 
@@ -43,6 +44,12 @@ public class MainActivity extends MMActivity{
     private static final int ID_TOPIC = 401;
 
     private static final int PAGE_CUSTOM_ITEMS = 500;
+
+    private static final int PAGE_CREDITS = 600;
+    private static final int ID_CREDIT_ICONS8 = 601;
+    private static final int ID_CREDIT_MATERIAL_DIALOGS = 602;
+
+    private static final int PAGE_DEVELOPMENT = 700;
 
     private MMMenu mMenu;
     private String mFirstName = "Drew";
@@ -64,38 +71,42 @@ public class MainActivity extends MMActivity{
 
     @Override
     public MMMenu onRequestMenu() {
+        // Do not create MMMenu object here if you wish for the items to be editable!!
+        // Instead, create a different function that builds the object if not already created
         if (mMenu == null){
             buildMenu();
         }
         return mMenu;
     }
 
+    // Used to build MMMenu object
     private void buildMenu(){
         MMPage pageRoot = new MMPageBuilder(PAGE_ROOT)
                 .withPageTitle("Holtzapfel\'s Menu Maker")
                 .withMenuItems(
                         new HeaderMenuItem("Examples"),
-                        new BodyMenuItem(ID_EXAMPLE_CUSTOM_ITEMS).withTitle("Custom Menu Items").withDescription("Need each item to appear differently?  No problem.").withIconLeft(android.R.mipmap.sym_def_app_icon),
-                        new BodyMenuItem(ID_EXAMPLE_FORM).withTitle("Forms").withDescription("Allow users to update and edit information").withIconLeft(android.R.mipmap.sym_def_app_icon),
-                        new BodyMenuItem(ID_EXAMPLE_DISPLAY_INFORMATION).withTitle("Display Information").withDescription("Menus do not have to be just about selecting preferences.  Sometimes, like in a Help section, information just needs to be displayed!").withIconLeft(android.R.mipmap.sym_def_app_icon),
-                        new BodyMenuItem(ID_EXAMPLE_SWITCHES).withTitle("Switches").withDescription("Create menus with switches for true/false properties").withIconLeft(android.R.mipmap.sym_def_app_icon),
+                        new BodyMenuItem(ID_EXAMPLE_CUSTOM_ITEMS).withTitle("Custom Menu Items").withDescription("Need each item to appear differently?  No problem.").withIconLeft(R.drawable.ic_star),
+                        new BodyMenuItem(ID_EXAMPLE_FORM).withTitle("Forms").withDescription("Allow users to update and edit information").withIconLeft(R.drawable.ic_form),
+                        new BodyMenuItem(ID_EXAMPLE_DISPLAY_INFORMATION).withTitle("Display Information").withDescription("Menus do not have to be just about selecting preferences.  Sometimes, like in a Help section, information just needs to be displayed!").withIconLeft(R.drawable.ic_news),
+                        new BodyMenuItem(ID_EXAMPLE_SWITCHES).withTitle("Switches").withDescription("Create menus with switches for true/false properties").withIconLeft(R.drawable.ic_switch),
                         new FooterMenuItem(),
 
                         new HeaderMenuItem("About"),
-                        new BodyMenuItem(ID_GITHUB).withTitle("GitHub").withDescription("Visit the GitHub page to integrate MenuMaker into your app"),
-                        new BodyMenuItem(ID_CREDITS).withTitle("Credits"),
-                        new BodyMenuItem(0).withTitle("Version").withValue("v1.0").withEnabled(false),
+                        new BodyMenuItem(ID_GITHUB).withTitle("GitHub").withDescription("Visit the GitHub page to integrate MenuMaker into your app").withIconLeft(R.drawable.ic_github),
+                        new BodyMenuItem(ID_CREDITS).withTitle("Credits").withIconLeft(R.drawable.ic_credits),
+                        new BodyMenuItem(ID_DEVELOPMENT).withTitle("Development").withIconLeft(R.drawable.ic_developer_board),
                         new FooterMenuItem()
                 )
+                .withHeaderTitleTextColor(0)
                 .build();
 
         MMPage pageSwitches = new MMPageBuilder(PAGE_SWITCHES)
                 .withPageTitle("Switches")
                 .withMenuItems(
                         new HeaderMenuItem("Group 1"),
-                        new BodyMenuItem(0).withTitle("Switch 1").withDescription("Switch 1 description").withBooleanValue(true).withIconLeft(android.R.drawable.ic_menu_crop),
-                        new BodyMenuItem(0).withTitle("Switch 2").withDescription("Switch 2 description").withBooleanValue(false).withIconLeft(android.R.drawable.ic_menu_camera),
-                        new BodyMenuItem(0).withTitle("Switch 3").withDescription("Switch 3 description").withBooleanValue(true).withIconLeft(android.R.drawable.ic_menu_day),
+                        new BodyMenuItem(0).withTitle("Switch 1").withDescription("Switch 1 description").withBooleanValue(true),
+                        new BodyMenuItem(0).withTitle("Switch 2").withDescription("Switch 2 description").withBooleanValue(false),
+                        new BodyMenuItem(0).withTitle("Switch 3").withDescription("Switch 3 description").withBooleanValue(true),
                         new FooterMenuItem(),
 
                         new HeaderMenuItem("Group 2"),
@@ -113,8 +124,6 @@ public class MainActivity extends MMActivity{
         MMPage pageForms = new MMPageBuilder(PAGE_FORMS)
                 .withPageTitle("Forms")
                 .withMenuItems(
-                        new BodyMenuItem(0).withDescription("Click to edit information.").withEnabled(false),
-                        new FooterMenuItem(),
                         new HeaderMenuItem("User Information"),
                         new BodyMenuItem(ID_FORM_FIRST_NAME).withTitle("First Name").withValue(mFirstName),
                         new BodyMenuItem(ID_FORM_LAST_NAME).withTitle("Last Name").withValue(mLastName),
@@ -185,15 +194,40 @@ public class MainActivity extends MMActivity{
                 })
                 .build();
 
+        MMPage pageCredits = new MMPageBuilder(PAGE_CREDITS)
+                .withPageTitle("Credits")
+                .withMenuItems(
+                        new BodyMenuItem(ID_CREDIT_ICONS8).withTitle("Icons8").withDescription("All the icons you need.  Guaranteed.").withIconLeft(R.drawable.ic_icons8),
+                        new BodyMenuItem(ID_CREDIT_MATERIAL_DIALOGS).withTitle("Material Dialogs").withDescription("A beautiful, fluid, and customizable dialogs API.").withIconLeft(R.drawable.ic_favorite)
+                )
+                .build();
+
+        MMPage pageDevelopment = new MMPageBuilder(PAGE_DEVELOPMENT)
+                .withPageTitle("Development")
+                .withMenuItems(
+                        new HeaderMenuItem("Versions"),
+                        new BodyMenuItem(0).withTitle("App Release").withValue("v1.0"),
+                        new BodyMenuItem(0).withTitle("MenuMaker API").withValue("v1.0-beta1"),
+                        new FooterMenuItem(),
+
+                        new HeaderMenuItem("Misc"),
+                        new BodyMenuItem(0).withTitle("Author").withValue("Drew Holtzapfel"),
+                        new FooterMenuItem()
+                )
+                .build();
+
         mMenu = new MMMenuBuilder(this, R.id.frame)
                 .withPages(
                         pageRoot,
                         pageSwitches,
                         pageForms,
                         pageDisplayInformation,
-                        pageCustomItems
+                        pageCustomItems,
+                        pageCredits,
+                        pageDevelopment
                 )
                 .withInitialPageID(PAGE_ROOT)
+                .withIconColor(R.color.colorPrimary)
                 .withHeaderTitleTextColor(R.color.colorPrimary)
                 .build();
     }
@@ -201,6 +235,22 @@ public class MainActivity extends MMActivity{
     @Override
     public void onBodyItemClick(final BodyMenuItem bodyItem) {
         switch (bodyItem.getID()) {
+            case ID_CREDITS:
+                mMenu.showPage(PAGE_CREDITS);
+                break;
+            case ID_CREDIT_ICONS8:
+                Intent intentIcons8 = new Intent(Intent.ACTION_VIEW);
+                intentIcons8.setData(Uri.parse("https://icons8.com/"));
+                startActivity(intentIcons8);
+                break;
+            case ID_CREDIT_MATERIAL_DIALOGS:
+                Intent intentMaterialDialogs = new Intent(Intent.ACTION_VIEW);
+                intentMaterialDialogs.setData(Uri.parse("https://github.com/afollestad/material-dialogs"));
+                startActivity(intentMaterialDialogs);
+                break;
+            case ID_DEVELOPMENT:
+                mMenu.showPage(PAGE_DEVELOPMENT);
+                break;
             case ID_EXAMPLE_CUSTOM_ITEMS:
                 mMenu.showPage(PAGE_CUSTOM_ITEMS);
                 break;

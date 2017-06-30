@@ -255,7 +255,7 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
             holder.title.setText(Master.fromHtml(getTitle()));
 
             // Set text color
-            if (getTitleTextColorRes() != -1){
+            if (getTitleTextColorRes() != -1 && getTitleTextColorRes() != 0){
                 holder.title.setTextColor(ResourcesCompat.getColor(context.getResources(), getTitleTextColorRes(), context.getTheme()));
             }
         } else holder.title.setVisibility(View.GONE);

@@ -43,7 +43,7 @@ public class HeaderMenuItem extends AbstractMenuItem<HeaderMenuItem, HeaderMenuI
     public void bindView(Context context, HeaderViewHolder holder, final MMFragment.OnFragmentInteractionListener listener) {
         // Configure title
         holder.title.setText(Master.fromHtml(mTitle));
-        if (mTitleTextColorRes != -1){
+        if (mTitleTextColorRes != -1 && mTitleTextColorRes != 0){
             holder.title.setTextColor(ResourcesCompat.getColor(context.getApplicationContext().getResources(), mTitleTextColorRes, context.getTheme()));
         }
     }

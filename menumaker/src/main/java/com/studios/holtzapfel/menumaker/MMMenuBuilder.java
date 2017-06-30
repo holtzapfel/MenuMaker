@@ -2,6 +2,7 @@ package com.studios.holtzapfel.menumaker;
 
 import android.content.Context;
 
+import com.studios.holtzapfel.menumaker.model.BodyMenuItem;
 import com.studios.holtzapfel.menumaker.model.HeaderMenuItem;
 import com.studios.holtzapfel.menumaker.model.interfaces.IMenuItem;
 
@@ -20,6 +21,8 @@ public class MMMenuBuilder {
     private List<MMPage> mPages;
     private int mInitialPageID = -1;
     private int mHeaderTitleTextColorRes = -1;
+    private int mBodyTitleTextColorRes = -1;
+    private int mIconColorRes = -1;
 
     public MMMenuBuilder(Context context, int fragmentFrameContainerResource){
         this.mContext = context;
@@ -41,6 +44,16 @@ public class MMMenuBuilder {
 
     public MMMenuBuilder withHeaderTitleTextColor(int colorRes){
         this.mHeaderTitleTextColorRes = colorRes;
+        return this;
+    }
+
+    public MMMenuBuilder withBodyTitleTextColor(int colorRes){
+        this.mBodyTitleTextColorRes = colorRes;
+        return this;
+    }
+
+    public MMMenuBuilder withIconColor(int colorRes){
+        this.mIconColorRes = colorRes;
         return this;
     }
 
@@ -82,6 +95,10 @@ public class MMMenuBuilder {
             return updateHeaderMenuItemWithCustomSettings((HeaderMenuItem) item);
         }
 
+        if (item instanceof BodyMenuItem){
+            return updateBodyMenuItemWithCustomSettings((BodyMenuItem) item);
+        }
+
         return item;
     }
 
@@ -89,6 +106,23 @@ public class MMMenuBuilder {
         if (item.getTitleTextColorRes() == -1){
             item.withTitleTextColor(mHeaderTitleTextColorRes);
         }
+
+        return item;
+    }
+
+    private BodyMenuItem updateBodyMenuItemWithCustomSettings(BodyMenuItem item){
+        if (item.getTitleTextColorRes() == -1){
+            item.withTitleTextColor(mBodyTitleTextColorRes);
+        }
+
+        if (item.getIconLeftColorRes() == -1){
+            item.withIconLeftColor(mIconColorRes);
+        }
+
+        if (item.getIconRightColorRes() == -1){
+            item.withIconRightColor(mIconColorRes);
+        }
+
         return item;
     }
 }
