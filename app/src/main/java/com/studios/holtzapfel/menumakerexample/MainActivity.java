@@ -24,13 +24,14 @@ import java.util.List;
 public class MainActivity extends MMActivity{
 
     private static final int PAGE_ROOT = 100;
-    private static final int ID_EXAMPLE_SWITCHES = 101;
-    private static final int ID_EXAMPLE_FORM = 102;
-    private static final int ID_EXAMPLE_DISPLAY_INFORMATION = 103;
-    private static final int ID_EXAMPLE_CUSTOM_ITEMS = 104;
+    private static final int ID_FEAT_SWITCHES = 101;
+    private static final int ID_FEAT_FORM = 102;
+    private static final int ID_FEAT_DISPLAY_INFORMATION = 103;
+    private static final int ID_FEAT_CUSTOM_ITEMS = 104;
     private static final int ID_GITHUB = 105;
     private static final int ID_CREDITS = 106;
     private static final int ID_DEVELOPMENT = 107;
+    private static final int ID_EXAMPLE_BASIC_MENU = 108;
 
     private static final int PAGE_SWITCHES = 200;
 
@@ -84,11 +85,15 @@ public class MainActivity extends MMActivity{
         MMPage pageRoot = new MMPageBuilder(PAGE_ROOT)
                 .withPageTitle("Holtzapfel\'s Menu Maker")
                 .withMenuItems(
-                        new HeaderMenuItem("Examples"),
-                        new BodyMenuItem(ID_EXAMPLE_CUSTOM_ITEMS).withTitle("Custom Menu Items").withDescription("Need each item to appear differently?  No problem.").withIconLeft(R.drawable.ic_star),
-                        new BodyMenuItem(ID_EXAMPLE_FORM).withTitle("Forms").withDescription("Allow users to update and edit information").withIconLeft(R.drawable.ic_form),
-                        new BodyMenuItem(ID_EXAMPLE_DISPLAY_INFORMATION).withTitle("Display Information").withDescription("Menus do not have to be just about selecting preferences.  Sometimes, like in a Help section, information just needs to be displayed!").withIconLeft(R.drawable.ic_news),
-                        new BodyMenuItem(ID_EXAMPLE_SWITCHES).withTitle("Switches").withDescription("Create menus with switches for true/false properties").withIconLeft(R.drawable.ic_switch),
+                        new HeaderMenuItem("Example Menus"),
+                        new BodyMenuItem(ID_EXAMPLE_BASIC_MENU).withTitle("Basic Menu"),
+                        new FooterMenuItem(),
+
+                        new HeaderMenuItem("Features"),
+                        new BodyMenuItem(ID_FEAT_CUSTOM_ITEMS).withTitle("Custom Menu Items").withDescription("Need each item to appear differently?  No problem.").withIconLeft(R.drawable.ic_star),
+                        new BodyMenuItem(ID_FEAT_FORM).withTitle("Forms").withDescription("Allow users to update and edit information").withIconLeft(R.drawable.ic_form),
+                        new BodyMenuItem(ID_FEAT_DISPLAY_INFORMATION).withTitle("Display Information").withDescription("Menus do not have to be just about selecting preferences.  Sometimes, like in a Help section, information just needs to be displayed!").withIconLeft(R.drawable.ic_news),
+                        new BodyMenuItem(ID_FEAT_SWITCHES).withTitle("Switches").withDescription("Create menus with switches for true/false properties").withIconLeft(R.drawable.ic_switch),
                         new FooterMenuItem(),
 
                         new HeaderMenuItem("About"),
@@ -251,16 +256,20 @@ public class MainActivity extends MMActivity{
             case ID_DEVELOPMENT:
                 mMenu.showPage(PAGE_DEVELOPMENT);
                 break;
-            case ID_EXAMPLE_CUSTOM_ITEMS:
+            case ID_EXAMPLE_BASIC_MENU:
+                Intent intentBasicMenu = new Intent(this, BasicMenuActivity.class);
+                startActivity(intentBasicMenu);
+                break;
+            case ID_FEAT_CUSTOM_ITEMS:
                 mMenu.showPage(PAGE_CUSTOM_ITEMS);
                 break;
-            case ID_EXAMPLE_DISPLAY_INFORMATION:
+            case ID_FEAT_DISPLAY_INFORMATION:
                 mMenu.showPage(PAGE_DISPLAY_INFORMATION);
                 break;
-            case ID_EXAMPLE_FORM:
+            case ID_FEAT_FORM:
                 mMenu.showPage(PAGE_FORMS);
                 break;
-            case ID_EXAMPLE_SWITCHES:
+            case ID_FEAT_SWITCHES:
                 mMenu.showPage(PAGE_SWITCHES);
                 break;
             case ID_FORM_EMAIL_ADDRESS:

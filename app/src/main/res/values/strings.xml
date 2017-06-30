@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Menu Maker Example</string>
+    <string name="title_activity_basic_menu">BasicMenuActivity</string>
 </resources>
