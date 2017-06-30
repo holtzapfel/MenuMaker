@@ -15,7 +15,7 @@ Tired of creating and recreating a settings menu?  Quit spending so much time on
 Follow the instructions below to get started.
 ### 1. Insert gradle dependency into module build.gradle file
 ```gradle
-compile 'com.github.holtzapfel:MenuMaker:8870093'
+compile 'com.github.holtzapfel:MenuMaker:cb6fb6a'
 ```
 ### 2. Create new activity that extends **MMActivity**
 ```java
