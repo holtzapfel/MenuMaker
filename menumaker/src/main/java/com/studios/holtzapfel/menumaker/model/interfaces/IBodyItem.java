@@ -71,4 +71,8 @@ public interface IBodyItem<T, VH extends RecyclerView.ViewHolder> extends IMenuI
     T withDividerColor(int colorRes);
 
     int getDividerColorRes();
+
+    T withValueEditable(boolean isEditable);
+
+    boolean isValueEditable();
 }

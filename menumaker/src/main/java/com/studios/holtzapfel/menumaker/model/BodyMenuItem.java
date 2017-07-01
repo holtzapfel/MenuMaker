@@ -45,6 +45,8 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
     private boolean isDividerEnabled = true;
     private int mDividerColorRes = -1;
 
+    private boolean isValueEditable = false;
+
     public BodyMenuItem(int id){
         this.mID = id;
     }
@@ -227,6 +229,17 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
     }
 
     @Override
+    public BodyMenuItem withValueEditable(boolean isEditable) {
+        this.isValueEditable = isEditable;
+        return this;
+    }
+
+    @Override
+    public boolean isValueEditable() {
+        return isValueEditable;
+    }
+
+    @Override
     public int getMenuType() {
         return IMenuItem.MENU_ITEM_TYPE_BODY;
     }
@@ -240,7 +253,10 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
                 public void onClick(View view) {
                     if (isSwitchUsed){
                         holder.booleanValue.performClick();
-                    } else listener.onMenuItemClick(BodyMenuItem.this);
+                    } else if (isValueEditable()){
+
+                    }
+                    else listener.onMenuItemClick(BodyMenuItem.this);
                 }
             });
         }
@@ -359,15 +375,15 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
 
         public BodyMenuItemViewHolder(View v) {
             super(v);
-            this.cardView = v.findViewById(R.id.mm_item_body_cardview);
-            this.iconLeft = v.findViewById(R.id.mm_item_body_icon_left);
-            this.title = v.findViewById(R.id.mm_item_body_title);
-            this.description = v.findViewById(R.id.mm_item_body_description);
-            this.value = v.findViewById(R.id.mm_item_body_value);
-            this.booleanValue = v.findViewById(R.id.mm_item_body_switch);
-            this.iconRight = v.findViewById(R.id.mm_item_body_icon_right);
-            this.content = v.findViewById(R.id.mm_item_body_content);
-            this.divider = v.findViewById(R.id.mm_item_body_divider);
+            this.cardView = (CardView) v.findViewById(R.id.mm_item_body_cardview);
+            this.iconLeft = (ImageView) v.findViewById(R.id.mm_item_body_icon_left);
+            this.title = (TextView) v.findViewById(R.id.mm_item_body_title);
+            this.description = (TextView) v.findViewById(R.id.mm_item_body_description);
+            this.value = (TextView) v.findViewById(R.id.mm_item_body_value);
+            this.booleanValue = (Switch) v.findViewById(R.id.mm_item_body_switch);
+            this.iconRight = (ImageView) v.findViewById(R.id.mm_item_body_icon_right);
+            this.content = (TextView) v.findViewById(R.id.mm_item_body_content);
+            this.divider = (TextView) v.findViewById(R.id.mm_item_body_divider);
         }
     }
 }

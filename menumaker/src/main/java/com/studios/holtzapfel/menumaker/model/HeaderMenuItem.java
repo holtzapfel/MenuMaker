@@ -84,8 +84,8 @@ public class HeaderMenuItem extends AbstractMenuItem<HeaderMenuItem, HeaderMenuI
             super(v);
 
             this.view = v;
-            cardView = v.findViewById(R.id.mm_item_header_cardview);
-            title = v.findViewById(R.id.mm_item_header_title);
+            cardView = (CardView) v.findViewById(R.id.mm_item_header_cardview);
+            title = (TextView) v.findViewById(R.id.mm_item_header_title);
         }
     }
 }

@@ -38,7 +38,7 @@ public class FooterMenuItem extends AbstractMenuItem<FooterMenuItem, FooterMenuI
         public FooterViewHolder(View v) {
             super(v);
 
-            this.cardView = v.findViewById(R.id.mm_item_footer_cardview);
+            this.cardView = (CardView) v.findViewById(R.id.mm_item_footer_cardview);
         }
     }
 }

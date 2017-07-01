@@ -51,8 +51,8 @@ public class MMFragment extends Fragment{
         View v = inflater.inflate(R.layout.fragment_menu, container, false);
 
         // Associate views
-        mRecycler = v.findViewById(R.id.menu_maker_menu_fragment_recycler);
-        mFAB = v.findViewById(R.id.menu_maker_menu_fragment_fab);
+        mRecycler = (RecyclerView) v.findViewById(R.id.menu_maker_menu_fragment_recycler);
+        mFAB = (FloatingActionButton) v.findViewById(R.id.menu_maker_menu_fragment_fab);
 
         return v;
     }
