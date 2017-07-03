@@ -27,12 +27,20 @@ public abstract class MMActivity extends AppCompatActivity implements MMFragment
     public abstract void onBodyItemClick(BodyMenuItem bodyItem);
 
     @Override
-    public void showPage(int frameRes, int pageID) {
-        getSupportFragmentManager().beginTransaction()
-                .replace(frameRes, MMFragment.newInstance(pageID), String.valueOf(pageID))
-                .addToBackStack(null)
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .commit();
+    public void showPage(int frameRes, int pageID, boolean withSlidingAnimation) {
+        if (withSlidingAnimation) {
+            getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                    .replace(frameRes, MMFragment.newInstance(pageID), String.valueOf(pageID))
+                    .addToBackStack(null)
+                    .commit();
+        } else {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(frameRes, MMFragment.newInstance(pageID), String.valueOf(pageID))
+                    .addToBackStack(null)
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .commit();
+        }
     }
 
     @Override
@@ -47,7 +55,7 @@ public abstract class MMActivity extends AppCompatActivity implements MMFragment
                 ((MMFragment) fragment).updateUI();
             }
         } else {
-            showPage(frameRes, pageID);
+            showPage(frameRes, pageID, false);
         }
     }
 

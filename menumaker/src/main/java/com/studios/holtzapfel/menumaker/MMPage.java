@@ -22,6 +22,8 @@ public class MMPage {
     private boolean isFABEnabled = false;
     private View.OnClickListener mFABOnClickListener;
     private int mIconColorRes = -1;
+    private int mIconRightColorRes = -1;
+    private int mIconLeftColorRes = -1;
     private boolean isDividersEnabled = true;
     private int mDividerColorRes = -1;
 
@@ -109,6 +111,22 @@ public class MMPage {
 
     public int getIconColorRes(){
         return mIconColorRes;
+    }
+
+    public void setIconLeftColor(int colorRes){
+        this.mIconLeftColorRes = colorRes;
+    }
+
+    public int getIconLeftColorRes(){
+        return mIconLeftColorRes;
+    }
+
+    public void setIconRightColor(int colorRes){
+        this.mIconRightColorRes = colorRes;
+    }
+
+    public int getIconRightColorRes(){
+        return mIconRightColorRes;
     }
 
     public void setDividersEnabled(boolean isEnabled){

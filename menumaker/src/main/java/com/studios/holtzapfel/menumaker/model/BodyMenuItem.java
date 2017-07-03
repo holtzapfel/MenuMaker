@@ -2,6 +2,8 @@ package com.studios.holtzapfel.menumaker.model;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -10,7 +12,9 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.studios.holtzapfel.menumaker.MMFragment;
 import com.studios.holtzapfel.menumaker.Master;
 import com.studios.holtzapfel.menumaker.R;
@@ -23,11 +27,29 @@ import com.studios.holtzapfel.menumaker.model.interfaces.IMenuItem;
 
 public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.BodyMenuItemViewHolder> implements IBodyItem<BodyMenuItem, BodyMenuItem.BodyMenuItemViewHolder>{
 
+    public static final int ICON_ARROW_RIGHT = 50;
+    public static final int ICON_ARROW_LEFT = 51;
+    public static final int ICON_ARROW_UP = 52;
+    public static final int ICON_ARROW_DOWN = 53;
+    public static final int ICON_OPEN_IN_NEW = 54;
+    public static final int ICON_OPEN_IN_BROWSER = 55;
+
+
     private String mTitle;
     private int mTitleColorRes = -1;
 
     private String mDescription;
     private String mValue;
+
+    private boolean isValueEditable = false;
+    private CharSequence mEditableHint;
+    private boolean prefillWithValue = false;
+    private boolean allowEmptyInput = true;
+    private CharSequence mEditableTitle;
+    private int mEditableInputType = -1;
+    private boolean verifyIfValueIsEmail = false;
+    private boolean verifyIfValueIsPhone = false;
+
     private boolean mBooleanValue = false;
     private boolean isSwitchUsed = false;
     private String mContent;
@@ -36,16 +58,18 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
     private Drawable mIconLeft;
     private boolean isIconLeftVisible = true;
     private int mIconLeftColorRes = -1;
+    private int mIconLeftHeight = -1;
+    private int mIconLeftWidth = -1;
 
     private int mIconRightRes = -1;
     private Drawable mIconRight;
     private boolean isIconRightVisible = true;
     private int mIconRightColorRes = -1;
+    private int mIconRightHeight = -1;
+    private int mIconRightWidth = -1;
 
     private boolean isDividerEnabled = true;
     private int mDividerColorRes = -1;
-
-    private boolean isValueEditable = false;
 
     public BodyMenuItem(int id){
         this.mID = id;
@@ -120,6 +144,32 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
 
     @Override
     public BodyMenuItem withIconLeft(int iconRes) {
+        switch (iconRes){
+            case ICON_ARROW_RIGHT:
+                this.mIconLeftRes = R.drawable.ic_arrow_right;
+                withIconLeftSize(75, 75);
+                return this;
+            case ICON_ARROW_LEFT:
+                this.mIconLeftRes = R.drawable.ic_arrow_left;
+                withIconLeftSize(75, 75);
+                return this;
+            case ICON_ARROW_UP:
+                this.mIconLeftRes = R.drawable.ic_arrow_up;
+                withIconLeftSize(75, 75);
+                return this;
+            case ICON_ARROW_DOWN:
+                this.mIconLeftRes = R.drawable.ic_arrow_down;
+                withIconLeftSize(75, 75);
+                return this;
+            case ICON_OPEN_IN_NEW:
+                this.mIconLeftRes = R.drawable.ic_action_open_in_new;
+                withIconLeftSize(75, 75);
+                return this;
+            case ICON_OPEN_IN_BROWSER:
+                this.mIconLeftRes = R.drawable.ic_action_open_in_browser;
+                withIconLeftSize(75, 75);
+                return this;
+        }
         this.mIconLeftRes = iconRes;
         return this;
     }
@@ -142,6 +192,32 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
 
     @Override
     public BodyMenuItem withIconRight(int iconRes) {
+        switch (iconRes){
+            case ICON_ARROW_RIGHT:
+                this.mIconRightRes = R.drawable.ic_arrow_right;
+                withIconRightSize(75,75);
+                return this;
+            case ICON_ARROW_LEFT:
+                this.mIconRightRes = R.drawable.ic_arrow_left;
+                withIconRightSize(75, 75);
+                return this;
+            case ICON_ARROW_UP:
+                this.mIconRightRes = R.drawable.ic_arrow_up;
+                withIconRightSize(75, 75);
+                return this;
+            case ICON_ARROW_DOWN:
+                this.mIconRightRes = R.drawable.ic_arrow_down;
+                withIconRightSize(75, 75);
+                return this;
+            case ICON_OPEN_IN_NEW:
+                this.mIconRightRes = R.drawable.ic_action_open_in_new;
+                withIconRightSize(75,75);
+                return this;
+            case ICON_OPEN_IN_BROWSER:
+                this.mIconRightRes = R.drawable.ic_action_open_in_browser;
+                withIconRightSize(75,75);
+                return this;
+        }
         this.mIconRightRes = iconRes;
         return this;
     }
@@ -206,6 +282,34 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
         return mIconRightColorRes;
     }
 
+    public BodyMenuItem withIconLeftSize(int width, int height){
+        this.mIconLeftWidth = width;
+        this.mIconLeftHeight = height;
+        return this;
+    }
+
+    public int getIconLeftWidth(){
+        return mIconLeftWidth;
+    }
+
+    public int getIconLeftHeight(){
+        return mIconLeftHeight;
+    }
+
+    public BodyMenuItem withIconRightSize(int width, int height){
+        this.mIconRightWidth = width;
+        this.mIconRightHeight = height;
+        return this;
+    }
+
+    public int getIconRightWidth(){
+        return mIconRightWidth;
+    }
+
+    public int getIconRightHeight(){
+        return mIconRightHeight;
+    }
+
     @Override
     public BodyMenuItem withDividerEnabled(boolean isEnabled) {
         this.isDividerEnabled = isEnabled;
@@ -228,15 +332,36 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
         return mDividerColorRes;
     }
 
-    @Override
-    public BodyMenuItem withValueEditable(boolean isEditable) {
-        this.isValueEditable = isEditable;
+    public BodyMenuItem withValueEditable(@Nullable CharSequence inputHint, boolean prefillInputWithItemValue, boolean allowEmptyInput, @Nullable CharSequence dialogTitle) {
+        this.isValueEditable = true;
+        this.mEditableHint = inputHint;
+        this.prefillWithValue = prefillInputWithItemValue;
+        this.allowEmptyInput = allowEmptyInput;
+        this.mEditableTitle = dialogTitle;
         return this;
     }
 
-    @Override
+    public BodyMenuItem withValueEditable(@Nullable CharSequence inputHint, boolean prefillInputWithItemValue, boolean allowEmptyInput, @Nullable CharSequence dialogTitle, int inputType) {
+        withValueEditable(inputHint, prefillInputWithItemValue, allowEmptyInput, dialogTitle);
+        this.mEditableInputType = inputType;
+        return this;
+    }
+
+    public BodyMenuItem withValueEditable(@Nullable CharSequence inputHint, boolean prefillInputWithItemValue, boolean allowEmptyInput, @Nullable CharSequence dialogTitle, int inputType, boolean verifyValueAsEmail, boolean verifyValueAsPhoneNumber) {
+        withValueEditable(inputHint, prefillInputWithItemValue, allowEmptyInput, dialogTitle, inputType);
+        this.verifyIfValueIsEmail = verifyValueAsEmail;
+        this.verifyIfValueIsPhone = verifyValueAsPhoneNumber;
+        return this;
+    }
+
     public boolean isValueEditable() {
         return isValueEditable;
+    }
+
+    private CharSequence getPrefillValue(){
+        if (prefillWithValue){
+            return mValue;
+        } else return null;
     }
 
     @Override
@@ -245,7 +370,7 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
     }
 
     @Override
-    public void bindView(Context context, final BodyMenuItemViewHolder holder, final MMFragment.OnFragmentInteractionListener listener) {
+    public void bindView(final Context context, final BodyMenuItemViewHolder holder, final MMFragment.OnFragmentInteractionListener listener) {
         // Configure card
         if(isEnabled()){
             holder.cardView.setOnClickListener(new View.OnClickListener() {
@@ -254,9 +379,42 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
                     if (isSwitchUsed){
                         holder.booleanValue.performClick();
                     } else if (isValueEditable()){
+                        MaterialDialog.Builder dialogEditable = new MaterialDialog.Builder(context)
+                                .input(mEditableHint, getPrefillValue(), allowEmptyInput, new MaterialDialog.InputCallback() {
+                                    @Override
+                                    public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                                        if (verifyIfValueIsEmail){
+                                            if (Master.verifyStringIsEmail(input.toString())){
+                                                withValue(input.toString());
+                                            } else Toast.makeText(context, "Invalid Email Address", Toast.LENGTH_SHORT).show();
+                                        } else if (verifyIfValueIsPhone){
+                                            if (Master.verifyStringIsPhoneNumber(input.toString())){
+                                                withValue(input.toString());
+                                            } else Toast.makeText(context, "Invalid Phone Number", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            withValue(String.valueOf(input));
+                                        }
 
-                    }
-                    else listener.onMenuItemClick(BodyMenuItem.this);
+                                        if (getValue() != null){
+                                            holder.value.setVisibility(View.VISIBLE);
+                                            holder.value.setText(Master.fromHtml(getValue()));
+                                        } else holder.value.setVisibility(View.GONE);
+
+                                        listener.onMenuItemClick(BodyMenuItem.this);
+                                    }
+                                })
+                                .negativeText("Cancel");
+
+                        if (mEditableTitle != null){
+                            dialogEditable.title(mEditableTitle);
+                        }
+
+                        if (mEditableInputType != -1){
+                            dialogEditable.inputType(mEditableInputType);
+                        }
+
+                        dialogEditable.show();
+                    } else listener.onMenuItemClick(BodyMenuItem.this);
                 }
             });
         }
@@ -318,6 +476,11 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
             if (getIconLeftColorRes() != -1){
                 holder.iconLeft.setColorFilter(ResourcesCompat.getColor(context.getResources(), getIconLeftColorRes(), context.getTheme()));
             }
+
+            if (getIconLeftWidth() != -1 && getIconLeftHeight() != -1){
+                holder.iconLeft.getLayoutParams().width = getIconLeftWidth();
+                holder.iconLeft.getLayoutParams().height = getIconLeftHeight();
+            }
         } else holder.iconLeft.setVisibility(View.GONE);
 
         // Configure right icon
@@ -334,6 +497,11 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
 
             if (getIconRightColorRes() != -1){
                 holder.iconRight.setColorFilter(ResourcesCompat.getColor(context.getResources(), getIconRightColorRes(), context.getTheme()));
+            }
+
+            if (getIconRightWidth() != -1 && getIconRightHeight() != -1){
+                holder.iconRight.getLayoutParams().width = getIconRightWidth();
+                holder.iconRight.getLayoutParams().height = getIconLeftHeight();
             }
         } else holder.iconRight.setVisibility(View.GONE);
 

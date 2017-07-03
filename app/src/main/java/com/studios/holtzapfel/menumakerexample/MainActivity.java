@@ -3,11 +3,10 @@ package com.studios.holtzapfel.menumakerexample;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.studios.holtzapfel.menumaker.MMActivity;
 import com.studios.holtzapfel.menumaker.MMMenu;
 import com.studios.holtzapfel.menumaker.MMMenuBuilder;
@@ -65,8 +64,8 @@ public class MainActivity extends MMActivity{
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onStart() {
+        super.onStart();
         initiateMenu();
     }
 
@@ -86,23 +85,22 @@ public class MainActivity extends MMActivity{
                 .withPageTitle("Holtzapfel\'s Menu Maker")
                 .withMenuItems(
                         new HeaderMenuItem("Example Menus"),
-                        new BodyMenuItem(ID_EXAMPLE_BASIC_MENU).withTitle("Basic Menu"),
+                        new BodyMenuItem(ID_EXAMPLE_BASIC_MENU).withTitle("Basic Menu").withIconLeft(BodyMenuItem.ICON_ARROW_RIGHT).withIconLeftSize(100, 100),
                         new FooterMenuItem(),
 
                         new HeaderMenuItem("Features"),
-                        new BodyMenuItem(ID_FEAT_CUSTOM_ITEMS).withTitle("Custom Menu Items").withDescription("Need each item to appear differently?  No problem.").withIconLeft(R.drawable.ic_star),
-                        new BodyMenuItem(ID_FEAT_FORM).withTitle("Forms").withDescription("Allow users to update and edit information").withIconLeft(R.drawable.ic_form),
-                        new BodyMenuItem(ID_FEAT_DISPLAY_INFORMATION).withTitle("Display Information").withDescription("Menus do not have to be just about selecting preferences.  Sometimes, like in a Help section, information just needs to be displayed!").withIconLeft(R.drawable.ic_news),
-                        new BodyMenuItem(ID_FEAT_SWITCHES).withTitle("Switches").withDescription("Create menus with switches for true/false properties").withIconLeft(R.drawable.ic_switch),
+                        new BodyMenuItem(ID_FEAT_CUSTOM_ITEMS).withTitle("Custom Menu Items").withDescription("Need each item to appear differently?  No problem.").withIconLeft(R.drawable.ic_star).withIconRight(BodyMenuItem.ICON_ARROW_RIGHT),
+                        new BodyMenuItem(ID_FEAT_FORM).withTitle("Forms").withDescription("Allow users to update and edit information").withIconLeft(R.drawable.ic_form).withIconRight(BodyMenuItem.ICON_ARROW_RIGHT),
+                        new BodyMenuItem(ID_FEAT_DISPLAY_INFORMATION).withTitle("Display Information").withDescription("Menus do not have to be just about selecting preferences.  Sometimes, like in a Help section, information just needs to be displayed!").withIconLeft(R.drawable.ic_news).withIconRight(BodyMenuItem.ICON_ARROW_RIGHT),
+                        new BodyMenuItem(ID_FEAT_SWITCHES).withTitle("Switches").withDescription("Create menus with switches for true/false properties").withIconLeft(R.drawable.ic_switch).withIconRight(BodyMenuItem.ICON_ARROW_RIGHT),
                         new FooterMenuItem(),
 
                         new HeaderMenuItem("About"),
-                        new BodyMenuItem(ID_GITHUB).withTitle("GitHub").withDescription("Visit the GitHub page to integrate MenuMaker into your app").withIconLeft(R.drawable.ic_github),
-                        new BodyMenuItem(ID_CREDITS).withTitle("Credits").withIconLeft(R.drawable.ic_credits),
-                        new BodyMenuItem(ID_DEVELOPMENT).withTitle("Development").withIconLeft(R.drawable.ic_developer_board),
+                        new BodyMenuItem(ID_GITHUB).withTitle("GitHub").withDescription("Visit the GitHub page to integrate MenuMaker into your app").withIconLeft(R.drawable.ic_github).withIconRight(BodyMenuItem.ICON_OPEN_IN_BROWSER),
+                        new BodyMenuItem(ID_CREDITS).withTitle("Credits").withIconLeft(R.drawable.ic_credits).withIconRight(BodyMenuItem.ICON_ARROW_RIGHT),
+                        new BodyMenuItem(ID_DEVELOPMENT).withTitle("Development").withIconLeft(R.drawable.ic_developer_board).withIconRight(BodyMenuItem.ICON_ARROW_RIGHT),
                         new FooterMenuItem()
                 )
-                .withHeaderTitleTextColor(0)
                 .build();
 
         MMPage pageSwitches = new MMPageBuilder(PAGE_SWITCHES)
@@ -130,9 +128,9 @@ public class MainActivity extends MMActivity{
                 .withPageTitle("Forms")
                 .withMenuItems(
                         new HeaderMenuItem("User Information"),
-                        new BodyMenuItem(ID_FORM_FIRST_NAME).withTitle("First Name").withValue(mFirstName),
-                        new BodyMenuItem(ID_FORM_LAST_NAME).withTitle("Last Name").withValue(mLastName),
-                        new BodyMenuItem(ID_FORM_EMAIL_ADDRESS).withTitle("Email Address").withValue(mEmailAddress),
+                        new BodyMenuItem(ID_FORM_FIRST_NAME).withTitle("First Name").withValue(mFirstName).withValueEditable("First Name", true, true, "Edit", InputType.TYPE_TEXT_FLAG_CAP_WORDS),
+                        new BodyMenuItem(ID_FORM_LAST_NAME).withTitle("Last Name").withValue(mLastName).withValueEditable("Last Name", true, true, "Edit", InputType.TYPE_TEXT_FLAG_CAP_WORDS),
+                        new BodyMenuItem(ID_FORM_EMAIL_ADDRESS).withTitle("Email Address").withValue(mEmailAddress).withValueEditable("Email Address", true, true, "Edit", InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS, true, false),
                         new FooterMenuItem(),
 
                         new HeaderMenuItem("Preferences"),
@@ -232,8 +230,8 @@ public class MainActivity extends MMActivity{
                         pageDevelopment
                 )
                 .withInitialPageID(PAGE_ROOT)
-                .withIconColor(R.color.colorPrimary)
-                .withHeaderTitleTextColor(R.color.colorPrimary)
+                .withSlidingAnimation(true)
+                .withIconLeftColor(R.color.colorPrimary)
                 .build();
     }
 
@@ -273,40 +271,13 @@ public class MainActivity extends MMActivity{
                 mMenu.showPage(PAGE_SWITCHES);
                 break;
             case ID_FORM_EMAIL_ADDRESS:
-                new MaterialDialog.Builder(this)
-                        .input("Email Address", mEmailAddress, true, new MaterialDialog.InputCallback() {
-                            @Override
-                            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                                mEmailAddress = input.toString();
-                                bodyItem.withValue(mEmailAddress);
-                                mMenu.updateItem(bodyItem, true);
-                            }
-                        })
-                        .show();
+                mEmailAddress = bodyItem.getValue();
                 break;
             case ID_FORM_FIRST_NAME:
-                new MaterialDialog.Builder(this)
-                        .input("First Name", mFirstName, true, new MaterialDialog.InputCallback() {
-                            @Override
-                            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                                mFirstName = input.toString();
-                                bodyItem.withValue(mFirstName);
-                                mMenu.updateItem(bodyItem, true);
-                            }
-                        })
-                        .show();
+                mFirstName = bodyItem.getValue();
                 break;
             case ID_FORM_LAST_NAME:
-                new MaterialDialog.Builder(this)
-                        .input("Last Name", mLastName, true, new MaterialDialog.InputCallback() {
-                            @Override
-                            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                                mLastName = input.toString();
-                                bodyItem.withValue(mLastName);
-                                mMenu.updateItem(bodyItem, true);
-                            }
-                        })
-                        .show();
+                mLastName = bodyItem.getValue();
                 break;
             case ID_FORM_RECEIVE_EMAILS:
                 receiveEmails = bodyItem.getBooleanValue();

@@ -17,4 +17,12 @@ public class Master {
         }
         return result;
     }
+
+    public static boolean verifyStringIsEmail(String email){
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
+    public static boolean verifyStringIsPhoneNumber(String phoneNumber){
+        return phoneNumber.matches("^[+]?[0-9]{10,13}$");
+    }
 }

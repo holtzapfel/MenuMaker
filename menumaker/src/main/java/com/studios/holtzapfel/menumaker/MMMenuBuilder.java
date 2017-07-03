@@ -23,6 +23,9 @@ public class MMMenuBuilder {
     private int mHeaderTitleTextColorRes = -1;
     private int mBodyTitleTextColorRes = -1;
     private int mIconColorRes = -1;
+    private int mIconRightColorRes = -1;
+    private int mIconLeftColorRes = -1;
+    private boolean useSlidingAnimation = false;
 
     public MMMenuBuilder(Context context, int fragmentFrameContainerResource){
         this.mContext = context;
@@ -57,11 +60,27 @@ public class MMMenuBuilder {
         return this;
     }
 
+    public MMMenuBuilder withIconRightColor(int colorRes){
+        this.mIconRightColorRes = colorRes;
+        return this;
+    }
+
+    public MMMenuBuilder withIconLeftColor(int colorRes){
+        this.mIconLeftColorRes = colorRes;
+        return this;
+    }
+
+    public MMMenuBuilder withSlidingAnimation(boolean withSlidingAnimation){
+        this.useSlidingAnimation = withSlidingAnimation;
+        return this;
+    }
+
     public MMMenu build(){
         MMMenu menu = new MMMenu(mContext);
         menu.setFrameRes(mFrameRes);
         menu.setPages(prepareAndGetPages());
         menu.setInitialPageID(getInitialPageID());
+        menu.setUseSlidingAnimation(useSlidingAnimation);
         return menu;
     }
 
@@ -111,16 +130,25 @@ public class MMMenuBuilder {
     }
 
     private BodyMenuItem updateBodyMenuItemWithCustomSettings(BodyMenuItem item){
+        // Update title text color if not already set
         if (item.getTitleTextColorRes() == -1){
             item.withTitleTextColor(mBodyTitleTextColorRes);
         }
 
+        // Update icon left color if not already set
         if (item.getIconLeftColorRes() == -1){
-            item.withIconLeftColor(mIconColorRes);
+            // Set with left color res if user defined, otherwise use BL icon color
+            if (mIconLeftColorRes != -1){
+                item.withIconLeftColor(mIconLeftColorRes);
+            } else item.withIconLeftColor(mIconColorRes);
         }
 
+        // Update icon right color if not already set
         if (item.getIconRightColorRes() == -1){
-            item.withIconRightColor(mIconColorRes);
+            // Set with right color res if user defined, otherwise use BL icon color
+            if (mIconRightColorRes != -1){
+                item.withIconRightColor(mIconRightColorRes);
+            } else item.withIconRightColor(mIconColorRes);
         }
 
         return item;

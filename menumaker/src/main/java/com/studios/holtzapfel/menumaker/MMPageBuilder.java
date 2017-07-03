@@ -76,6 +76,16 @@ public class MMPageBuilder {
         return this;
     }
 
+    public MMPageBuilder withIconRightColor(int colorRes){
+        mPage.setIconRightColor(colorRes);
+        return this;
+    }
+
+    public MMPageBuilder withIconLeftColor(int colorRes){
+        mPage.setIconLeftColor(colorRes);
+        return this;
+    }
+
     public MMPageBuilder withDividersEnabled(boolean isEnabled){
         mPage.setDividersEnabled(isEnabled);
         return this;
@@ -114,14 +124,16 @@ public class MMPageBuilder {
                     }
                 }
 
-                if (mPage.getIconColorRes() != -1){
-                    if (bodyMenuItem.getIconLeftColorRes() == -1){
-                        bodyMenuItem.withIconLeftColor(mPage.getIconColorRes());
-                    }
+                if (bodyMenuItem.getIconLeftColorRes() == -1) {
+                    if (mPage.getIconLeftColorRes() != -1) {
+                        bodyMenuItem.withIconLeftColor(mPage.getIconLeftColorRes());
+                    } else bodyMenuItem.withIconLeftColor(mPage.getIconColorRes());
+                }
 
-                    if (bodyMenuItem.getIconRightColorRes() == -1){
-                        bodyMenuItem.withIconRightColor(mPage.getIconColorRes());
-                    }
+                if (bodyMenuItem.getIconRightColorRes() == -1){
+                    if (mPage.getIconRightColorRes() != -1){
+                        bodyMenuItem.withIconRightColor(mPage.getIconRightColorRes());
+                    } else bodyMenuItem.withIconRightColor(mPage.getIconColorRes());
                 }
 
                 bodyMenuItem.withDividerEnabled(mPage.isDividersEnabled());

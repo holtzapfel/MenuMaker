@@ -17,6 +17,7 @@ public class MMMenu {
     private List<MMPage> mPages;
     private int mInitialPageID;
     private int mCurrentPageID;
+    private boolean useSlidingAnimation = false;
     private OnMMMenuInteractionListener mListener;
 
     public MMMenu(Context context){
@@ -24,7 +25,7 @@ public class MMMenu {
     }
 
     interface OnMMMenuInteractionListener{
-        void showPage(int frameRes, int pageID);
+        void showPage(int frameRes, int pageID, boolean withSlidingAnimation);
         void refreshPage(int frameRes, int pageID);
         int requestCurrentID();
     }
@@ -79,6 +80,14 @@ public class MMMenu {
         return mInitialPageID;
     }
 
+    public void setUseSlidingAnimation(boolean withSlidingAnimation){
+        this.useSlidingAnimation = withSlidingAnimation;
+    }
+
+    public boolean getUseSlidingAnimation(){
+        return this.useSlidingAnimation;
+    }
+
     public void setCurrentPageID(int pageID){
         this.mCurrentPageID = pageID;
     }
@@ -89,7 +98,12 @@ public class MMMenu {
 
     public void showPage(int pageID){
         this.mCurrentPageID = pageID;
-        mListener.showPage(mFrameRes, pageID);
+        mListener.showPage(mFrameRes, pageID, useSlidingAnimation);
+    }
+
+    public void showPage(int pageID, boolean withSlidingAnimation){
+        this.mCurrentPageID = pageID;
+        mListener.showPage(mFrameRes, pageID, withSlidingAnimation);
     }
 
     public void refreshPage(){
