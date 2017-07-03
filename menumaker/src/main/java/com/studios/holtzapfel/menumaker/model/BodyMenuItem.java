@@ -386,13 +386,19 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
                                         if (verifyIfValueIsEmail){
                                             if (Master.verifyStringIsEmail(input.toString())){
                                                 withValue(input.toString());
+                                                dialog.dismiss();
+                                                listener.onMenuItemClick(BodyMenuItem.this);
                                             } else Toast.makeText(context, "Invalid Email Address", Toast.LENGTH_SHORT).show();
                                         } else if (verifyIfValueIsPhone){
                                             if (Master.verifyStringIsPhoneNumber(input.toString())){
                                                 withValue(input.toString());
+                                                dialog.dismiss();
+                                                listener.onMenuItemClick(BodyMenuItem.this);
                                             } else Toast.makeText(context, "Invalid Phone Number", Toast.LENGTH_SHORT).show();
                                         } else {
                                             withValue(String.valueOf(input));
+                                            dialog.dismiss();
+                                            listener.onMenuItemClick(BodyMenuItem.this);
                                         }
 
                                         if (getValue() != null){
@@ -400,10 +406,10 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
                                             holder.value.setText(Master.fromHtml(getValue()));
                                         } else holder.value.setVisibility(View.GONE);
 
-                                        listener.onMenuItemClick(BodyMenuItem.this);
                                     }
                                 })
-                                .negativeText("Cancel");
+                                .negativeText("Cancel")
+                                .autoDismiss(false);
 
                         if (mEditableTitle != null){
                             dialogEditable.title(mEditableTitle);

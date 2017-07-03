@@ -33,7 +33,7 @@ You will never have to design a menu again.
 Follow the instructions below.
 ### 1. Insert gradle dependency into module build.gradle file
 ```gradle
-compile 'com.github.holtzapfel:MenuMaker:v1.0.0'
+compile 'com.github.holtzapfel:MenuMaker:v1.0.1'
 ```
 ### 2. Create new activity that extends **MMActivity**
 ```java
