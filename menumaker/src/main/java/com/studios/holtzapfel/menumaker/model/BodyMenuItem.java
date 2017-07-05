@@ -14,8 +14,9 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.studios.holtzapfel.menumaker.MMFragment;
+import com.studios.holtzapfel.menumaker.MMMenu;
 import com.studios.holtzapfel.menumaker.Master;
 import com.studios.holtzapfel.menumaker.R;
 import com.studios.holtzapfel.menumaker.model.interfaces.IBodyItem;
@@ -370,7 +371,7 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
     }
 
     @Override
-    public void bindView(final Context context, final BodyMenuItemViewHolder holder, final MMFragment.OnFragmentInteractionListener listener) {
+    public void bindView(final Context context, final BodyMenuItemViewHolder holder, final MMMenu.OnMenuItemClickListener listener) {
         // Configure card
         if(isEnabled()){
             holder.cardView.setOnClickListener(new View.OnClickListener() {
@@ -387,18 +388,18 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
                                             if (Master.verifyStringIsEmail(input.toString())){
                                                 withValue(input.toString());
                                                 dialog.dismiss();
-                                                listener.onMenuItemClick(BodyMenuItem.this);
+                                                listener.onBodyItemClick(BodyMenuItem.this);
                                             } else Toast.makeText(context, "Invalid Email Address", Toast.LENGTH_SHORT).show();
                                         } else if (verifyIfValueIsPhone){
                                             if (Master.verifyStringIsPhoneNumber(input.toString())){
                                                 withValue(input.toString());
                                                 dialog.dismiss();
-                                                listener.onMenuItemClick(BodyMenuItem.this);
+                                                listener.onBodyItemClick(BodyMenuItem.this);
                                             } else Toast.makeText(context, "Invalid Phone Number", Toast.LENGTH_SHORT).show();
                                         } else {
                                             withValue(String.valueOf(input));
                                             dialog.dismiss();
-                                            listener.onMenuItemClick(BodyMenuItem.this);
+                                            listener.onBodyItemClick(BodyMenuItem.this);
                                         }
 
                                         if (getValue() != null){
@@ -409,6 +410,12 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
                                     }
                                 })
                                 .negativeText("Cancel")
+                                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                        dialog.dismiss();
+                                    }
+                                })
                                 .autoDismiss(false);
 
                         if (mEditableTitle != null){
@@ -420,7 +427,7 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
                         }
 
                         dialogEditable.show();
-                    } else listener.onMenuItemClick(BodyMenuItem.this);
+                    } else listener.onBodyItemClick(BodyMenuItem.this);
                 }
             });
         }
@@ -450,7 +457,7 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                     BodyMenuItem.this.withBooleanValue(b);
-                    listener.onMenuItemClick(BodyMenuItem.this);
+                    listener.onBodyItemClick(BodyMenuItem.this);
                 }
             });
         } else holder.booleanValue.setVisibility(View.GONE);

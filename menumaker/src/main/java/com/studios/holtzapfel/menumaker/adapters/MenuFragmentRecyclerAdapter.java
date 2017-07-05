@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import com.studios.holtzapfel.menumaker.MMFragment.OnFragmentInteractionListener;
+import com.studios.holtzapfel.menumaker.MMMenu;
 import com.studios.holtzapfel.menumaker.R;
 import com.studios.holtzapfel.menumaker.model.BodyMenuItem;
 import com.studios.holtzapfel.menumaker.model.FooterMenuItem;
@@ -22,9 +22,9 @@ public class MenuFragmentRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
 
     private Context mContext;
     private List<IMenuItem> mItems;
-    private OnFragmentInteractionListener mListener;
+    private MMMenu.OnMenuItemClickListener mListener;
 
-    public MenuFragmentRecyclerAdapter(Context context, List<IMenuItem> menuItems, OnFragmentInteractionListener listener){
+    public MenuFragmentRecyclerAdapter(Context context, List<IMenuItem> menuItems, MMMenu.OnMenuItemClickListener listener){
         this.mContext = context;
         this.mItems = menuItems;
         this.mListener = listener;

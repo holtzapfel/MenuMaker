@@ -1,17 +1,18 @@
 package com.studios.holtzapfel.menumakerexample;
 
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
-import com.studios.holtzapfel.menumaker.MMActivity;
 import com.studios.holtzapfel.menumaker.MMMenu;
 import com.studios.holtzapfel.menumaker.MMMenuBuilder;
 import com.studios.holtzapfel.menumaker.MMPage;
 import com.studios.holtzapfel.menumaker.MMPageBuilder;
 import com.studios.holtzapfel.menumaker.model.BodyMenuItem;
+import com.studios.holtzapfel.menumaker.model.HeaderMenuItem;
 
-public class BasicMenuActivity extends MMActivity {
+public class BasicMenuActivity extends AppCompatActivity {
 
     // Unique IDs to associate with pages and menu items
     private static final int PAGE_MAIN = 100;
@@ -40,17 +41,8 @@ public class BasicMenuActivity extends MMActivity {
         // VERY IMPORTANT! If this is not called, the menu will not be created
         // For more complex menus, call this function **after** all data required to create
         // menu items has been retrieved
-        initiateMenu();
-    }
-
-    @Override
-    public MMMenu onRequestMenu() {
-        // Your MMMenu object is requested periodically during the activity
-        // If you wish for your menu to be dynamic, only allow it to be create once!
-        if (mMenu == null){
-            mMenu = buildMenu();
-        }
-        return mMenu;
+        mMenu = buildMenu();
+        mMenu.startMenu();
     }
 
     private MMMenu buildMenu(){
@@ -74,25 +66,30 @@ public class BasicMenuActivity extends MMActivity {
         return new MMMenuBuilder(this, R.id.basic_menu_frame)   // Layout ID must reference to a FrameLayout
                 .withPages(pageMain)                            // Include created pages
                 .withInitialPageID(PAGE_MAIN)                   // Needed more for menus with multiple pages
-                .build();                                       // build() prepares and creates MMMenu object
-    }
+                .withOnMenuItemClickListener(new MMMenu.OnMenuItemClickListener() {
+                    @Override
+                    public void onBodyItemClick(BodyMenuItem bodyMenuItem) {
+                        switch (bodyMenuItem.getID()){
+                            case ID_LINK1:
+                                // TODO perform click action
+                                Toast.makeText(BasicMenuActivity.this, bodyMenuItem.getTitle(), Toast.LENGTH_SHORT).show();
+                                break;
+                            case ID_LINK2:
+                                // TODO perform click action
+                                Toast.makeText(BasicMenuActivity.this, bodyMenuItem.getTitle(), Toast.LENGTH_SHORT).show();
+                                break;
+                            case ID_LINK3:
+                                // TODO perform click action
+                                Toast.makeText(BasicMenuActivity.this, bodyMenuItem.getTitle(), Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    }
 
-    @Override
-    public void onBodyItemClick(BodyMenuItem bodyItem) {
-        // Determine which item was clicked by filtering by ID
-        switch (bodyItem.getID()){
-            case ID_LINK1:
-                // TODO perform click action
-                Toast.makeText(this, bodyItem.getTitle(), Toast.LENGTH_SHORT).show();
-                break;
-            case ID_LINK2:
-                // TODO perform click action
-                Toast.makeText(this, bodyItem.getTitle(), Toast.LENGTH_SHORT).show();
-                break;
-            case ID_LINK3:
-                // TODO perform click action
-                Toast.makeText(this, bodyItem.getTitle(), Toast.LENGTH_SHORT).show();
-                break;
-        }
+                    @Override
+                    public void onHeaderItemClick(HeaderMenuItem headerMenuItem) {
+
+                    }
+                })
+                .build();                                       // build() prepares and creates MMMenu object
     }
 }

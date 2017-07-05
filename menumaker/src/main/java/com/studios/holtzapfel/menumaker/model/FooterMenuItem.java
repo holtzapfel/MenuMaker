@@ -5,7 +5,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.studios.holtzapfel.menumaker.MMFragment;
+import com.studios.holtzapfel.menumaker.MMMenu;
 import com.studios.holtzapfel.menumaker.R;
 import com.studios.holtzapfel.menumaker.model.interfaces.IFooterItem;
 
@@ -23,7 +23,7 @@ public class FooterMenuItem extends AbstractMenuItem<FooterMenuItem, FooterMenuI
     }
 
     @Override
-    public void bindView(Context context, FooterMenuItem.FooterViewHolder holder, final MMFragment.OnFragmentInteractionListener listener) {
+    public void bindView(Context context, FooterMenuItem.FooterViewHolder holder, final MMMenu.OnMenuItemClickListener listener) {
 
     }
 

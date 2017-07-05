@@ -1,6 +1,7 @@
 package com.studios.holtzapfel.menumaker;
 
-import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 
 import com.studios.holtzapfel.menumaker.model.BodyMenuItem;
 import com.studios.holtzapfel.menumaker.model.HeaderMenuItem;
@@ -16,7 +17,7 @@ import java.util.List;
 
 public class MMMenuBuilder {
 
-    Context mContext;
+    private AppCompatActivity mActivity;
     int mFrameRes;
     private List<MMPage> mPages;
     private int mInitialPageID = -1;
@@ -26,9 +27,11 @@ public class MMMenuBuilder {
     private int mIconRightColorRes = -1;
     private int mIconLeftColorRes = -1;
     private boolean useSlidingAnimation = false;
+    private MMMenu.OnMenuItemClickListener mOnMenuItemClickListener;
 
-    public MMMenuBuilder(Context context, int fragmentFrameContainerResource){
-        this.mContext = context;
+
+    public MMMenuBuilder(AppCompatActivity activity, int fragmentFrameContainerResource){
+        this.mActivity = activity;
         this.mFrameRes = fragmentFrameContainerResource;
     }
 
@@ -75,12 +78,18 @@ public class MMMenuBuilder {
         return this;
     }
 
+    public MMMenuBuilder withOnMenuItemClickListener(@NonNull MMMenu.OnMenuItemClickListener onMenuItemClickListener){
+        this.mOnMenuItemClickListener = onMenuItemClickListener;
+        return this;
+    }
+
     public MMMenu build(){
-        MMMenu menu = new MMMenu(mContext);
+        MMMenu menu = new MMMenu(mActivity);
         menu.setFrameRes(mFrameRes);
         menu.setPages(prepareAndGetPages());
         menu.setInitialPageID(getInitialPageID());
         menu.setUseSlidingAnimation(useSlidingAnimation);
+        menu.setOnMenuItemClickListener(mOnMenuItemClickListener);
         return menu;
     }
 

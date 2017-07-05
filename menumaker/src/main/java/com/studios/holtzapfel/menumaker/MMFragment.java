@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import com.studios.holtzapfel.menumaker.adapters.MenuFragmentRecyclerAdapter;
 import com.studios.holtzapfel.menumaker.model.interfaces.IMenuItem;
 
-public class MMFragment extends Fragment{
+public class MMFragment extends Fragment {
 
     private static final String ARG_PAGE_ID = "ARG_PAGE_ID";
 
@@ -60,12 +60,13 @@ public class MMFragment extends Fragment{
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
+        mListener = MMMenu.getListener();
+        /*if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
-        }
+        }*/
     }
 
     @Override
@@ -77,20 +78,21 @@ public class MMFragment extends Fragment{
     @Override
     public void onResume() {
         super.onResume();
-        updateUI();
+        updateUI(mPageID);
     }
 
     public interface OnFragmentInteractionListener {
         MMPage onRequestPage(int pageID);
+        MMMenu.OnMenuItemClickListener onRequestMenuItemClickListener();
         void onMenuItemClick(IMenuItem menuItem);
         void onNotifyCurrentPageID(int pageID);
     }
 
-    public void updateUI(){
-        MMPage page = mListener.onRequestPage(mPageID);
+    public void updateUI(int pageID){
+        MMPage page = mListener.onRequestPage(pageID);
 
         if (page == null){
-            throw new RuntimeException("PageBuilder is null!");
+            //throw new RuntimeException("PageBuilder is null!");
         } else {
             // Set title
             if (page.getPageTitle() != null) {
@@ -119,7 +121,7 @@ public class MMFragment extends Fragment{
                 });
             }
 
-            mRecycler.setAdapter(new MenuFragmentRecyclerAdapter(getContext(), page.getMenuItems(), mListener));
+            mRecycler.setAdapter(new MenuFragmentRecyclerAdapter(getContext(), page.getMenuItems(), mListener.onRequestMenuItemClickListener()));
 
             mListener.onNotifyCurrentPageID(mPageID);
         }

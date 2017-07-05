@@ -3,11 +3,11 @@ package com.studios.holtzapfel.menumakerexample;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.view.View;
 import android.widget.Toast;
 
-import com.studios.holtzapfel.menumaker.MMActivity;
 import com.studios.holtzapfel.menumaker.MMMenu;
 import com.studios.holtzapfel.menumaker.MMMenuBuilder;
 import com.studios.holtzapfel.menumaker.MMPage;
@@ -20,7 +20,7 @@ import com.studios.holtzapfel.menumaker.model.interfaces.IMenuItem;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends MMActivity{
+public class MainActivity extends AppCompatActivity{
 
     private static final int PAGE_ROOT = 100;
     private static final int ID_FEAT_SWITCHES = 101;
@@ -61,22 +61,14 @@ public class MainActivity extends MMActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        initiateMenu();
-    }
-
-    @Override
-    public MMMenu onRequestMenu() {
-        // Do not create MMMenu object here if you wish for the items to be editable!!
-        // Instead, create a different function that builds the object if not already created
-        if (mMenu == null){
-            buildMenu();
-        }
-        return mMenu;
+        buildMenu();
+        mMenu.startMenu();
     }
 
     // Used to build MMMenu object
@@ -219,7 +211,7 @@ public class MainActivity extends MMActivity{
                 )
                 .build();
 
-        mMenu = new MMMenuBuilder(this, R.id.frame)
+        mMenu = new MMMenuBuilder(MainActivity.this, R.id.frame)
                 .withPages(
                         pageRoot,
                         pageSwitches,
@@ -232,65 +224,73 @@ public class MainActivity extends MMActivity{
                 .withInitialPageID(PAGE_ROOT)
                 .withSlidingAnimation(true)
                 .withIconLeftColor(R.color.colorPrimary)
-                .build();
-    }
+                .withOnMenuItemClickListener(new MMMenu.OnMenuItemClickListener() {
+                    @Override
+                    public void onBodyItemClick(BodyMenuItem bodyMenuItem) {
+                        switch (bodyMenuItem.getID()) {
+                            case ID_CREDITS:
+                                mMenu.showPage(PAGE_CREDITS);
+                                break;
+                            case ID_CREDIT_ICONS8:
+                                Intent intentIcons8 = new Intent(Intent.ACTION_VIEW);
+                                intentIcons8.setData(Uri.parse("https://icons8.com/"));
+                                startActivity(intentIcons8);
+                                break;
+                            case ID_CREDIT_MATERIAL_DIALOGS:
+                                Intent intentMaterialDialogs = new Intent(Intent.ACTION_VIEW);
+                                intentMaterialDialogs.setData(Uri.parse("https://github.com/afollestad/material-dialogs"));
+                                startActivity(intentMaterialDialogs);
+                                break;
+                            case ID_DEVELOPMENT:
+                                mMenu.showPage(PAGE_DEVELOPMENT);
+                                break;
+                            case ID_EXAMPLE_BASIC_MENU:
+                                Intent intentBasicMenu = new Intent(MainActivity.this, BasicMenuActivity.class);
+                                startActivity(intentBasicMenu);
+                                break;
+                            case ID_FEAT_CUSTOM_ITEMS:
+                                mMenu.showPage(PAGE_CUSTOM_ITEMS);
+                                break;
+                            case ID_FEAT_DISPLAY_INFORMATION:
+                                mMenu.showPage(PAGE_DISPLAY_INFORMATION);
+                                break;
+                            case ID_FEAT_FORM:
+                                mMenu.showPage(PAGE_FORMS);
+                                break;
+                            case ID_FEAT_SWITCHES:
+                                mMenu.showPage(PAGE_SWITCHES);
+                                break;
+                            case ID_FORM_EMAIL_ADDRESS:
+                                mEmailAddress = bodyMenuItem.getValue();
+                                bodyMenuItem.withValue("test");
+                                mMenu.refreshPage();
+                                break;
+                            case ID_FORM_FIRST_NAME:
+                                mFirstName = bodyMenuItem.getValue();
+                                break;
+                            case ID_FORM_LAST_NAME:
+                                mLastName = bodyMenuItem.getValue();
+                                break;
+                            case ID_FORM_RECEIVE_EMAILS:
+                                receiveEmails = bodyMenuItem.getBooleanValue();
+                                break;
+                            case ID_GITHUB:
+                                String url = "https://github.com/holtzapfel/MenuMaker";
+                                Intent i = new Intent(Intent.ACTION_VIEW);
+                                i.setData(Uri.parse(url));
+                                startActivity(i);
+                                break;
+                            case ID_TOPIC:
+                                Toast.makeText(MainActivity.this, bodyMenuItem.getTitle(), Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    }
 
-    @Override
-    public void onBodyItemClick(final BodyMenuItem bodyItem) {
-        switch (bodyItem.getID()) {
-            case ID_CREDITS:
-                mMenu.showPage(PAGE_CREDITS);
-                break;
-            case ID_CREDIT_ICONS8:
-                Intent intentIcons8 = new Intent(Intent.ACTION_VIEW);
-                intentIcons8.setData(Uri.parse("https://icons8.com/"));
-                startActivity(intentIcons8);
-                break;
-            case ID_CREDIT_MATERIAL_DIALOGS:
-                Intent intentMaterialDialogs = new Intent(Intent.ACTION_VIEW);
-                intentMaterialDialogs.setData(Uri.parse("https://github.com/afollestad/material-dialogs"));
-                startActivity(intentMaterialDialogs);
-                break;
-            case ID_DEVELOPMENT:
-                mMenu.showPage(PAGE_DEVELOPMENT);
-                break;
-            case ID_EXAMPLE_BASIC_MENU:
-                Intent intentBasicMenu = new Intent(this, BasicMenuActivity.class);
-                startActivity(intentBasicMenu);
-                break;
-            case ID_FEAT_CUSTOM_ITEMS:
-                mMenu.showPage(PAGE_CUSTOM_ITEMS);
-                break;
-            case ID_FEAT_DISPLAY_INFORMATION:
-                mMenu.showPage(PAGE_DISPLAY_INFORMATION);
-                break;
-            case ID_FEAT_FORM:
-                mMenu.showPage(PAGE_FORMS);
-                break;
-            case ID_FEAT_SWITCHES:
-                mMenu.showPage(PAGE_SWITCHES);
-                break;
-            case ID_FORM_EMAIL_ADDRESS:
-                mEmailAddress = bodyItem.getValue();
-                break;
-            case ID_FORM_FIRST_NAME:
-                mFirstName = bodyItem.getValue();
-                break;
-            case ID_FORM_LAST_NAME:
-                mLastName = bodyItem.getValue();
-                break;
-            case ID_FORM_RECEIVE_EMAILS:
-                receiveEmails = bodyItem.getBooleanValue();
-                break;
-            case ID_GITHUB:
-                String url = "https://github.com/holtzapfel/MenuMaker";
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(url));
-                startActivity(i);
-                break;
-            case ID_TOPIC:
-                Toast.makeText(this, bodyItem.getTitle(), Toast.LENGTH_SHORT).show();
-                break;
-        }
+                    @Override
+                    public void onHeaderItemClick(HeaderMenuItem headerMenuItem) {
+
+                    }
+                })
+                .build();
     }
 }

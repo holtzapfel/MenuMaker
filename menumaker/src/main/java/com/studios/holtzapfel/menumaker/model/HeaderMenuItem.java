@@ -7,7 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-import com.studios.holtzapfel.menumaker.MMFragment;
+import com.studios.holtzapfel.menumaker.MMMenu;
 import com.studios.holtzapfel.menumaker.Master;
 import com.studios.holtzapfel.menumaker.R;
 import com.studios.holtzapfel.menumaker.model.interfaces.IHeaderItem;
@@ -40,7 +40,7 @@ public class HeaderMenuItem extends AbstractMenuItem<HeaderMenuItem, HeaderMenuI
     }
 
     @Override
-    public void bindView(Context context, HeaderViewHolder holder, final MMFragment.OnFragmentInteractionListener listener) {
+    public void bindView(Context context, HeaderViewHolder holder, final MMMenu.OnMenuItemClickListener listener) {
         // Configure title
         holder.title.setText(Master.fromHtml(mTitle));
         if (mTitleTextColorRes != -1 && mTitleTextColorRes != 0){
