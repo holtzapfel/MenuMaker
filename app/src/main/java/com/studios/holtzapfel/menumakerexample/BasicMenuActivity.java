@@ -63,7 +63,8 @@ public class BasicMenuActivity extends AppCompatActivity {
 
         // Compile all pages into MMMenuBuilder and then build()
         // Only one page is used in this example
-        return new MMMenuBuilder(this, R.id.basic_menu_frame)   // Layout ID must reference to a FrameLayout
+        return new MMMenuBuilder(this)
+                .withFrameLayout(R.id.basic_menu_frame)   // Layout ID must reference to a FrameLayout
                 .withPages(pageMain)                            // Include created pages
                 .withInitialPageID(PAGE_MAIN)                   // Needed more for menus with multiple pages
                 .withOnMenuItemClickListener(new MMMenu.OnMenuItemClickListener() {

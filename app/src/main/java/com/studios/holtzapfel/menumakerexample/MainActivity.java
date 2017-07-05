@@ -211,7 +211,8 @@ public class MainActivity extends AppCompatActivity{
                 )
                 .build();
 
-        mMenu = new MMMenuBuilder(MainActivity.this, R.id.frame)
+        mMenu = new MMMenuBuilder(MainActivity.this)
+                .withFrameLayout(R.id.frame)
                 .withPages(
                         pageRoot,
                         pageSwitches,

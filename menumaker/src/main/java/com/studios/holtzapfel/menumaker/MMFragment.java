@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import com.studios.holtzapfel.menumaker.adapters.MenuFragmentRecyclerAdapter;
 import com.studios.holtzapfel.menumaker.model.interfaces.IMenuItem;
 
-public class MMFragment extends Fragment {
+class MMFragment extends Fragment {
 
     private static final String ARG_PAGE_ID = "ARG_PAGE_ID";
 
