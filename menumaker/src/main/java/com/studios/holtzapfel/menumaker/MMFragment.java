@@ -11,11 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.studios.holtzapfel.menumaker.adapters.MenuFragmentRecyclerAdapter;
-import com.studios.holtzapfel.menumaker.model.interfaces.IMenuItem;
 
-class MMFragment extends Fragment {
+public class MMFragment extends Fragment{
 
     private static final String ARG_PAGE_ID = "ARG_PAGE_ID";
+    private static final String ARG_LISTENER = "ARG_LISTENER";
 
     private int mPageID;
 
@@ -41,6 +41,7 @@ class MMFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mPageID = getArguments().getInt(ARG_PAGE_ID);
+
         }
     }
 
@@ -81,15 +82,14 @@ class MMFragment extends Fragment {
         updateUI(mPageID);
     }
 
-    public interface OnFragmentInteractionListener {
-        MMPage onRequestPage(int pageID);
+    interface OnFragmentInteractionListener {
+        MMPage getPage(int pageID);
         MMMenu.OnMenuItemClickListener onRequestMenuItemClickListener();
-        void onMenuItemClick(IMenuItem menuItem);
         void onNotifyCurrentPageID(int pageID);
     }
 
     public void updateUI(int pageID){
-        MMPage page = mListener.onRequestPage(pageID);
+        MMPage page = mListener.getPage(pageID);
 
         if (page == null){
             //throw new RuntimeException("PageBuilder is null!");

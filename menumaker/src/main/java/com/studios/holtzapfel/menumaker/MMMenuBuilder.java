@@ -1,5 +1,6 @@
 package com.studios.holtzapfel.menumaker;
 
+import android.os.Bundle;
 import android.support.annotation.ColorRes;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
@@ -18,9 +19,8 @@ import java.util.List;
  * Created by holtzapfel on 6/24/17.
  */
 
+@SuppressWarnings("unused")
 public class MMMenuBuilder {
-
-    private AppCompatActivity mActivity;
 
     /**
      * Default constructor
@@ -28,6 +28,9 @@ public class MMMenuBuilder {
     public MMMenuBuilder(){
 
     }
+
+    // Activity reference for use in managing fragments
+    AppCompatActivity mActivity = null;
 
     /**
      * Constructor using activity that will contain frame resource
@@ -39,7 +42,7 @@ public class MMMenuBuilder {
     }
 
     // Frame layout resource for hosting MMFragment
-    private int mFrameRes = -1;
+    int mFrameRes = -1;
 
     /**
      * Sets the FrameLayout resource to be used for hosting MMFragment
@@ -62,7 +65,7 @@ public class MMMenuBuilder {
     }
 
     // List of MMPages that provide the menu's content
-    private List<MMPage> mPages = new ArrayList<>();
+    List<MMPage> mPages = new ArrayList<>();
 
     /**
      * Adds the pages to be used in the creation and display of the menu
@@ -85,10 +88,11 @@ public class MMMenuBuilder {
     }
 
     // Stores MMPage ID of page to first display
-    private int mInitialPageID = -1;
+    int mInitialPageID = -1;
 
     /**
      * Sets which page will be displayed first when menu is started
+     * NOTE: If this is not set, the first page added will become the initial page displayed
      *
      * @param pageID - ID of MMPage to first be displayed
      */
@@ -120,7 +124,7 @@ public class MMMenuBuilder {
      *
      * @param colorRes - Color resource ID
      */
-    public MMMenuBuilder withBodyTitleTextColor(int colorRes){
+    public MMMenuBuilder withBodyTitleTextColor(@ColorRes int colorRes){
         this.mBodyTitleTextColorRes = colorRes;
         return this;
     }
@@ -130,7 +134,7 @@ public class MMMenuBuilder {
      *
      * @param colorRes - Color resource ID
      */
-    public MMMenuBuilder withIconColor(int colorRes){
+    public MMMenuBuilder withIconColor(@ColorRes int colorRes){
         this.mIconColorRes = colorRes;
         return this;
     }
@@ -141,7 +145,7 @@ public class MMMenuBuilder {
      *
      * @param colorRes - Color resource ID
      */
-    public MMMenuBuilder withIconRightColor(int colorRes){
+    public MMMenuBuilder withIconRightColor(@ColorRes int colorRes){
         this.mIconRightColorRes = colorRes;
         return this;
     }
@@ -152,13 +156,13 @@ public class MMMenuBuilder {
      *
      * @param colorRes - Color resource ID
      */
-    public MMMenuBuilder withIconLeftColor(int colorRes){
+    public MMMenuBuilder withIconLeftColor(@ColorRes int colorRes){
         this.mIconLeftColorRes = colorRes;
         return this;
     }
 
     // Default preference of option to use sliding animation with fragment transitions
-    private boolean useSlidingAnimation = false;
+    boolean useSlidingAnimation = false;
 
     /**
      * Sets whether or not fragments use sliding animation in transitions
@@ -171,7 +175,7 @@ public class MMMenuBuilder {
     }
 
     // Interface object for item clicks
-    private MMMenu.OnMenuItemClickListener mOnMenuItemClickListener;
+    MMMenu.OnMenuItemClickListener mOnMenuItemClickListener;
 
     /**
      * Allows for programming what to if an item is clicked
@@ -183,12 +187,19 @@ public class MMMenuBuilder {
         return this;
     }
 
+    // To ensure build() is only called once
+    private boolean isUsed = false;
+
     /**
-     * Prepares and uilds MMMenu object
+     * Prepares and builds MMMenu object
      *
      * @return MMMenu object
      */
     public MMMenu build(){
+        if (isUsed){
+            throw new RuntimeException("You can only build the menu once!");
+        }
+
         if (mActivity == null) {
             throw new RuntimeException("Must pass an Activity to builder!");
         }
@@ -197,30 +208,36 @@ public class MMMenuBuilder {
             throw new RuntimeException("Must pass a valid FrameLayout resource!");
         }
 
-        MMMenu menu = new MMMenu(mActivity);
-        menu.setFrameRes(mFrameRes);
-        menu.setPages(prepareAndGetPages());
-        menu.setInitialPageID(getInitialPageID());
-        menu.setUseSlidingAnimation(useSlidingAnimation);
-        menu.setOnMenuItemClickListener(mOnMenuItemClickListener);
-        return menu;
+        // Disallows building the drawer more than once
+        isUsed = true;
+
+        // Add in all user-set preferences
+        modifyPagesWithUserSetPrefs();
+
+        // Ensure initial page ID is established
+        updateInitialPageID();
+
+        // Return new menu object
+        return new MMMenu(this);
     }
 
-    private int getInitialPageID(){
-        if (mInitialPageID != -1){
-            return mInitialPageID;
-        }
-
-        if (mPages != null){
-            if (mPages.size() > 0){
-                mInitialPageID = mPages.get(0).getPageID();
+    /**
+     * Retrieves stored @mInitialPageID if set or stores and returns ID of first page added
+     */
+    private void updateInitialPageID(){
+        if (mInitialPageID == -1){
+            if (mPages != null){
+                if (mPages.size() > 0){
+                    mInitialPageID = mPages.get(0).getPageID();
+                }
             }
         }
-
-        return mInitialPageID;
     }
 
-    private List<MMPage> prepareAndGetPages(){
+    /**
+     * Modifies each page added with user-set preferences and returns list
+     */
+    private void modifyPagesWithUserSetPrefs(){
         for (int x = 0; x < mPages.size(); x++){
             for (int y = 0; y < mPages.get(x).getMenuItems().size(); y++){
                 IMenuItem item = mPages.get(x).getMenuItems().get(y);
@@ -228,9 +245,13 @@ public class MMMenuBuilder {
                 mPages.get(x).getMenuItems().add(y, updateItemWithCustomSettings(item));
             }
         }
-        return mPages;
     }
 
+    /**
+     * Passes IMenuItem to appropriate function for item modification based upon user-set preferences
+     *
+     * @param item - IMenuItem from mPages
+     */
     private IMenuItem updateItemWithCustomSettings(IMenuItem item){
         if (item instanceof HeaderMenuItem){
             return updateHeaderMenuItemWithCustomSettings((HeaderMenuItem) item);
@@ -243,6 +264,11 @@ public class MMMenuBuilder {
         return item;
     }
 
+    /**
+     * HeaderMenuItem modifications based upon user-set preferences
+     *
+     * @param item - HeaderMenuItem from mPages
+     */
     private HeaderMenuItem updateHeaderMenuItemWithCustomSettings(HeaderMenuItem item){
         if (item.getTitleTextColorRes() == -1){
             item.withTitleTextColor(mHeaderTitleTextColorRes);
@@ -251,6 +277,11 @@ public class MMMenuBuilder {
         return item;
     }
 
+    /**
+     * BodyMenuItem modifications based upon user-set preferences
+     *
+     * @param item - BodyMenuItem from mPages
+     */
     private BodyMenuItem updateBodyMenuItemWithCustomSettings(BodyMenuItem item){
         // Update title text color if not already set
         if (item.getTitleTextColorRes() == -1){
@@ -274,5 +305,18 @@ public class MMMenuBuilder {
         }
 
         return item;
+    }
+
+    // Allowing state to be saved during events like screen rotation
+    Bundle mSavedInstanceState = null;
+
+    /**
+     * To help prevent data loss associated with activity recreation
+     *
+     * @param savedInstanceState - Bundle from activity to reset menu to former state
+     */
+    public MMMenuBuilder withSavedInstanceState(Bundle savedInstanceState){
+        this.mSavedInstanceState = savedInstanceState;
+        return this;
     }
 }
