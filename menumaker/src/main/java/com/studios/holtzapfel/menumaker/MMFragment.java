@@ -6,7 +6,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,7 +62,7 @@ public class MMFragment extends Fragment{
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mListener = MMMenu.getListener();
+        mListener = (OnFragmentInteractionListener) context;
     }
 
     @Override
@@ -79,12 +78,62 @@ public class MMFragment extends Fragment{
     }
 
     interface OnFragmentInteractionListener {
-        MMPage getPage(int pageID);
-        MMMenu.OnMenuItemClickListener onRequestMenuItemClickListener();
+        MMMenu onRetrieveMenu();
         void onNotifyCurrentPageID(int pageID);
     }
 
     public void updateUI(int pageID){
+        MMMenu menu = mListener.onRetrieveMenu();
+
+        if (menu == null){
+            throw new RuntimeException("MMMenu is null!");
+        }
+
+        MMPage page = menu.getPage(pageID);
+
+        if (page == null){
+            throw new RuntimeException("MMPage is null!");
+        }
+
+        // Set title
+        if (page.getPageTitle() != null) {
+            getActivity().setTitle(page.getPageTitle());
+        }
+
+        // Configure FAB
+        if (page.isFABEnabled()) {
+            mFAB.setVisibility(View.VISIBLE);
+            if (page.getFABOnClickListener() != null) {
+                mFAB.setOnClickListener(page.getFABOnClickListener());
+            }
+        } else mFAB.setVisibility(View.GONE);
+
+        // Configure recycler
+        mRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        if (page.isFABEnabled()) {
+            mRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+                    if (dy > 0) {
+                        mFAB.hide();
+                    } else mFAB.show();
+                }
+            });
+        }
+
+        mRecycler.setAdapter(new MenuFragmentRecyclerAdapter(getContext(), page.getMenuItems(), menu.onRequestMenuItemClickListener()));
+
+        mListener.onNotifyCurrentPageID(mPageID);
+    }
+
+    int getCurrentPageID(){
+        return mPageID;
+    }
+
+    /*public void updateUI(int pageID){
+
+
         MMPage page = null;
 
         if (mListener != null) {
@@ -128,5 +177,5 @@ public class MMFragment extends Fragment{
 
             mListener.onNotifyCurrentPageID(mPageID);
         }
-    }
+    }*/
 }

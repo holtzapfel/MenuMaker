@@ -315,7 +315,7 @@ public class MMMenuBuilder {
      *
      * @param savedInstanceState - Bundle from activity to reset menu to former state
      */
-    public MMMenuBuilder withSavedInstanceState(Bundle savedInstanceState){
+    MMMenuBuilder withSavedInstanceState(Bundle savedInstanceState){
         this.mSavedInstanceState = savedInstanceState;
         return this;
     }

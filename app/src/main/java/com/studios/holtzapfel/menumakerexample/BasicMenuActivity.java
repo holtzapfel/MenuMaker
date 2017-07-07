@@ -1,10 +1,10 @@
 package com.studios.holtzapfel.menumakerexample;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
+import com.studios.holtzapfel.menumaker.MMActivity;
 import com.studios.holtzapfel.menumaker.MMMenu;
 import com.studios.holtzapfel.menumaker.MMMenuBuilder;
 import com.studios.holtzapfel.menumaker.MMPage;
@@ -12,7 +12,7 @@ import com.studios.holtzapfel.menumaker.MMPageBuilder;
 import com.studios.holtzapfel.menumaker.model.BodyMenuItem;
 import com.studios.holtzapfel.menumaker.model.HeaderMenuItem;
 
-public class BasicMenuActivity extends AppCompatActivity {
+public class BasicMenuActivity extends MMActivity {
 
     // Unique IDs to associate with pages and menu items
     private static final int PAGE_MAIN = 100;
@@ -35,14 +35,21 @@ public class BasicMenuActivity extends AppCompatActivity {
     }
 
     @Override
+    public MMMenu onRequestMenu() {
+        if (mMenu == null){
+            mMenu = buildMenu();
+        }
+        return mMenu;
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
 
         // VERY IMPORTANT! If this is not called, the menu will not be created
         // For more complex menus, call this function **after** all data required to create
         // menu items has been retrieved
-        mMenu = buildMenu();
-        mMenu.startMenu();
+        startMenu();
     }
 
     private MMMenu buildMenu(){

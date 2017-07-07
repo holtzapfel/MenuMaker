@@ -1,9 +1,6 @@
 package com.studios.holtzapfel.menumaker;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 
 import com.studios.holtzapfel.menumaker.model.BodyMenuItem;
 import com.studios.holtzapfel.menumaker.model.HeaderMenuItem;
@@ -16,30 +13,30 @@ import java.util.List;
  */
 
 @SuppressWarnings({"unused"})
-public class MMMenu implements MMFragment.OnFragmentInteractionListener{
-
-    protected static final String BUNDLE_CURRENT_PAGE_ID = "BUNDLE_CURRENT_PAGE_ID";
+public class MMMenu {
 
     private static final String TAG = "MMMenu";
-    private static MMMenu mMenu;
+
+    static final String BUNDLE_CURRENT_PAGE_ID = "BUNDLE_CURRENT_PAGE_ID";
+
     private MMMenuBuilder mMenuBuilder;
-    MMFragment.OnFragmentInteractionListener mListener;
+    private OnMMMenuListener mListener;
 
     private int mCurrentPageID;
 
 
     protected MMMenu(MMMenuBuilder menuBuilder){
         this.mMenuBuilder = menuBuilder;
+        mListener = (OnMMMenuListener) menuBuilder.mActivity;
         mCurrentPageID = menuBuilder.mInitialPageID;
-        MMMenu.mMenu = this;
     }
 
-    static MMFragment.OnFragmentInteractionListener getListener(){
-        return mMenu;
+    interface OnMMMenuListener{
+        void onShowPage(int frameLayoutRes, int pageID, boolean useSlidingAnimation);
+        void onRefreshPage(int frameLayoutRes, int pageID, boolean useSlidingAnimation);
     }
 
-    @Override
-    public MMPage getPage(int pageID) {
+    MMPage getPage(int pageID) {
         if (mMenuBuilder.mPages != null){
             for (int x = 0; x < mMenuBuilder.mPages.size(); x++){
                 if (mMenuBuilder.mPages.get(x).getPageID() == pageID){
@@ -50,14 +47,8 @@ public class MMMenu implements MMFragment.OnFragmentInteractionListener{
         return null;
     }
 
-    @Override
-    public OnMenuItemClickListener onRequestMenuItemClickListener() {
+    OnMenuItemClickListener onRequestMenuItemClickListener() {
         return mMenuBuilder.mOnMenuItemClickListener;
-    }
-
-    @Override
-    public void onNotifyCurrentPageID(int pageID) {
-        mCurrentPageID = pageID;
     }
 
     public interface OnMenuItemClickListener {
@@ -65,7 +56,7 @@ public class MMMenu implements MMFragment.OnFragmentInteractionListener{
         void onHeaderItemClick(HeaderMenuItem headerMenuItem);
     }
 
-    public int getFrameRes(){
+    int getFrameRes(){
         return mMenuBuilder.mFrameRes;
     }
 
@@ -87,8 +78,16 @@ public class MMMenu implements MMFragment.OnFragmentInteractionListener{
         return isSuccessful;
     }
 
-    public int getCurrentPageID(){
+    void setCurrentPageID(int currentPageID){
+        this.mCurrentPageID = currentPageID;
+    }
+
+    int getCurrentPageID(){
         return mCurrentPageID;
+    }
+
+    int getInitialPageID(){
+        return mMenuBuilder.mInitialPageID;
     }
 
     public void showPage(int pageID){
@@ -97,7 +96,9 @@ public class MMMenu implements MMFragment.OnFragmentInteractionListener{
 
     private void showPage(int pageID, boolean withSlidingAnimation){
         mCurrentPageID = pageID;
-        if (withSlidingAnimation) {
+        mListener.onShowPage(getFrameRes(), pageID, withSlidingAnimation);
+
+        /*if (withSlidingAnimation) {
             mMenuBuilder.mActivity.getSupportFragmentManager().beginTransaction()
                     .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                     .replace(mMenuBuilder.mFrameRes, MMFragment.newInstance(pageID), String.valueOf(pageID))
@@ -109,11 +110,11 @@ public class MMMenu implements MMFragment.OnFragmentInteractionListener{
                     .addToBackStack(null)
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .commit();
-        }
+        }*/
     }
 
     public void refreshPage(){
-        refreshCurrentPage(mCurrentPageID);
+        refreshCurrentPage(mCurrentPageID, mMenuBuilder.useSlidingAnimation);
     }
 
     public void updatePage(MMPage page, boolean showPage){
@@ -180,8 +181,10 @@ public class MMMenu implements MMFragment.OnFragmentInteractionListener{
     }
 
 
-    private void refreshCurrentPage(int pageID){
-        Fragment fragment = mMenuBuilder.mActivity.getSupportFragmentManager().findFragmentByTag(String.valueOf(pageID));
+    private void refreshCurrentPage(int pageID, boolean usesSlidingAnimation){
+        mListener.onRefreshPage(getFrameRes(), pageID, usesSlidingAnimation);
+
+        /*Fragment fragment = mMenuBuilder.mActivity.getSupportFragmentManager().findFragmentByTag(String.valueOf(pageID));
         if (fragment != null) {
             if (fragment instanceof MMFragment) {
                 ((MMFragment) fragment).updateUI(pageID);
@@ -189,36 +192,21 @@ public class MMMenu implements MMFragment.OnFragmentInteractionListener{
             }
         } else {
             showPage(pageID, false);
-        }
+        }*/
     }
 
-    public void startMenu(){
-        // It took me forever to discover that I really needed this single line of code
-        // When traversing to a new activity that also had a menu, and then pressing 'back,'
-        // the menu on the previous activity would show.  Now it does not do that :)
-        mMenu = this;
-        int pageIDToShow = mMenuBuilder.mInitialPageID;
-        if (mMenuBuilder.mInitialPageID != mCurrentPageID){
-            pageIDToShow = mCurrentPageID;
-        }
-        if (mMenuBuilder.mSavedInstanceState != null){
-            int bundle_current_page_ID = mMenuBuilder.mSavedInstanceState.getInt(BUNDLE_CURRENT_PAGE_ID, -1);
-            if (bundle_current_page_ID != -1){
-                Log.d(TAG, "startMenu: ");
-                pageIDToShow = bundle_current_page_ID;
-            }
-        }
-        if (mMenuBuilder.mActivity.getSupportFragmentManager().getBackStackEntryCount() == 0) {
-            mMenuBuilder.mActivity.getSupportFragmentManager().beginTransaction()
-                    .replace(mMenuBuilder.mFrameRes, MMFragment.newInstance(pageIDToShow))
-                    .commit();
-        }
-    }
-
-    public Bundle saveInstanceState(Bundle savedInstanceState){
+    Bundle saveInstanceState(Bundle savedInstanceState){
         if (savedInstanceState != null){
             savedInstanceState.putInt(BUNDLE_CURRENT_PAGE_ID, mCurrentPageID);
         }
         return savedInstanceState;
+    }
+
+    void setSavedInstanceState(Bundle savedInstanceState){
+        this.mMenuBuilder.withSavedInstanceState(savedInstanceState);
+    }
+
+    Bundle getSavedInstanceState(){
+        return this.mMenuBuilder.mSavedInstanceState;
     }
 }
