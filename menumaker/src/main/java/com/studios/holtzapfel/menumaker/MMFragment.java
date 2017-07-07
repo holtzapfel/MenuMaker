@@ -6,6 +6,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +15,9 @@ import com.studios.holtzapfel.menumaker.adapters.MenuFragmentRecyclerAdapter;
 
 public class MMFragment extends Fragment{
 
+    private static final String TAG = "MMFragment";
+
     private static final String ARG_PAGE_ID = "ARG_PAGE_ID";
-    private static final String ARG_LISTENER = "ARG_LISTENER";
 
     private int mPageID;
 
@@ -62,12 +64,6 @@ public class MMFragment extends Fragment{
     public void onAttach(Context context) {
         super.onAttach(context);
         mListener = MMMenu.getListener();
-        /*if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }*/
     }
 
     @Override
@@ -89,10 +85,17 @@ public class MMFragment extends Fragment{
     }
 
     public void updateUI(int pageID){
-        MMPage page = mListener.getPage(pageID);
+        MMPage page = null;
+
+        if (mListener != null) {
+            page = mListener.getPage(pageID);
+        } else {
+            Log.d(TAG, "updateUI: mListener == null");
+            getActivity().recreate();
+        }
 
         if (page == null){
-            //throw new RuntimeException("PageBuilder is null!");
+            throw new RuntimeException("MMPage is null!");
         } else {
             // Set title
             if (page.getPageTitle() != null) {
