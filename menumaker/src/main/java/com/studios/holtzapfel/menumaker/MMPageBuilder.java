@@ -1,5 +1,9 @@
 package com.studios.holtzapfel.menumaker;
 
+import android.support.annotation.ColorRes;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.studios.holtzapfel.menumaker.model.BodyMenuItem;
@@ -24,39 +28,50 @@ public class MMPageBuilder {
         this.mPage.setPageID(pageID);
     }
 
-    public MMPageBuilder withMenuItems(IMenuItem... items){
-        if (items != null) {
-            if (mPage.getMenuItems().size() > 0){
-                throw new RuntimeException("Menu items cannot be declared more than once!");
-            }
-            List<IMenuItem> menuItems = new ArrayList<>();
-            Collections.addAll(menuItems, items);
-            mPage.setMenuItems(menuItems);
+    public MMPageBuilder withMenuItems(@NonNull IMenuItem... items){
+        if (mPage.getMenuItems().size() > 0){
+            throw new RuntimeException("Menu items cannot be declared more than once!");
         }
+        List<IMenuItem> menuItems = new ArrayList<>();
+        Collections.addAll(menuItems, items);
+        mPage.setMenuItems(menuItems);
         return this;
     }
 
-    public MMPageBuilder withMenuItems(List<IMenuItem> items){
-        if (items != null){
-            if (mPage.getMenuItems().size() > 0){
-                throw new RuntimeException("Menu items cannot be declared more than once!");
-            }
-            mPage.setMenuItems(items);
+    public MMPageBuilder withMenuItems(@NonNull List<IMenuItem> items){
+        if (mPage.getMenuItems().size() > 0){
+            throw new RuntimeException("Menu items cannot be declared more than once!");
         }
+        mPage.setMenuItems(items);
         return this;
     }
 
-    public MMPageBuilder withHeaderTitleTextColor(int colorRes){
+    public MMPageBuilder withHeaderTitleTextColor(@ColorRes int colorRes){
         mPage.setHeaderTitleTextColor(colorRes);
         return this;
     }
 
-    public MMPageBuilder withBodyTitleTextColor(int colorRes){
+    public MMPageBuilder withBodyTitleTextColor(@ColorRes int colorRes){
         mPage.setBodyTitleTextColor(colorRes);
         return this;
     }
 
-    public MMPageBuilder withPageTitle(String title){
+    public MMPageBuilder withBodyDescriptionTextColor(@ColorRes int colorRes){
+        mPage.setBodyDescriptionTextColor(colorRes);
+        return this;
+    }
+
+    public MMPageBuilder withBodyValueTextColor(@ColorRes int colorRes){
+        mPage.setBodyValueTextColor(colorRes);
+        return this;
+    }
+
+    public MMPageBuilder withBodyContentTextColor(@ColorRes int colorRes){
+        mPage.setBodyContentTextColor(colorRes);
+        return this;
+    }
+
+    public MMPageBuilder withPageTitle(@Nullable String title){
         mPage.setPageTitle(title);
         return this;
     }
@@ -66,35 +81,35 @@ public class MMPageBuilder {
         return this;
     }
 
-    public MMPageBuilder withFAB(View.OnClickListener onClickListener){
+    public MMPageBuilder withFAB(@Nullable View.OnClickListener onClickListener){
         mPage.setFABEnabled(true);
         mPage.setFABOnClickListener(onClickListener);
         return this;
     }
 
-    public MMPageBuilder withFAB(int iconRes, View.OnClickListener onClickListener){
+    public MMPageBuilder withFAB(@DrawableRes int iconRes, View.OnClickListener onClickListener){
         withFAB(onClickListener);
         mPage.setFABIconRes(iconRes);
         return this;
     }
 
-    public MMPageBuilder withFAB(int iconRes, int backgroundColorRes, View.OnClickListener onClickListener){
+    public MMPageBuilder withFAB(@DrawableRes int iconRes, @ColorRes int backgroundColorRes, View.OnClickListener onClickListener){
         withFAB(iconRes, onClickListener);
         mPage.setFABBackgroundColorRes(backgroundColorRes);
         return this;
     }
 
-    public MMPageBuilder withIconColor(int colorRes){
+    public MMPageBuilder withIconColor(@ColorRes int colorRes){
         mPage.setIconColor(colorRes);
         return this;
     }
 
-    public MMPageBuilder withIconRightColor(int colorRes){
+    public MMPageBuilder withIconRightColor(@ColorRes int colorRes){
         mPage.setIconRightColor(colorRes);
         return this;
     }
 
-    public MMPageBuilder withIconLeftColor(int colorRes){
+    public MMPageBuilder withIconLeftColor(@ColorRes int colorRes){
         mPage.setIconLeftColor(colorRes);
         return this;
     }
@@ -104,7 +119,7 @@ public class MMPageBuilder {
         return this;
     }
 
-    public MMPageBuilder withDividerColor(int colorRes){
+    public MMPageBuilder withDividerColor(@ColorRes int colorRes){
         mPage.setDividerColor(colorRes);
         return this;
     }
@@ -121,9 +136,9 @@ public class MMPageBuilder {
                 HeaderMenuItem headerMenuItem = (HeaderMenuItem) item;
 
                 // Set custom header title text color if not already defined
-                if (mPage.getHeaderTitleTextColor() != -1){
+                if (mPage.getHeaderTitleTextColorRes() != -1){
                     if (headerMenuItem.getTitleTextColorRes() == -1){
-                        headerMenuItem.withTitleTextColor(mPage.getHeaderTitleTextColor());
+                        headerMenuItem.withTitleTextColor(mPage.getHeaderTitleTextColorRes());
                     }
                 }
 
@@ -131,9 +146,27 @@ public class MMPageBuilder {
             case IMenuItem.MENU_ITEM_TYPE_BODY:
                 BodyMenuItem bodyMenuItem = (BodyMenuItem) item;
 
-                if (mPage.getBodyTitleTextColor() != -1){
+                if (mPage.getBodyTitleTextColorRes() != -1){
                     if (bodyMenuItem.getTitleTextColorRes() == -1){
-                        bodyMenuItem.withTitleTextColor(mPage.getBodyTitleTextColor());
+                        bodyMenuItem.withTitleTextColor(mPage.getBodyTitleTextColorRes());
+                    }
+                }
+
+                if (mPage.getBodyDescriptionTextColorRes() != -1){
+                    if (bodyMenuItem.getDescriptionTextColorRes() == -1){
+                        bodyMenuItem.withDescriptionTextColor(mPage.getBodyDescriptionTextColorRes());
+                    }
+                }
+
+                if (mPage.getBodyValueTextColorRes() != -1){
+                    if (bodyMenuItem.getValueTextColorRes() == -1){
+                        bodyMenuItem.withValueTextColor(mPage.getBodyValueTextColorRes());
+                    }
+                }
+
+                if (mPage.getBodyContentTextColorRes() != -1){
+                    if (bodyMenuItem.getContentTextColorRes() == -1){
+                        bodyMenuItem.withContentTextColor(mPage.getBodyContentTextColorRes());
                     }
                 }
 

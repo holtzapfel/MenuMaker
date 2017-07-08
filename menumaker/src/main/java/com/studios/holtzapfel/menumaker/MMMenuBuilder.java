@@ -105,6 +105,9 @@ public class MMMenuBuilder {
     // NOTE: Any resource set here will be overridden if also set in MMPage or IMenuItem
     private int mHeaderTitleTextColorRes = -1;
     private int mBodyTitleTextColorRes = -1;
+    private int mBodyDescriptionTextColorRes = -1;
+    private int mBodyValueTextColorRes = -1;
+    private int mBodyContentTextColorRes = -1;
     private int mIconColorRes = -1;
     private int mIconRightColorRes = -1;
     private int mIconLeftColorRes = -1;

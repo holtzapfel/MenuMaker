@@ -22,11 +22,11 @@ public class HeaderMenuItem extends AbstractMenuItem<HeaderMenuItem, HeaderMenuI
     private int mTitleTextColorRes = -1;
 
     public HeaderMenuItem(int id){
-        this.mID = id;
+        withID(id);
     }
 
     public HeaderMenuItem(int id, String title){
-        this.mID = id;
+        withID(id);
         this.mTitle = title;
     }
 

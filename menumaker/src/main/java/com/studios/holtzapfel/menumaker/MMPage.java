@@ -1,5 +1,8 @@
 package com.studios.holtzapfel.menumaker;
 
+import android.support.annotation.ColorRes;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.studios.holtzapfel.menumaker.model.interfaces.IMenuItem;
@@ -11,23 +14,10 @@ import java.util.List;
  * Created by holtzapfel on 6/25/17.
  */
 
+@SuppressWarnings("WeakerAccess")
 public class MMPage {
 
     private int mID = -1;
-    private List<IMenuItem> mItems = new ArrayList<>();
-
-    private String mPageTitle;
-    private int mHeaderTitleTextColorRes = -1;
-    private int mBodyTitleTextColorRes = -1;
-    private boolean isFABEnabled = false;
-    private View.OnClickListener mFABOnClickListener;
-    private int mIconColorRes = -1;
-    private int mIconRightColorRes = -1;
-    private int mIconLeftColorRes = -1;
-    private boolean isDividersEnabled = true;
-    private int mDividerColorRes = -1;
-    private int mFABIconRes = -1;
-    private int mFABBackgroundColorRes = -1;
 
     public void setPageID(int id){
         this.mID = id;
@@ -37,7 +27,9 @@ public class MMPage {
         return mID;
     }
 
-    public void setMenuItems(List<IMenuItem> menuItems){
+    private List<IMenuItem> mItems = new ArrayList<>();
+
+    public void setMenuItems(@NonNull List<IMenuItem> menuItems){
         this.mItems = menuItems;
     }
 
@@ -54,7 +46,7 @@ public class MMPage {
         return null;
     }
 
-    public boolean replaceMenuItem(IMenuItem menuItem){
+    public boolean replaceMenuItem(@NonNull IMenuItem menuItem){
         boolean isSuccessful = false;
         for (int x = 0; x < mItems.size(); x++){
             if (mItems.get(x).getID() == menuItem.getID()){
@@ -66,7 +58,9 @@ public class MMPage {
         return isSuccessful;
     }
 
-    public void setPageTitle(String title){
+    private String mPageTitle;
+
+    public void setPageTitle(@Nullable String title){
         this.mPageTitle = title;
     }
 
@@ -74,21 +68,56 @@ public class MMPage {
         return mPageTitle;
     }
 
-    public void setHeaderTitleTextColor(int colorRes){
+    private int mHeaderTitleTextColorRes = -1;
+    private int mBodyTitleTextColorRes = -1;
+    private int mBodyDescriptionTextColorRes = -1;
+    private int mBodyValueTextColorRes = -1;
+    private int mBodyContentTextColorRes = -1;
+
+    public void setHeaderTitleTextColor(@ColorRes int colorRes){
         this.mHeaderTitleTextColorRes = colorRes;
     }
 
-    public int getHeaderTitleTextColor(){
+    public int getHeaderTitleTextColorRes(){
         return mHeaderTitleTextColorRes;
     }
 
-    public void setBodyTitleTextColor(int colorRes){
+    public void setBodyTitleTextColor(@ColorRes int colorRes){
         this.mBodyTitleTextColorRes = colorRes;
     }
 
-    public int getBodyTitleTextColor(){
+    public int getBodyTitleTextColorRes(){
         return mBodyTitleTextColorRes;
     }
+
+    public void setBodyDescriptionTextColor(@ColorRes int colorRes){
+        this.mBodyDescriptionTextColorRes = colorRes;
+    }
+
+    public int getBodyDescriptionTextColorRes(){
+        return mBodyDescriptionTextColorRes;
+    }
+
+    public void setBodyValueTextColor(@ColorRes int colorRes){
+        this.mBodyValueTextColorRes = colorRes;
+    }
+
+    public int getBodyValueTextColorRes(){
+        return mBodyValueTextColorRes;
+    }
+
+    public void setBodyContentTextColor(@ColorRes int colorRes){
+        this.mBodyContentTextColorRes = colorRes;
+    }
+
+    public int getBodyContentTextColorRes(){
+        return mBodyContentTextColorRes;
+    }
+
+    private boolean isFABEnabled = false;
+    private View.OnClickListener mFABOnClickListener;
+    private int mFABIconRes = -1;
+    private int mFABBackgroundColorRes = -1;
 
     public void setFABEnabled(boolean isFABEnabled){
         this.isFABEnabled = isFABEnabled;
@@ -123,6 +152,8 @@ public class MMPage {
         return mFABOnClickListener;
     }
 
+    private int mIconColorRes = -1;
+
     public void setIconColor(int colorRes){
         this.mIconColorRes = colorRes;
     }
@@ -130,6 +161,8 @@ public class MMPage {
     public int getIconColorRes(){
         return mIconColorRes;
     }
+
+    private int mIconLeftColorRes = -1;
 
     public void setIconLeftColor(int colorRes){
         this.mIconLeftColorRes = colorRes;
@@ -139,6 +172,8 @@ public class MMPage {
         return mIconLeftColorRes;
     }
 
+    private int mIconRightColorRes = -1;
+
     public void setIconRightColor(int colorRes){
         this.mIconRightColorRes = colorRes;
     }
@@ -147,6 +182,8 @@ public class MMPage {
         return mIconRightColorRes;
     }
 
+    private boolean isDividersEnabled = true;
+
     public void setDividersEnabled(boolean isEnabled){
         this.isDividersEnabled = isEnabled;
     }
@@ -154,6 +191,8 @@ public class MMPage {
     public boolean isDividersEnabled(){
         return isDividersEnabled;
     }
+
+    private int mDividerColorRes = -1;
 
     public void setDividerColor(int colorRes){
         this.mDividerColorRes = colorRes;

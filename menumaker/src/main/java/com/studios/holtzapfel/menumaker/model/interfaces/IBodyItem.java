@@ -1,6 +1,9 @@
 package com.studios.holtzapfel.menumaker.model.interfaces;
 
 import android.graphics.drawable.Drawable;
+import android.support.annotation.ColorRes;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 
 /**
@@ -8,59 +11,98 @@ import android.support.v7.widget.RecyclerView;
  */
 
 public interface IBodyItem<T, VH extends RecyclerView.ViewHolder> extends IMenuItem<T, VH> {
-    T withTitle(String title);
+    T withTitle(@Nullable String title);
 
     String getTitle();
 
-    T withTitleTextColor(int colorRes);
+    T withTitleTextColor(@ColorRes int colorRes);
 
     int getTitleTextColorRes();
 
-    T withDescription(String description);
+    T withDescription(@Nullable String description);
 
     String getDescription();
 
-    T withValue(String value);
+    T withDescriptionTextColor(@ColorRes int colorRes);
+
+    int getDescriptionTextColorRes();
+
+    T withValue(@Nullable String value);
 
     String getValue();
+
+    interface OnVerifyInputListener{
+        boolean onVerifyInput(CharSequence input);
+        void afterVerification(boolean inputVerified);
+    }
+
+    T withValueEditable(@Nullable String value, @Nullable CharSequence inputHint, boolean prefillInputWithItemValue, boolean allowEmptyInput, @Nullable CharSequence dialogTitle);
+
+    T withValueEditable(@Nullable String value, @Nullable CharSequence inputHint, boolean prefillInputWithItemValue, boolean allowEmptyInput, @Nullable CharSequence dialogTitle, @Nullable OnVerifyInputListener verifyInputListener);
+
+    T withValueEditable(@Nullable String value, @Nullable CharSequence inputHint, boolean prefillInputWithItemValue, boolean allowEmptyInput, @Nullable CharSequence dialogTitle, int inputType);
+
+    T withValueEditable(@Nullable String value, @Nullable CharSequence inputHint, boolean prefillInputWithItemValue, boolean allowEmptyInput, @Nullable CharSequence dialogTitle, int inputType, @Nullable OnVerifyInputListener verifyInputListener);
+
+    T withValueEditable(@Nullable String value, @Nullable CharSequence inputHint, boolean prefillInputWithItemValue, boolean allowEmptyInput, @Nullable CharSequence dialogTitle, int inputType, boolean verifyInputTypeEmailOrPhone);
+
+    T withValueTextColor(@ColorRes int colorRes);
+
+    int getValueTextColorRes();
 
     T withBooleanValue(boolean value);
 
     boolean getBooleanValue();
 
-    T withContent(String content);
+    T withContent(@Nullable String content);
 
     String getContent();
 
-    T withIconLeft(int iconRes);
+    T withContentTextColor(@ColorRes int colorRes);
 
-    T withIconLeft(Drawable icon);
+    int getContentTextColorRes();
+
+    T withIconLeft(@DrawableRes int iconRes);
+
+    T withIconLeft(@Nullable Drawable icon);
 
     int getIconLeftRes();
 
     Drawable getIconLeft();
 
-    T withIconRight(int iconRes);
+    T withIconLeftSize(int width, int height);
 
-    T withIconRight(Drawable icon);
+    int getIconLeftWidth();
 
-    int getIconRightRes();
-
-    Drawable getIconRight();
+    int getIconLeftHeight();
 
     T withIconLeftVisible(boolean isVisible);
 
     boolean isIconLeftVisible();
 
+    T withIconLeftColor(@ColorRes int colorRes);
+
+    int getIconLeftColorRes();
+
+    T withIconRight(@DrawableRes int iconRes);
+
+    T withIconRight(@Nullable Drawable icon);
+
+    int getIconRightRes();
+
+    Drawable getIconRight();
+
+    T withIconRightSize(int width, int height);
+
+    int getIconRightWidth();
+
+    int getIconRightHeight();
+
     T withIconRightVisible(boolean isVisible);
 
     boolean isIconRightVisible();
 
-    T withIconLeftColor(int colorRes);
-
-    int getIconLeftColorRes();
-
-    T withIconRightColor(int colorRes);
+    T withIconRightColor(@ColorRes int colorRes);
 
     int getIconRightColorRes();
 
@@ -68,7 +110,7 @@ public interface IBodyItem<T, VH extends RecyclerView.ViewHolder> extends IMenuI
 
     boolean isDividerEnabled();
 
-    T withDividerColor(int colorRes);
+    T withDividerColor(@ColorRes int colorRes);
 
     int getDividerColorRes();
 }

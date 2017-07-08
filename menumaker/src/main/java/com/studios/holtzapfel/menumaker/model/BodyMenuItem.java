@@ -2,6 +2,8 @@ package com.studios.holtzapfel.menumaker.model;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.ColorRes;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.res.ResourcesCompat;
@@ -30,19 +32,75 @@ import com.studios.holtzapfel.menumaker.model.interfaces.IMenuItem;
 
 public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.BodyMenuItemViewHolder> implements IBodyItem<BodyMenuItem, BodyMenuItem.BodyMenuItemViewHolder>{
 
-    public static final int ICON_ARROW_RIGHT = 50;
-    public static final int ICON_ARROW_LEFT = 51;
-    public static final int ICON_ARROW_UP = 52;
-    public static final int ICON_ARROW_DOWN = 53;
-    public static final int ICON_OPEN_IN_NEW = 54;
-    public static final int ICON_OPEN_IN_BROWSER = 55;
 
+    public BodyMenuItem(int id){
+        withID(id);
+    }
 
     private String mTitle;
-    private int mTitleColorRes = -1;
+
+    @Override
+    public BodyMenuItem withTitle(@Nullable String title) {
+        this.mTitle = title;
+        return this;
+    }
+
+    @Override
+    public String getTitle() {
+        return mTitle;
+    }
+
+    private int mTitleTextColorRes = -1;
+
+    @Override
+    public BodyMenuItem withTitleTextColor(@ColorRes int colorRes) {
+        this.mTitleTextColorRes = colorRes;
+        return this;
+    }
+
+    @Override
+    public int getTitleTextColorRes() {
+        return mTitleTextColorRes;
+    }
 
     private String mDescription;
+
+    @Override
+    public BodyMenuItem withDescription(@Nullable String description) {
+        this.mDescription = description;
+        return this;
+    }
+
+    @Override
+    public String getDescription() {
+        return mDescription;
+    }
+
+    private int mDescriptionTextColorRes = -1;
+
+    @Override
+    public BodyMenuItem withDescriptionTextColor(@ColorRes int colorRes) {
+        this.mDescriptionTextColorRes = colorRes;
+        return this;
+    }
+
+    @Override
+    public int getDescriptionTextColorRes() {
+        return mDescriptionTextColorRes;
+    }
+
     private String mValue;
+
+    @Override
+    public BodyMenuItem withValue(@Nullable String value) {
+        this.mValue = value;
+        return this;
+    }
+
+    @Override
+    public String getValue() {
+        return mValue;
+    }
 
     private boolean isValueEditable = false;
     private CharSequence mEditableHint;
@@ -55,293 +113,7 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
     private OnVerifyInputListener mVerifyInputListener;
     private boolean isInputTypePassword = false;
 
-    private boolean mBooleanValue = false;
-    private boolean isSwitchUsed = false;
-    private String mContent;
-
-    private int mIconLeftRes = -1;
-    private Drawable mIconLeft;
-    private boolean isIconLeftVisible = true;
-    private int mIconLeftColorRes = -1;
-    private int mIconLeftHeight = -1;
-    private int mIconLeftWidth = -1;
-
-    private int mIconRightRes = -1;
-    private Drawable mIconRight;
-    private boolean isIconRightVisible = true;
-    private int mIconRightColorRes = -1;
-    private int mIconRightHeight = -1;
-    private int mIconRightWidth = -1;
-
-    private boolean isDividerEnabled = true;
-    private int mDividerColorRes = -1;
-
-    public BodyMenuItem(int id){
-        this.mID = id;
-    }
-
     @Override
-    public BodyMenuItem withTitle(String title) {
-        this.mTitle = title;
-        return this;
-    }
-
-    @Override
-    public String getTitle() {
-        return mTitle;
-    }
-
-    @Override
-    public BodyMenuItem withTitleTextColor(int colorRes) {
-        this.mTitleColorRes = colorRes;
-        return this;
-    }
-
-    @Override
-    public int getTitleTextColorRes() {
-        return mTitleColorRes;
-    }
-
-    @Override
-    public BodyMenuItem withDescription(String description) {
-        this.mDescription = description;
-        return this;
-    }
-
-    @Override
-    public String getDescription() {
-        return mDescription;
-    }
-
-    @Override
-    public BodyMenuItem withValue(String value) {
-        this.mValue = value;
-        return this;
-    }
-
-    @Override
-    public String getValue() {
-        return mValue;
-    }
-
-    @Override
-    public BodyMenuItem withBooleanValue(boolean value) {
-        this.mBooleanValue = value;
-        this.isSwitchUsed = true;
-        return this;
-    }
-
-    @Override
-    public boolean getBooleanValue() {
-        return mBooleanValue;
-    }
-
-    @Override
-    public BodyMenuItem withContent(String content) {
-        this.mContent = content;
-        return this;
-    }
-
-    @Override
-    public String getContent() {
-        return mContent;
-    }
-
-    @Override
-    public BodyMenuItem withIconLeft(int iconRes) {
-        switch (iconRes){
-            case ICON_ARROW_RIGHT:
-                this.mIconLeftRes = R.drawable.ic_arrow_right;
-                withIconLeftSize(75, 75);
-                return this;
-            case ICON_ARROW_LEFT:
-                this.mIconLeftRes = R.drawable.ic_arrow_left;
-                withIconLeftSize(75, 75);
-                return this;
-            case ICON_ARROW_UP:
-                this.mIconLeftRes = R.drawable.ic_arrow_up;
-                withIconLeftSize(75, 75);
-                return this;
-            case ICON_ARROW_DOWN:
-                this.mIconLeftRes = R.drawable.ic_arrow_down;
-                withIconLeftSize(75, 75);
-                return this;
-            case ICON_OPEN_IN_NEW:
-                this.mIconLeftRes = R.drawable.ic_action_open_in_new;
-                withIconLeftSize(75, 75);
-                return this;
-            case ICON_OPEN_IN_BROWSER:
-                this.mIconLeftRes = R.drawable.ic_action_open_in_browser;
-                withIconLeftSize(75, 75);
-                return this;
-        }
-        this.mIconLeftRes = iconRes;
-        return this;
-    }
-
-    @Override
-    public BodyMenuItem withIconLeft(Drawable icon) {
-        this.mIconLeft = icon;
-        return this;
-    }
-
-    @Override
-    public int getIconLeftRes() {
-        return mIconLeftRes;
-    }
-
-    @Override
-    public Drawable getIconLeft() {
-        return mIconLeft;
-    }
-
-    @Override
-    public BodyMenuItem withIconRight(int iconRes) {
-        switch (iconRes){
-            case ICON_ARROW_RIGHT:
-                this.mIconRightRes = R.drawable.ic_arrow_right;
-                withIconRightSize(75,75);
-                return this;
-            case ICON_ARROW_LEFT:
-                this.mIconRightRes = R.drawable.ic_arrow_left;
-                withIconRightSize(75, 75);
-                return this;
-            case ICON_ARROW_UP:
-                this.mIconRightRes = R.drawable.ic_arrow_up;
-                withIconRightSize(75, 75);
-                return this;
-            case ICON_ARROW_DOWN:
-                this.mIconRightRes = R.drawable.ic_arrow_down;
-                withIconRightSize(75, 75);
-                return this;
-            case ICON_OPEN_IN_NEW:
-                this.mIconRightRes = R.drawable.ic_action_open_in_new;
-                withIconRightSize(75,75);
-                return this;
-            case ICON_OPEN_IN_BROWSER:
-                this.mIconRightRes = R.drawable.ic_action_open_in_browser;
-                withIconRightSize(75,75);
-                return this;
-        }
-        this.mIconRightRes = iconRes;
-        return this;
-    }
-
-    @Override
-    public BodyMenuItem withIconRight(Drawable icon) {
-        this.mIconRight = icon;
-        return this;
-    }
-
-    @Override
-    public int getIconRightRes() {
-        return mIconRightRes;
-    }
-
-    @Override
-    public Drawable getIconRight() {
-        return mIconRight;
-    }
-
-    @Override
-    public BodyMenuItem withIconLeftVisible(boolean isVisible) {
-        this.isIconLeftVisible = isVisible;
-        return this;
-    }
-
-    @Override
-    public boolean isIconLeftVisible() {
-        return isIconLeftVisible;
-    }
-
-    @Override
-    public BodyMenuItem withIconRightVisible(boolean isVisible) {
-        this.isIconRightVisible = isVisible;
-        return this;
-    }
-
-    @Override
-    public boolean isIconRightVisible() {
-        return isIconRightVisible;
-    }
-
-    @Override
-    public BodyMenuItem withIconLeftColor(int colorRes) {
-        this.mIconLeftColorRes = colorRes;
-        return this;
-    }
-
-    @Override
-    public int getIconLeftColorRes() {
-        return mIconLeftColorRes;
-    }
-
-    @Override
-    public BodyMenuItem withIconRightColor(int colorRes) {
-        this.mIconRightColorRes = colorRes;
-        return this;
-    }
-
-    @Override
-    public int getIconRightColorRes() {
-        return mIconRightColorRes;
-    }
-
-    public BodyMenuItem withIconLeftSize(int width, int height){
-        this.mIconLeftWidth = width;
-        this.mIconLeftHeight = height;
-        return this;
-    }
-
-    public int getIconLeftWidth(){
-        return mIconLeftWidth;
-    }
-
-    public int getIconLeftHeight(){
-        return mIconLeftHeight;
-    }
-
-    public BodyMenuItem withIconRightSize(int width, int height){
-        this.mIconRightWidth = width;
-        this.mIconRightHeight = height;
-        return this;
-    }
-
-    public int getIconRightWidth(){
-        return mIconRightWidth;
-    }
-
-    public int getIconRightHeight(){
-        return mIconRightHeight;
-    }
-
-    @Override
-    public BodyMenuItem withDividerEnabled(boolean isEnabled) {
-        this.isDividerEnabled = isEnabled;
-        return this;
-    }
-
-    @Override
-    public boolean isDividerEnabled() {
-        return isDividerEnabled;
-    }
-
-    @Override
-    public BodyMenuItem withDividerColor(int colorRes) {
-        this.mDividerColorRes = colorRes;
-        return this;
-    }
-
-    @Override
-    public int getDividerColorRes() {
-        return mDividerColorRes;
-    }
-
-    public interface OnVerifyInputListener{
-        boolean onVerifyInput(CharSequence input);
-        void afterVerification(boolean inputVerified);
-    }
-
     public BodyMenuItem withValueEditable(@Nullable String value, @Nullable CharSequence inputHint, boolean prefillInputWithItemValue, boolean allowEmptyInput, @Nullable CharSequence dialogTitle) {
         this.withValue(value);
         this.isValueEditable = true;
@@ -352,12 +124,14 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
         return this;
     }
 
+    @Override
     public BodyMenuItem withValueEditable(@Nullable String value, @Nullable CharSequence inputHint, boolean prefillInputWithItemValue, boolean allowEmptyInput, @Nullable CharSequence dialogTitle, @Nullable OnVerifyInputListener verifyInputListener) {
-        this.withValueEditable(value, inputHint, prefillInputWithItemValue, allowEmptyInput, dialogTitle);
+        withValueEditable(value, inputHint, prefillInputWithItemValue, allowEmptyInput, dialogTitle);
         this.mVerifyInputListener = verifyInputListener;
         return this;
     }
 
+    @Override
     public BodyMenuItem withValueEditable(@Nullable String value, @Nullable CharSequence inputHint, boolean prefillInputWithItemValue, boolean allowEmptyInput, @Nullable CharSequence dialogTitle, int inputType) {
         withValueEditable(value, inputHint, prefillInputWithItemValue, allowEmptyInput, dialogTitle);
         this.mEditableInputType = inputType;
@@ -365,12 +139,14 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
         return this;
     }
 
+    @Override
     public BodyMenuItem withValueEditable(@Nullable String value, @Nullable CharSequence inputHint, boolean prefillInputWithItemValue, boolean allowEmptyInput, @Nullable CharSequence dialogTitle, int inputType, @Nullable OnVerifyInputListener verifyInputListener) {
         withValueEditable(value, inputHint, prefillInputWithItemValue, allowEmptyInput, dialogTitle, inputType);
         this.mVerifyInputListener = verifyInputListener;
         return this;
     }
 
+    @Override
     public BodyMenuItem withValueEditable(@Nullable String value, @Nullable CharSequence inputHint, boolean prefillInputWithItemValue, boolean allowEmptyInput, @Nullable CharSequence dialogTitle, int inputType, boolean verifyInputTypeEmailOrPhone) {
         withValueEditable(value, inputHint, prefillInputWithItemValue, allowEmptyInput, dialogTitle, inputType);
 
@@ -392,14 +168,238 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
         return this;
     }
 
-    public boolean isValueEditable() {
-        return isValueEditable;
-    }
-
     private CharSequence getPrefillValue(){
         if (prefillWithValue){
             return mValue;
         } else return null;
+    }
+
+    private int mValueTextColorRes = -1;
+
+    @Override
+    public BodyMenuItem withValueTextColor(@ColorRes int colorRes) {
+        this.mValueTextColorRes = colorRes;
+        return this;
+    }
+
+    @Override
+    public int getValueTextColorRes() {
+        return mValueTextColorRes;
+    }
+
+    private boolean mBooleanValue = false;
+    private boolean isSwitchUsed = false;
+
+    @Override
+    public BodyMenuItem withBooleanValue(boolean value) {
+        this.mBooleanValue = value;
+        this.isSwitchUsed = true;
+        return this;
+    }
+
+    @Override
+    public boolean getBooleanValue() {
+        return mBooleanValue;
+    }
+
+    private String mContent;
+
+    @Override
+    public BodyMenuItem withContent(@Nullable String content) {
+        this.mContent = content;
+        return this;
+    }
+
+    @Override
+    public String getContent() {
+        return mContent;
+    }
+
+    private int mContentTextColorRes = -1;
+
+    @Override
+    public BodyMenuItem withContentTextColor(@ColorRes int colorRes) {
+        this.mContentTextColorRes = colorRes;
+        return this;
+    }
+
+    @Override
+    public int getContentTextColorRes() {
+        return mContentTextColorRes;
+    }
+
+    private int mIconLeftRes = -1;
+    private Drawable mIconLeft;
+
+    @Override
+    public BodyMenuItem withIconLeft(@DrawableRes int iconRes) {
+        this.mIconLeftRes = getMMIconRes(iconRes);
+        if (this.mIconLeftRes != -1){
+            withIconLeftSize(75, 75);
+        } else this.mIconLeftRes = iconRes;
+        return this;
+    }
+
+    @Override
+    public BodyMenuItem withIconLeft(@Nullable Drawable icon) {
+        this.mIconLeft = icon;
+        return this;
+    }
+
+    @Override
+    public int getIconLeftRes() {
+        return mIconLeftRes;
+    }
+
+    @Override
+    public Drawable getIconLeft() {
+        return mIconLeft;
+    }
+
+    private int mIconLeftHeight = -1;
+    private int mIconLeftWidth = -1;
+
+    @Override
+    public BodyMenuItem withIconLeftSize(int width, int height){
+        this.mIconLeftWidth = width;
+        this.mIconLeftHeight = height;
+        return this;
+    }
+
+    @Override
+    public int getIconLeftWidth(){
+        return mIconLeftWidth;
+    }
+
+    @Override
+    public int getIconLeftHeight(){
+        return mIconLeftHeight;
+    }
+
+    private boolean isIconLeftVisible = true;
+
+    @Override
+    public BodyMenuItem withIconLeftVisible(boolean isVisible) {
+        this.isIconLeftVisible = isVisible;
+        return this;
+    }
+
+    @Override
+    public boolean isIconLeftVisible() {
+        return isIconLeftVisible;
+    }
+
+    private int mIconLeftColorRes = -1;
+
+    @Override
+    public BodyMenuItem withIconLeftColor(@ColorRes int colorRes) {
+        this.mIconLeftColorRes = colorRes;
+        return this;
+    }
+
+    @Override
+    public int getIconLeftColorRes() {
+        return mIconLeftColorRes;
+    }
+
+    private int mIconRightRes = -1;
+    private Drawable mIconRight;
+
+    @Override
+    public BodyMenuItem withIconRight(@DrawableRes int iconRes) {
+        this.mIconRightRes = getMMIconRes(iconRes);
+        if (this.mIconRightRes != -1){
+            withIconRightSize(75, 75);
+        } else this.mIconRightRes = iconRes;
+        return this;
+    }
+
+    @Override
+    public BodyMenuItem withIconRight(@Nullable Drawable icon) {
+        this.mIconRight = icon;
+        return this;
+    }
+
+    @Override
+    public int getIconRightRes() {
+        return mIconRightRes;
+    }
+
+    @Override
+    public Drawable getIconRight() {
+        return mIconRight;
+    }
+
+    private boolean isIconRightVisible = true;
+
+    @Override
+    public BodyMenuItem withIconRightVisible(boolean isVisible) {
+        this.isIconRightVisible = isVisible;
+        return this;
+    }
+
+    @Override
+    public boolean isIconRightVisible() {
+        return isIconRightVisible;
+    }
+
+    private int mIconRightColorRes = -1;
+
+    @Override
+    public BodyMenuItem withIconRightColor(@ColorRes int colorRes) {
+        this.mIconRightColorRes = colorRes;
+        return this;
+    }
+
+    @Override
+    public int getIconRightColorRes() {
+        return mIconRightColorRes;
+    }
+
+    private int mIconRightHeight = -1;
+    private int mIconRightWidth = -1;
+
+    @Override
+    public BodyMenuItem withIconRightSize(int width, int height){
+        this.mIconRightWidth = width;
+        this.mIconRightHeight = height;
+        return this;
+    }
+
+    @Override
+    public int getIconRightWidth(){
+        return mIconRightWidth;
+    }
+
+    @Override
+    public int getIconRightHeight(){
+        return mIconRightHeight;
+    }
+
+    private boolean isDividerEnabled = true;
+
+    @Override
+    public BodyMenuItem withDividerEnabled(boolean isEnabled) {
+        this.isDividerEnabled = isEnabled;
+        return this;
+    }
+
+    @Override
+    public boolean isDividerEnabled() {
+        return isDividerEnabled;
+    }
+
+    private int mDividerColorRes = -1;
+
+    @Override
+    public BodyMenuItem withDividerColor(int colorRes) {
+        this.mDividerColorRes = colorRes;
+        return this;
+    }
+
+    @Override
+    public int getDividerColorRes() {
+        return mDividerColorRes;
     }
 
     @Override
@@ -416,7 +416,7 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
                 public void onClick(View view) {
                     if (isSwitchUsed){
                         holder.booleanValue.performClick();
-                    } else if (isValueEditable()){
+                    } else if (isValueEditable){
                         MaterialDialog.Builder dialogEditable = new MaterialDialog.Builder(context)
                                 .input(mEditableHint, getPrefillValue(), allowEmptyInput, new MaterialDialog.InputCallback() {
                                     @Override
@@ -493,6 +493,11 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
         if (getDescription() != null){
             holder.description.setVisibility(View.VISIBLE);
             holder.description.setText(Master.fromHtml(getDescription()));
+
+            // Set text color
+            if (getDescriptionTextColorRes() > 0){
+                holder.description.setTextColor(ResourcesCompat.getColor(context.getResources(), getDescriptionTextColorRes(), context.getTheme()));
+            }
         } else holder.description.setVisibility(View.GONE);
 
         // Configure switch
@@ -512,8 +517,15 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
         if (getValue() != null){
             holder.value.setVisibility(View.VISIBLE);
             holder.value.setText(Master.fromHtml(getValue()));
+
+            // Convert text to hidden password if input type is password
             if (isInputTypePassword) {
                 holder.value.setTransformationMethod(new PasswordTransformationMethod());
+            }
+
+            // Set text color
+            if (getValueTextColorRes() > 0){
+                holder.value.setTextColor(ResourcesCompat.getColor(context.getResources(), getValueTextColorRes(), context.getTheme()));
             }
         } else holder.value.setVisibility(View.GONE);
 
@@ -521,6 +533,10 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
         if (getContent() != null){
             holder.content.setVisibility(View.VISIBLE);
             holder.content.setText(Master.fromHtml(getContent()));
+
+            if (getContentTextColorRes() > 0){
+                holder.content.setTextColor(ResourcesCompat.getColor(context.getResources(), getContentTextColorRes(), context.getTheme()));
+            }
         } else holder.content.setVisibility(View.GONE);
 
         // Configure left icon
@@ -570,7 +586,7 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
         // Configure divider
         if (isDividerEnabled()){
             holder.divider.setVisibility(View.VISIBLE);
-            if (getDividerColorRes() != -1){
+            if (getDividerColorRes() > 0){
                 holder.divider.setBackgroundColor(ResourcesCompat.getColor(context.getResources(), getDividerColorRes(), context.getTheme()));
             }
         } else holder.divider.setVisibility(View.GONE);

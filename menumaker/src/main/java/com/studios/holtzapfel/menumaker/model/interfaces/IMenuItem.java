@@ -11,9 +11,16 @@ import com.studios.holtzapfel.menumaker.MMMenu;
 
 public interface IMenuItem<T, VH extends RecyclerView.ViewHolder> {
 
-    int MENU_ITEM_TYPE_HEADER = 100;
-    int MENU_ITEM_TYPE_BODY = 200;
-    int MENU_ITEM_TYPE_FOOTER = 300;
+    int ICON_ARROW_RIGHT = 100;
+    int ICON_ARROW_LEFT = 101;
+    int ICON_ARROW_UP = 102;
+    int ICON_ARROW_DOWN = 103;
+    int ICON_OPEN_IN_NEW = 104;
+    int ICON_OPEN_IN_BROWSER = 105;
+
+    int MENU_ITEM_TYPE_HEADER = 200;
+    int MENU_ITEM_TYPE_BODY = 300;
+    int MENU_ITEM_TYPE_FOOTER = 400;
 
     int getID();
 
