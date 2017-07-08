@@ -7,6 +7,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -50,6 +52,8 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
     private int mEditableInputType = -1;
     private boolean verifyIfValueIsEmail = false;
     private boolean verifyIfValueIsPhone = false;
+    private OnVerifyInputListener mVerifyInputListener;
+    private boolean isInputTypePassword = false;
 
     private boolean mBooleanValue = false;
     private boolean isSwitchUsed = false;
@@ -333,7 +337,13 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
         return mDividerColorRes;
     }
 
-    public BodyMenuItem withValueEditable(@Nullable CharSequence inputHint, boolean prefillInputWithItemValue, boolean allowEmptyInput, @Nullable CharSequence dialogTitle) {
+    public interface OnVerifyInputListener{
+        boolean onVerifyInput(CharSequence input);
+        void afterVerification(boolean inputVerified);
+    }
+
+    public BodyMenuItem withValueEditable(@Nullable String value, @Nullable CharSequence inputHint, boolean prefillInputWithItemValue, boolean allowEmptyInput, @Nullable CharSequence dialogTitle) {
+        this.withValue(value);
         this.isValueEditable = true;
         this.mEditableHint = inputHint;
         this.prefillWithValue = prefillInputWithItemValue;
@@ -342,16 +352,43 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
         return this;
     }
 
-    public BodyMenuItem withValueEditable(@Nullable CharSequence inputHint, boolean prefillInputWithItemValue, boolean allowEmptyInput, @Nullable CharSequence dialogTitle, int inputType) {
-        withValueEditable(inputHint, prefillInputWithItemValue, allowEmptyInput, dialogTitle);
-        this.mEditableInputType = inputType;
+    public BodyMenuItem withValueEditable(@Nullable String value, @Nullable CharSequence inputHint, boolean prefillInputWithItemValue, boolean allowEmptyInput, @Nullable CharSequence dialogTitle, @Nullable OnVerifyInputListener verifyInputListener) {
+        this.withValueEditable(value, inputHint, prefillInputWithItemValue, allowEmptyInput, dialogTitle);
+        this.mVerifyInputListener = verifyInputListener;
         return this;
     }
 
-    public BodyMenuItem withValueEditable(@Nullable CharSequence inputHint, boolean prefillInputWithItemValue, boolean allowEmptyInput, @Nullable CharSequence dialogTitle, int inputType, boolean verifyValueAsEmail, boolean verifyValueAsPhoneNumber) {
-        withValueEditable(inputHint, prefillInputWithItemValue, allowEmptyInput, dialogTitle, inputType);
-        this.verifyIfValueIsEmail = verifyValueAsEmail;
-        this.verifyIfValueIsPhone = verifyValueAsPhoneNumber;
+    public BodyMenuItem withValueEditable(@Nullable String value, @Nullable CharSequence inputHint, boolean prefillInputWithItemValue, boolean allowEmptyInput, @Nullable CharSequence dialogTitle, int inputType) {
+        withValueEditable(value, inputHint, prefillInputWithItemValue, allowEmptyInput, dialogTitle);
+        this.mEditableInputType = inputType;
+        isInputTypePassword = inputType == InputType.TYPE_TEXT_VARIATION_PASSWORD;
+        return this;
+    }
+
+    public BodyMenuItem withValueEditable(@Nullable String value, @Nullable CharSequence inputHint, boolean prefillInputWithItemValue, boolean allowEmptyInput, @Nullable CharSequence dialogTitle, int inputType, @Nullable OnVerifyInputListener verifyInputListener) {
+        withValueEditable(value, inputHint, prefillInputWithItemValue, allowEmptyInput, dialogTitle, inputType);
+        this.mVerifyInputListener = verifyInputListener;
+        return this;
+    }
+
+    public BodyMenuItem withValueEditable(@Nullable String value, @Nullable CharSequence inputHint, boolean prefillInputWithItemValue, boolean allowEmptyInput, @Nullable CharSequence dialogTitle, int inputType, boolean verifyInputTypeEmailOrPhone) {
+        withValueEditable(value, inputHint, prefillInputWithItemValue, allowEmptyInput, dialogTitle, inputType);
+
+        if (verifyInputTypeEmailOrPhone){
+            switch (inputType){
+                case InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS:
+                    this.verifyIfValueIsEmail = true;
+                    this.verifyIfValueIsPhone = false;
+                    break;
+                case InputType.TYPE_CLASS_PHONE:
+                    this.verifyIfValueIsPhone = true;
+                    this.verifyIfValueIsEmail = true;
+                    break;
+            }
+        } else {
+            this.verifyIfValueIsEmail = false;
+            this.verifyIfValueIsPhone = false;
+        }
         return this;
     }
 
@@ -384,7 +421,16 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
                                 .input(mEditableHint, getPrefillValue(), allowEmptyInput, new MaterialDialog.InputCallback() {
                                     @Override
                                     public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                                        if (verifyIfValueIsEmail){
+                                        if (mVerifyInputListener != null){
+                                            boolean isVerified = mVerifyInputListener.onVerifyInput(input);
+                                            mVerifyInputListener.afterVerification(isVerified);
+
+                                            if (isVerified){
+                                                withValue(input.toString());
+                                                dialog.dismiss();
+                                                listener.onBodyItemClick(BodyMenuItem.this);
+                                            }
+                                        } else if (verifyIfValueIsEmail){
                                             if (Master.verifyStringIsEmail(input.toString())){
                                                 withValue(input.toString());
                                                 dialog.dismiss();
@@ -462,13 +508,16 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
             });
         } else holder.booleanValue.setVisibility(View.GONE);
 
-        // Configure short value
+        // Configure value
         if (getValue() != null){
             holder.value.setVisibility(View.VISIBLE);
             holder.value.setText(Master.fromHtml(getValue()));
+            if (isInputTypePassword) {
+                holder.value.setTransformationMethod(new PasswordTransformationMethod());
+            }
         } else holder.value.setVisibility(View.GONE);
 
-        // Configure long value
+        // Configure content
         if (getContent() != null){
             holder.content.setVisibility(View.VISIBLE);
             holder.content.setText(Master.fromHtml(getContent()));

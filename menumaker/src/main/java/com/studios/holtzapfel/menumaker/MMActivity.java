@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 
 /**
  * Created by holtzapfel on 7/6/17.
@@ -16,12 +17,25 @@ public abstract class MMActivity extends AppCompatActivity implements MMMenu.OnM
     private static final String TAG = "MMActivity";
     Bundle mSavedInstanceState;
     int mCurrentPageID = -1;
+    int mInitialPageID = -1;
+    boolean upArrowEnabled = true;
+    boolean useUpArrowOnInitialPage = true;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         mSavedInstanceState = savedInstanceState;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home){
+            if (getSupportFragmentManager().getBackStackEntryCount() > 0){
+                getSupportFragmentManager().popBackStack();
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -40,7 +54,11 @@ public abstract class MMActivity extends AppCompatActivity implements MMMenu.OnM
         if (menu != null){
             menu.setSavedInstanceState(mSavedInstanceState);
 
-            int pageIDToShow = menu.getInitialPageID();
+            upArrowEnabled = menu.getUpArrowEnabled();
+            useUpArrowOnInitialPage = menu.getUseUpArrowOnInitialPage();
+
+            mInitialPageID = menu.getInitialPageID();
+            int pageIDToShow = mInitialPageID;
 
             if (menu.getInitialPageID() != menu.getCurrentPageID()){
                 pageIDToShow = menu.getCurrentPageID();
@@ -56,9 +74,11 @@ public abstract class MMActivity extends AppCompatActivity implements MMMenu.OnM
 
             if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
                 getSupportFragmentManager().beginTransaction()
-                        .replace(menu.getFrameRes(), MMFragment.newInstance(pageIDToShow))
+                        .replace(menu.getFrameRes(), MMFragment.newInstance(pageIDToShow), String.valueOf(pageIDToShow))
                         .commit();
             }
+
+            determineUseUpArrow(pageIDToShow);
         }
     }
 
@@ -77,17 +97,24 @@ public abstract class MMActivity extends AppCompatActivity implements MMMenu.OnM
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .commit();
         }
+
+        determineUseUpArrow(mInitialPageID);
     }
 
     @Override
-    public void onRefreshPage(int frameLayoutRes, int pageID, boolean useSlidingAnimation) {
+    public void onRefreshPage(int frameLayoutRes, int pageID) {
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(String.valueOf(pageID));
         if (fragment != null) {
             if (fragment instanceof MMFragment) {
                 ((MMFragment) fragment).updateUI(pageID);
             }
         } else {
-            onShowPage(frameLayoutRes, pageID, useSlidingAnimation);
+            if (getSupportFragmentManager().getBackStackEntryCount() > 0){
+                getSupportFragmentManager().popBackStack();
+            }
+            getSupportFragmentManager().beginTransaction()
+                    .replace(frameLayoutRes, MMFragment.newInstance(pageID), String.valueOf(pageID))
+                    .commit();
         }
     }
 
@@ -99,5 +126,20 @@ public abstract class MMActivity extends AppCompatActivity implements MMMenu.OnM
     @Override
     public void onNotifyCurrentPageID(int pageID) {
         mCurrentPageID = pageID;
+        determineUseUpArrow(pageID);
+    }
+
+    private void determineUseUpArrow(int pageID){
+        if (upArrowEnabled){
+            if (mInitialPageID == pageID){
+                setUseUpArrow(useUpArrowOnInitialPage);
+            } else setUseUpArrow(true);
+        } else setUseUpArrow(false);
+    }
+
+    public void setUseUpArrow(boolean useUpArrow){
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(useUpArrow);
+        }
     }
 }

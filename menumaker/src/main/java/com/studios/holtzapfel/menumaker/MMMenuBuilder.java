@@ -1,10 +1,10 @@
 package com.studios.holtzapfel.menumaker;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.ColorRes;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.FrameLayout;
 
 import com.studios.holtzapfel.menumaker.model.BodyMenuItem;
@@ -30,15 +30,15 @@ public class MMMenuBuilder {
     }
 
     // Activity reference for use in managing fragments
-    AppCompatActivity mActivity = null;
+    Context mContext = null;
 
     /**
-     * Constructor using activity that will contain frame resource
+     * Constructor requiring Context
      *
-     * @param activity - will be used for getting support fragment manager
+     * @param context - will be used for getting support fragment manager
      */
-    public MMMenuBuilder(@NonNull AppCompatActivity activity){
-        this.mActivity = activity;
+    public MMMenuBuilder(@NonNull Context context){
+        this.mContext = context;
     }
 
     // Frame layout resource for hosting MMFragment
@@ -169,7 +169,7 @@ public class MMMenuBuilder {
      *
      * @param withSlidingAnimation - use sliding animation in fragment transitions
      */
-    public MMMenuBuilder withSlidingAnimation(boolean withSlidingAnimation){
+    public MMMenuBuilder withUseSlidingAnimationFragmentTransitions(boolean withSlidingAnimation){
         this.useSlidingAnimation = withSlidingAnimation;
         return this;
     }
@@ -187,6 +187,20 @@ public class MMMenuBuilder {
         return this;
     }
 
+    boolean useUpArrowOnInitialPage = true;
+
+    public MMMenuBuilder withUseUpArrowOnInitialPage(boolean useUpArrow){
+        this.useUpArrowOnInitialPage = useUpArrow;
+        return this;
+    }
+
+    boolean upArrowEnabled = true;
+
+    public MMMenuBuilder withUpArrowEnabled(boolean upArrowEnabled){
+        this.upArrowEnabled = upArrowEnabled;
+        return this;
+    }
+
     // To ensure build() is only called once
     private boolean isUsed = false;
 
@@ -200,8 +214,8 @@ public class MMMenuBuilder {
             throw new RuntimeException("You can only build the menu once!");
         }
 
-        if (mActivity == null) {
-            throw new RuntimeException("Must pass an Activity to builder!");
+        if (mContext == null) {
+            throw new RuntimeException("Must pass a Context to builder!");
         }
 
         if (mFrameRes == -1){

@@ -1,4 +1,4 @@
-package com.studios.holtzapfel.menumakerexample;
+package com.studios.holtzapfel.menumakerexample.examples;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -11,10 +11,17 @@ import com.studios.holtzapfel.menumaker.MMPage;
 import com.studios.holtzapfel.menumaker.MMPageBuilder;
 import com.studios.holtzapfel.menumaker.model.BodyMenuItem;
 import com.studios.holtzapfel.menumaker.model.HeaderMenuItem;
+import com.studios.holtzapfel.menumakerexample.R;
 
+/**
+ * A very basic menu
+ */
 public class BasicMenuActivity extends MMActivity {
 
-    // Unique IDs to associate with pages and menu items
+    /**
+     * While creating static final int variables is not required, handling click listeners is
+     * significantly easier and you will likely run into less issues
+     */
     private static final int PAGE_MAIN = 100;
     private static final int ID_LINK1 = 101;
     private static final int ID_LINK2 = 102;
@@ -25,15 +32,29 @@ public class BasicMenuActivity extends MMActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_basic_menu);
+        setContentView(R.layout.activity_menu);
+
+        // Setup toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Add back arrow to toolbar
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
 
+    /**
+     * A function that is periodically called by MMActivity and MMFragment to ensure an updated MMMenu
+     * NOTE: This is not called until startMenu() is called.
+     * NOTE: Add a statement like:
+     *
+     * if (mMenu == null){
+     *     // build and store menu
+     * }
+     *
+     * so that menu can be dynamic.  If setup to always rebuild, user inputted info will likely be erased
+     */
     @Override
     public MMMenu onRequestMenu() {
         if (mMenu == null){
@@ -42,16 +63,22 @@ public class BasicMenuActivity extends MMActivity {
         return mMenu;
     }
 
+    /**
+     * I prefer to call startMenu() here, but it can be called at any time.
+     *
+     * VERY IMPORTANT! If this is not called, the menu will not be created.
+     *
+     * NOTE: If data for menu values needs loaded, pulled, etc., ensure data is loaded before calling startMenu()
+     */
     @Override
     protected void onResume() {
         super.onResume();
-
-        // VERY IMPORTANT! If this is not called, the menu will not be created
-        // For more complex menus, call this function **after** all data required to create
-        // menu items has been retrieved
         startMenu();
     }
 
+    /**
+     * A function that builds and returns a new MMMenu
+     */
     private MMMenu buildMenu(){
         // Create a menu item
         BodyMenuItem itemLink1 = new BodyMenuItem(ID_LINK1)
@@ -60,7 +87,7 @@ public class BasicMenuActivity extends MMActivity {
 
         // Create a Page
         MMPage pageMain = new MMPageBuilder(PAGE_MAIN)
-                .withPageTitle("My Links")
+                .withPageTitle("Basic Menu")
                 .withMenuItems( // Items can be created as objects and inserted or created inline
                         itemLink1,
                         new BodyMenuItem(ID_LINK2).withTitle("Link 2").withDescription("This is a description for Link 2"),
@@ -71,7 +98,7 @@ public class BasicMenuActivity extends MMActivity {
         // Compile all pages into MMMenuBuilder and then build()
         // Only one page is used in this example
         return new MMMenuBuilder(BasicMenuActivity.this)
-                .withFrameLayout(R.id.basic_menu_frame)   // Layout ID must reference to a FrameLayout
+                .withFrameLayout(R.id.frame)                    // Layout ID must reference to a FrameLayout
                 .withPages(pageMain)                            // Include created pages
                 .withInitialPageID(PAGE_MAIN)                   // Needed more for menus with multiple pages
                 .withOnMenuItemClickListener(new MMMenu.OnMenuItemClickListener() {

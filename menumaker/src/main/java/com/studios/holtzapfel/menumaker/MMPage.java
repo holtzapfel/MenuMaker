@@ -26,6 +26,8 @@ public class MMPage {
     private int mIconLeftColorRes = -1;
     private boolean isDividersEnabled = true;
     private int mDividerColorRes = -1;
+    private int mFABIconRes = -1;
+    private int mFABBackgroundColorRes = -1;
 
     public void setPageID(int id){
         this.mID = id;
@@ -99,6 +101,22 @@ public class MMPage {
     public void setFABOnClickListener(View.OnClickListener onClickListener){
         this.mFABOnClickListener = onClickListener;
         this.isFABEnabled = true;
+    }
+
+    public void setFABIconRes(int iconRes){
+        this.mFABIconRes = iconRes;
+    }
+
+    public int getFABIconRes(){
+        return mFABIconRes;
+    }
+
+    public void setFABBackgroundColorRes(int colorRes){
+        this.mFABBackgroundColorRes = colorRes;
+    }
+
+    public int getFABBackgroundColorRes(){
+        return mFABBackgroundColorRes;
     }
 
     public View.OnClickListener getFABOnClickListener(){

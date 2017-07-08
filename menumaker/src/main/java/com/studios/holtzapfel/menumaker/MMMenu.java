@@ -1,5 +1,6 @@
 package com.studios.holtzapfel.menumaker;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import com.studios.holtzapfel.menumaker.model.BodyMenuItem;
@@ -12,31 +13,41 @@ import java.util.List;
  * Created by holtzapfel on 6/28/17.
  */
 
-@SuppressWarnings({"unused"})
 public class MMMenu {
 
-    private static final String TAG = "MMMenu";
+    //private static final String TAG = "MMMenu";
 
     static final String BUNDLE_CURRENT_PAGE_ID = "BUNDLE_CURRENT_PAGE_ID";
 
     private MMMenuBuilder mMenuBuilder;
     private OnMMMenuListener mListener;
-
     private int mCurrentPageID;
-
 
     protected MMMenu(MMMenuBuilder menuBuilder){
         this.mMenuBuilder = menuBuilder;
-        mListener = (OnMMMenuListener) menuBuilder.mActivity;
+        mListener = (OnMMMenuListener) menuBuilder.mContext;
         mCurrentPageID = menuBuilder.mInitialPageID;
     }
 
     interface OnMMMenuListener{
         void onShowPage(int frameLayoutRes, int pageID, boolean useSlidingAnimation);
-        void onRefreshPage(int frameLayoutRes, int pageID, boolean useSlidingAnimation);
+        void onRefreshPage(int frameLayoutRes, int pageID);
     }
 
-    MMPage getPage(int pageID) {
+    public interface OnMenuItemClickListener {
+        void onBodyItemClick(BodyMenuItem bodyMenuItem);
+        void onHeaderItemClick(HeaderMenuItem headerMenuItem);
+    }
+
+    OnMenuItemClickListener onRequestMenuItemClickListener() {
+        return mMenuBuilder.mOnMenuItemClickListener;
+    }
+
+    Context getContext(){
+        return mMenuBuilder.mContext;
+    }
+
+    public MMPage getPage(int pageID) {
         if (mMenuBuilder.mPages != null){
             for (int x = 0; x < mMenuBuilder.mPages.size(); x++){
                 if (mMenuBuilder.mPages.get(x).getPageID() == pageID){
@@ -45,15 +56,6 @@ public class MMMenu {
             }
         }
         return null;
-    }
-
-    OnMenuItemClickListener onRequestMenuItemClickListener() {
-        return mMenuBuilder.mOnMenuItemClickListener;
-    }
-
-    public interface OnMenuItemClickListener {
-        void onBodyItemClick(BodyMenuItem bodyMenuItem);
-        void onHeaderItemClick(HeaderMenuItem headerMenuItem);
     }
 
     int getFrameRes(){
@@ -90,6 +92,14 @@ public class MMMenu {
         return mMenuBuilder.mInitialPageID;
     }
 
+    boolean getUseUpArrowOnInitialPage(){
+        return mMenuBuilder.useUpArrowOnInitialPage;
+    }
+
+    boolean getUpArrowEnabled(){
+        return mMenuBuilder.upArrowEnabled;
+    }
+
     public void showPage(int pageID){
         showPage(pageID, mMenuBuilder.useSlidingAnimation);
     }
@@ -97,24 +107,10 @@ public class MMMenu {
     private void showPage(int pageID, boolean withSlidingAnimation){
         mCurrentPageID = pageID;
         mListener.onShowPage(getFrameRes(), pageID, withSlidingAnimation);
-
-        /*if (withSlidingAnimation) {
-            mMenuBuilder.mActivity.getSupportFragmentManager().beginTransaction()
-                    .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
-                    .replace(mMenuBuilder.mFrameRes, MMFragment.newInstance(pageID), String.valueOf(pageID))
-                    .addToBackStack(null)
-                    .commit();
-        } else {
-            mMenuBuilder.mActivity.getSupportFragmentManager().beginTransaction()
-                    .replace(mMenuBuilder.mFrameRes, MMFragment.newInstance(pageID), String.valueOf(pageID))
-                    .addToBackStack(null)
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                    .commit();
-        }*/
     }
 
     public void refreshPage(){
-        refreshCurrentPage(mCurrentPageID, mMenuBuilder.useSlidingAnimation);
+        refreshCurrentPage(mCurrentPageID);
     }
 
     public void updatePage(MMPage page, boolean showPage){
@@ -181,18 +177,8 @@ public class MMMenu {
     }
 
 
-    private void refreshCurrentPage(int pageID, boolean usesSlidingAnimation){
-        mListener.onRefreshPage(getFrameRes(), pageID, usesSlidingAnimation);
-
-        /*Fragment fragment = mMenuBuilder.mActivity.getSupportFragmentManager().findFragmentByTag(String.valueOf(pageID));
-        if (fragment != null) {
-            if (fragment instanceof MMFragment) {
-                ((MMFragment) fragment).updateUI(pageID);
-                Log.d(TAG, "refreshCurrentPage: ");
-            }
-        } else {
-            showPage(pageID, false);
-        }*/
+    private void refreshCurrentPage(int pageID){
+        mListener.onRefreshPage(getFrameRes(), pageID);
     }
 
     Bundle saveInstanceState(Bundle savedInstanceState){

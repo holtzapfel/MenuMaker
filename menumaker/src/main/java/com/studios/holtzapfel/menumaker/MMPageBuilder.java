@@ -66,8 +66,21 @@ public class MMPageBuilder {
         return this;
     }
 
-    public MMPageBuilder withFABOnClickListener(View.OnClickListener onClickListener){
+    public MMPageBuilder withFAB(View.OnClickListener onClickListener){
+        mPage.setFABEnabled(true);
         mPage.setFABOnClickListener(onClickListener);
+        return this;
+    }
+
+    public MMPageBuilder withFAB(int iconRes, View.OnClickListener onClickListener){
+        withFAB(onClickListener);
+        mPage.setFABIconRes(iconRes);
+        return this;
+    }
+
+    public MMPageBuilder withFAB(int iconRes, int backgroundColorRes, View.OnClickListener onClickListener){
+        withFAB(iconRes, onClickListener);
+        mPage.setFABBackgroundColorRes(backgroundColorRes);
         return this;
     }
 

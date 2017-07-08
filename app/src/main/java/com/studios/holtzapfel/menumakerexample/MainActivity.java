@@ -3,6 +3,7 @@ package com.studios.holtzapfel.menumakerexample;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.view.View;
 import android.widget.Toast;
@@ -16,13 +17,14 @@ import com.studios.holtzapfel.menumaker.model.BodyMenuItem;
 import com.studios.holtzapfel.menumaker.model.FooterMenuItem;
 import com.studios.holtzapfel.menumaker.model.HeaderMenuItem;
 import com.studios.holtzapfel.menumaker.model.interfaces.IMenuItem;
+import com.studios.holtzapfel.menumakerexample.examples.BasicMenuActivity;
+import com.studios.holtzapfel.menumakerexample.examples.EditProfileActivity;
+import com.studios.holtzapfel.menumakerexample.examples.LoginFormActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends MMActivity{
-
-    //private static final String TAG = "MainActivity";
 
     private static final int PAGE_ROOT = 100;
     private static final int ID_FEAT_SWITCHES = 101;
@@ -33,6 +35,8 @@ public class MainActivity extends MMActivity{
     private static final int ID_CREDITS = 106;
     private static final int ID_DEVELOPMENT = 107;
     private static final int ID_EXAMPLE_BASIC_MENU = 108;
+    private static final int ID_EXAMPLE_EDIT_PROFILE = 109;
+    private static final int ID_EXAMPLE_LOGIN_FORM = 110;
 
     private static final int PAGE_SWITCHES = 200;
 
@@ -62,19 +66,23 @@ public class MainActivity extends MMActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_menu);
 
+        // Setup toolbar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
     }
 
     @Override
     public MMMenu onRequestMenu() {
         if (mMenu == null){
-            mMenu = new MMMenuBuilder(MainActivity.this)
+            mMenu = new MMMenuBuilder(this)
                     .withFrameLayout(R.id.frame)
                     .withPages(buildPages())
                     .withInitialPageID(PAGE_ROOT)
-                    .withSlidingAnimation(true)
+                    .withUseSlidingAnimationFragmentTransitions(true)
                     .withIconLeftColor(R.color.colorPrimary)
+                    .withUseUpArrowOnInitialPage(false)
                     .withOnMenuItemClickListener(new MMMenu.OnMenuItemClickListener() {
                         @Override
                         public void onBodyItemClick(BodyMenuItem bodyMenuItem) {
@@ -98,6 +106,14 @@ public class MainActivity extends MMActivity{
                                 case ID_EXAMPLE_BASIC_MENU:
                                     Intent intentBasicMenu = new Intent(MainActivity.this, BasicMenuActivity.class);
                                     startActivity(intentBasicMenu);
+                                    break;
+                                case ID_EXAMPLE_EDIT_PROFILE:
+                                    Intent intentEditProfile = new Intent(MainActivity.this, EditProfileActivity.class);
+                                    startActivity(intentEditProfile);
+                                    break;
+                                case ID_EXAMPLE_LOGIN_FORM:
+                                    Intent intentLoginForm = new Intent(MainActivity.this, LoginFormActivity.class);
+                                    startActivity(intentLoginForm);
                                     break;
                                 case ID_FEAT_CUSTOM_ITEMS:
                                     mMenu.showPage(PAGE_CUSTOM_ITEMS);
@@ -163,6 +179,8 @@ public class MainActivity extends MMActivity{
                 .withMenuItems(
                         new HeaderMenuItem("Example Menus"),
                         new BodyMenuItem(ID_EXAMPLE_BASIC_MENU).withTitle("Basic Menu").withIconLeft(BodyMenuItem.ICON_ARROW_RIGHT).withIconLeftSize(100, 100),
+                        new BodyMenuItem(ID_EXAMPLE_EDIT_PROFILE).withTitle("Edit Profile").withIconLeft(BodyMenuItem.ICON_ARROW_RIGHT).withIconLeftSize(100,100),
+                        new BodyMenuItem(ID_EXAMPLE_LOGIN_FORM).withTitle("Login Form").withIconLeft(BodyMenuItem.ICON_ARROW_RIGHT).withIconLeftSize(100, 100),
                         new FooterMenuItem(),
 
                         new HeaderMenuItem("Features"),
@@ -194,7 +212,7 @@ public class MainActivity extends MMActivity{
                         new BodyMenuItem(0).withTitle("Switch 4").withBooleanValue(false),
                         new FooterMenuItem()
                 )
-                .withFABOnClickListener(new View.OnClickListener() {
+                .withFAB(R.drawable.ic_action_edit, R.color.colorPrimary, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Toast.makeText(MainActivity.this, "Do you see this?", Toast.LENGTH_SHORT).show();
@@ -207,9 +225,9 @@ public class MainActivity extends MMActivity{
                 .withPageTitle("Forms")
                 .withMenuItems(
                         new HeaderMenuItem("User Information"),
-                        new BodyMenuItem(ID_FORM_FIRST_NAME).withTitle("First Name").withValue(mFirstName).withValueEditable("First Name", true, true, "Edit", InputType.TYPE_TEXT_FLAG_CAP_WORDS),
-                        new BodyMenuItem(ID_FORM_LAST_NAME).withTitle("Last Name").withValue(mLastName).withValueEditable("Last Name", true, true, "Edit", InputType.TYPE_TEXT_FLAG_CAP_WORDS),
-                        new BodyMenuItem(ID_FORM_EMAIL_ADDRESS).withTitle("Email Address").withValue(mEmailAddress).withValueEditable("Email Address", true, true, "Edit", InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS, true, false),
+                        new BodyMenuItem(ID_FORM_FIRST_NAME).withTitle("First Name").withValueEditable(mFirstName, "First Name", true, true, "Edit", InputType.TYPE_TEXT_FLAG_CAP_WORDS),
+                        new BodyMenuItem(ID_FORM_LAST_NAME).withTitle("Last Name").withValueEditable(mLastName, "Last Name", true, true, "Edit", InputType.TYPE_TEXT_FLAG_CAP_WORDS),
+                        new BodyMenuItem(ID_FORM_EMAIL_ADDRESS).withTitle("Email Address").withValueEditable(mEmailAddress, "Email Address", true, true, "Edit", InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS, true),
                         new FooterMenuItem(),
 
                         new HeaderMenuItem("Preferences"),
@@ -236,8 +254,7 @@ public class MainActivity extends MMActivity{
         pages.add(new MMPageBuilder(PAGE_DISPLAY_INFORMATION)
                 .withPageTitle("Display Information")
                 .withMenuItems(sampleItems)
-                .withFABEnabled(true)
-                .withFABOnClickListener(new View.OnClickListener() {
+                .withFAB(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Toast.makeText(MainActivity.this, "Customize me!", Toast.LENGTH_SHORT).show();
@@ -269,8 +286,7 @@ public class MainActivity extends MMActivity{
                         new BodyMenuItem(0).withTitle("Bilateral Icons").withDescription("Customize icon colors too!").withTitleTextColor(android.R.color.holo_orange_dark).withIconLeft(R.drawable.ic_face).withIconLeftColor(android.R.color.holo_purple).withIconRight(R.drawable.ic_face).withIconRightColor(android.R.color.holo_green_light),
                         new FooterMenuItem()
                 )
-                .withFABEnabled(true)
-                .withFABOnClickListener(new View.OnClickListener() {
+                .withFAB(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Toast.makeText(MainActivity.this, "FAB!", Toast.LENGTH_SHORT).show();
