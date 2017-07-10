@@ -56,8 +56,8 @@ public class LoginFormActivity extends MMActivity {
     }
 
     private MMMenu buildMenu(){
-        final BodyMenuItem usernameItem = new BodyMenuItem(ID_USERNAME).withTitle("Username").withValueEditable(null, null, false, true, "Username");
-        final BodyMenuItem passwordItem = new BodyMenuItem(ID_PASSWORD).withTitle("Password").withValueEditable(null, null, false, true, "Password", InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        final BodyMenuItem usernameItem = new BodyMenuItem(ID_USERNAME).withTitle("Username").withDescription("Hint: \"menumaker\"").withValueEditable(null, null, false, true, "Username");
+        final BodyMenuItem passwordItem = new BodyMenuItem(ID_PASSWORD).withTitle("Password").withDescription("Hint: \"password\"").withValueEditable(null, null, false, true, "Password", InputType.TYPE_TEXT_VARIATION_PASSWORD);
         final BodyMenuItem loginItem = new BodyMenuItem(ID_LOGIN).withValue("Login").withEnabled(false);
 
         MMPage pageMain = new MMPageBuilder(PAGE_MAIN)

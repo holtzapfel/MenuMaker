@@ -93,7 +93,8 @@ public class MMPageBuilder {
         return this;
     }
 
-    public MMPageBuilder withFAB(@DrawableRes int iconRes, @ColorRes int backgroundColorRes, View.OnClickListener onClickListener){
+    public MMPageBuilder withFAB(@DrawableRes int iconRes, @ColorRes int backgroundColorRes, View
+            .OnClickListener onClickListener){
         withFAB(iconRes, onClickListener);
         mPage.setFABBackgroundColorRes(backgroundColorRes);
         return this;
@@ -146,42 +147,41 @@ public class MMPageBuilder {
             case IMenuItem.MENU_ITEM_TYPE_BODY:
                 BodyMenuItem bodyMenuItem = (BodyMenuItem) item;
 
-                if (mPage.getBodyTitleTextColorRes() != -1){
-                    if (bodyMenuItem.getTitleTextColorRes() == -1){
-                        bodyMenuItem.withTitleTextColor(mPage.getBodyTitleTextColorRes());
-                    }
+                // Update title text color if not already set
+                if (bodyMenuItem.getTitleTextColorRes() == -1){
+                    bodyMenuItem.withTitleTextColor(mPage.getBodyTitleTextColorRes());
                 }
 
-                if (mPage.getBodyDescriptionTextColorRes() != -1){
-                    if (bodyMenuItem.getDescriptionTextColorRes() == -1){
-                        bodyMenuItem.withDescriptionTextColor(mPage.getBodyDescriptionTextColorRes());
-                    }
+                // Update description text color if not already set
+                if (bodyMenuItem.getDescriptionTextColorRes() == -1){
+                    bodyMenuItem.withDescriptionTextColor(mPage.getBodyDescriptionTextColorRes());
                 }
 
-                if (mPage.getBodyValueTextColorRes() != -1){
-                    if (bodyMenuItem.getValueTextColorRes() == -1){
-                        bodyMenuItem.withValueTextColor(mPage.getBodyValueTextColorRes());
-                    }
+                // Update value text color if not already set
+                if (bodyMenuItem.getValueTextColorRes() == -1){
+                    bodyMenuItem.withValueTextColor(mPage.getBodyValueTextColorRes());
                 }
 
-                if (mPage.getBodyContentTextColorRes() != -1){
-                    if (bodyMenuItem.getContentTextColorRes() == -1){
-                        bodyMenuItem.withContentTextColor(mPage.getBodyContentTextColorRes());
-                    }
+                // Update content text color if not already set
+                if (bodyMenuItem.getContentTextColorRes() == -1){
+                    bodyMenuItem.withContentTextColor(mPage.getBodyContentTextColorRes());
                 }
 
+                // Update icon left color if not already set
                 if (bodyMenuItem.getIconLeftColorRes() == -1) {
                     if (mPage.getIconLeftColorRes() != -1) {
                         bodyMenuItem.withIconLeftColor(mPage.getIconLeftColorRes());
                     } else bodyMenuItem.withIconLeftColor(mPage.getIconColorRes());
                 }
 
+                // Update icon right color if not already set
                 if (bodyMenuItem.getIconRightColorRes() == -1){
                     if (mPage.getIconRightColorRes() != -1){
                         bodyMenuItem.withIconRightColor(mPage.getIconRightColorRes());
                     } else bodyMenuItem.withIconRightColor(mPage.getIconColorRes());
                 }
 
+                // Update divider color if not already set
                 bodyMenuItem.withDividerEnabled(mPage.isDividersEnabled());
                 if (mPage.getDividerColorRes() != -1){
                     if (bodyMenuItem.getDividerColorRes() == -1) {

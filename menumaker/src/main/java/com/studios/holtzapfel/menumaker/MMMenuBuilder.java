@@ -133,6 +133,36 @@ public class MMMenuBuilder {
     }
 
     /**
+     * Sets color resource for all BodyMenuItems description text
+     *
+     * @param colorRes - Color resource ID
+     */
+    public MMMenuBuilder withBodyDescriptionTextColor(@ColorRes int colorRes){
+        this.mBodyDescriptionTextColorRes = colorRes;
+        return this;
+    }
+
+    /**
+     * Sets color resource for all BodyMenuItems value text
+     *
+     * @param colorRes - Color resource ID
+     */
+    public MMMenuBuilder withBodyValueTextColor(@ColorRes int colorRes){
+        this.mBodyValueTextColorRes = colorRes;
+        return this;
+    }
+
+    /**
+     * Sets color resource for all BodyMenuItems content text
+     *
+     * @param colorRes - Color resource ID
+     */
+    public MMMenuBuilder withBodyContentTextColor(@ColorRes int colorRes){
+        this.mBodyContentTextColorRes = colorRes;
+        return this;
+    }
+
+    /**
      * Sets color resource for all left and right icons if used
      *
      * @param colorRes - Color resource ID
@@ -303,6 +333,21 @@ public class MMMenuBuilder {
         // Update title text color if not already set
         if (item.getTitleTextColorRes() == -1){
             item.withTitleTextColor(mBodyTitleTextColorRes);
+        }
+
+        // Update description text color if not already set
+        if (item.getDescriptionTextColorRes()  == -1){
+            item.withDescriptionTextColor(mBodyDescriptionTextColorRes);
+        }
+
+        // Update value text color if not already set
+        if (item.getValueTextColorRes() == -1){
+            item.withValueTextColor(mBodyValueTextColorRes);
+        }
+
+        // Update content text color if not already set
+        if (item.getContentTextColorRes() == -1){
+            item.withContentTextColor(mBodyContentTextColorRes);
         }
 
         // Update icon left color if not already set

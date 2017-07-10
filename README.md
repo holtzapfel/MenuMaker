@@ -4,10 +4,10 @@ Tired of creating and recreating a settings menu?  Quit spending so much time on
 
 You will never have to design a menu again.
 
-### Screenshots
+#### Screenshots
 <img src="https://github.com/holtzapfel/MenuMaker/raw/master/dev/screenshots/device-2017-06-30-112934.png" width="275"><img src="https://github.com/holtzapfel/MenuMaker/raw/master/dev/screenshots/device-2017-06-30-113659.png" width="275"><img src="https://github.com/holtzapfel/MenuMaker/raw/master/dev/screenshots/device-2017-06-30-113808.png" width="275">
 
-### Some Ideas for Use
+#### Some Ideas for Use
 - Settings Menu
 - Links List
 - FAQs
@@ -15,9 +15,9 @@ You will never have to design a menu again.
 - Development Credits List
 - Help Section
 - Display Lists of Information
-- _... the posibilities are endless!_
+- _... the possibilities are endless!_
 
-### Features
+#### Features
 - Easy to use API
 - Create a deep structured menu with multiple pages
 - Generate true/false menu items with switches
@@ -29,16 +29,19 @@ You will never have to design a menu again.
 
 ## How to Use MenuMaker
 **The best way to discover how to use MM is via the [MenuMaker Wiki](https://github.com/holtzapfel/MenuMaker/wiki).**  
-## Just want to get started?
+### Just want to get started?
 Follow the instructions below.
-### 1. Insert gradle dependency into module build.gradle file
+#### 1. Insert gradle dependency
+_Module level build.gradle_
 ```gradle
-compile 'com.github.holtzapfel:MenuMaker:v1.0.1'
+compile 'com.github.holtzapfel:MenuMaker:v1.0.2'
 ```
-### 2. Create new activity that extends **MMActivity**
+#### 2. Extend with **MMActivity**
 ```java
 public class MainActivity extends MMActivity{
 ...
 }
 ```
 That is it!  Enjoy!
+
+For more help, see the [MenuMaker Wiki](https://github.com/holtzapfel/MenuMaker/wiki).
