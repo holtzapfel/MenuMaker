@@ -18,20 +18,9 @@ import com.studios.holtzapfel.menumaker.model.interfaces.IHeaderItem;
 
 public class HeaderMenuItem extends AbstractMenuItem<HeaderMenuItem, HeaderMenuItem.HeaderViewHolder> implements IHeaderItem<HeaderMenuItem, HeaderMenuItem.HeaderViewHolder>{
 
-    private String mTitle;
-    private int mTitleTextColorRes = -1;
 
     public HeaderMenuItem(int id){
         withID(id);
-    }
-
-    public HeaderMenuItem(int id, String title){
-        withID(id);
-        this.mTitle = title;
-    }
-
-    public HeaderMenuItem(String title){
-        this.mTitle = title;
     }
 
     @Override
@@ -39,19 +28,7 @@ public class HeaderMenuItem extends AbstractMenuItem<HeaderMenuItem, HeaderMenuI
         return MENU_ITEM_TYPE_HEADER;
     }
 
-    @Override
-    public void bindView(Context context, HeaderViewHolder holder, final MMMenu.OnMenuItemClickListener listener) {
-        // Configure title
-        holder.title.setText(Master.fromHtml(mTitle));
-        if (mTitleTextColorRes != -1 && mTitleTextColorRes != 0){
-            holder.title.setTextColor(ResourcesCompat.getColor(context.getApplicationContext().getResources(), mTitleTextColorRes, context.getTheme()));
-        }
-    }
-
-    @Override
-    public void unbindView(HeaderViewHolder holder) {
-
-    }
+    private String mTitle;
 
     @Override
     public HeaderMenuItem withTitle(String title) {
@@ -64,6 +41,8 @@ public class HeaderMenuItem extends AbstractMenuItem<HeaderMenuItem, HeaderMenuI
         return mTitle;
     }
 
+    private int mTitleTextColorRes = -1;
+
     @Override
     public HeaderMenuItem withTitleTextColor(int colorRes) {
         this.mTitleTextColorRes = colorRes;
@@ -73,6 +52,58 @@ public class HeaderMenuItem extends AbstractMenuItem<HeaderMenuItem, HeaderMenuI
     @Override
     public int getTitleTextColorRes() {
         return mTitleTextColorRes;
+    }
+
+    private float mTitleTextSize = -1;
+    private int mTitleTextSizeUnit = -1;
+
+    @Override
+    public HeaderMenuItem withTitleTextSize(float size){
+        this.mTitleTextSize = -1;
+        return this;
+    }
+
+    @Override
+    public HeaderMenuItem withTitleTextSize(int unit, float size){
+        this.mTitleTextSizeUnit = unit;
+        this.mTitleTextSize = size;
+        return this;
+    }
+
+    @Override
+    public float getTitleTextSize() {
+        return mTitleTextSize;
+    }
+
+    @Override
+    public int getTitleTextSizeUnit() {
+        return mTitleTextSizeUnit;
+    }
+
+    @Override
+    public void bindView(Context context, HeaderViewHolder holder, final MMMenu.OnMenuItemClickListener listener) {
+        // Configure title
+        if (getTitle() != null) {
+            holder.title.setVisibility(View.VISIBLE);
+            holder.title.setText(Master.fromHtml(getTitle()));
+
+            // Set text color
+            if (getTitleTextColorRes() != -1) {
+                holder.title.setTextColor(ResourcesCompat.getColor(context.getApplicationContext().getResources(), getTitleTextColorRes(), context.getTheme()));
+            }
+
+            // Set text size
+            if (mTitleTextSize != -1) {
+                if (mTitleTextSizeUnit != -1) {
+                    holder.title.setTextSize(mTitleTextSizeUnit, mTitleTextSize);
+                } else holder.title.setTextSize(mTitleTextSize);
+            }
+        } else holder.title.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void unbindView(HeaderViewHolder holder) {
+
     }
 
     public static class HeaderViewHolder extends RecyclerView.ViewHolder{

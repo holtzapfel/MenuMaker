@@ -19,109 +19,207 @@ import java.util.List;
  * Created by holtzapfel on 6/21/17.
  */
 
+@SuppressWarnings("unused")
 public class MMPageBuilder {
 
-    private MMPage mPage;
+    int mID = -1;
 
     public MMPageBuilder(int pageID){
-        this.mPage = new MMPage();
-        this.mPage.setPageID(pageID);
+        this.mID = pageID;
     }
 
+    List<IMenuItem> mItems = new ArrayList<>();
+
     public MMPageBuilder withMenuItems(@NonNull IMenuItem... items){
-        if (mPage.getMenuItems().size() > 0){
+        if (mItems.size() > 0){
             throw new RuntimeException("Menu items cannot be declared more than once!");
         }
-        List<IMenuItem> menuItems = new ArrayList<>();
-        Collections.addAll(menuItems, items);
-        mPage.setMenuItems(menuItems);
+        Collections.addAll(mItems, items);
         return this;
     }
 
     public MMPageBuilder withMenuItems(@NonNull List<IMenuItem> items){
-        if (mPage.getMenuItems().size() > 0){
+        if (mItems.size() > 0){
             throw new RuntimeException("Menu items cannot be declared more than once!");
         }
-        mPage.setMenuItems(items);
+        mItems = items;
         return this;
     }
 
-    public MMPageBuilder withHeaderTitleTextColor(@ColorRes int colorRes){
-        mPage.setHeaderTitleTextColor(colorRes);
-        return this;
-    }
-
-    public MMPageBuilder withBodyTitleTextColor(@ColorRes int colorRes){
-        mPage.setBodyTitleTextColor(colorRes);
-        return this;
-    }
-
-    public MMPageBuilder withBodyDescriptionTextColor(@ColorRes int colorRes){
-        mPage.setBodyDescriptionTextColor(colorRes);
-        return this;
-    }
-
-    public MMPageBuilder withBodyValueTextColor(@ColorRes int colorRes){
-        mPage.setBodyValueTextColor(colorRes);
-        return this;
-    }
-
-    public MMPageBuilder withBodyContentTextColor(@ColorRes int colorRes){
-        mPage.setBodyContentTextColor(colorRes);
-        return this;
-    }
+    String mPageTitle;
 
     public MMPageBuilder withPageTitle(@Nullable String title){
-        mPage.setPageTitle(title);
+        this.mPageTitle = title;
         return this;
     }
 
+    boolean isFABEnabled = false;
+    View.OnClickListener mFABOnClickListener;
+    int mFABIconRes = -1;
+    int mFABBackgroundColorRes = -1;
+
     public MMPageBuilder withFABEnabled(boolean isFABEnabled){
-        mPage.setFABEnabled(isFABEnabled);
+        this.isFABEnabled = isFABEnabled;
         return this;
     }
 
     public MMPageBuilder withFAB(@Nullable View.OnClickListener onClickListener){
-        mPage.setFABEnabled(true);
-        mPage.setFABOnClickListener(onClickListener);
+        this.isFABEnabled = true;
+        this.mFABOnClickListener = onClickListener;
         return this;
     }
 
+    @SuppressWarnings("WeakerAccess")
     public MMPageBuilder withFAB(@DrawableRes int iconRes, View.OnClickListener onClickListener){
         withFAB(onClickListener);
-        mPage.setFABIconRes(iconRes);
+        this.mFABIconRes = iconRes;
         return this;
     }
 
     public MMPageBuilder withFAB(@DrawableRes int iconRes, @ColorRes int backgroundColorRes, View
             .OnClickListener onClickListener){
         withFAB(iconRes, onClickListener);
-        mPage.setFABBackgroundColorRes(backgroundColorRes);
+        this.mFABBackgroundColorRes = backgroundColorRes;
+        return this;
+    }
+
+    int mHeaderTitleTextColorRes = -1;
+
+    public MMPageBuilder withHeaderTitleTextColor(@ColorRes int colorRes){
+        this.mHeaderTitleTextColorRes = colorRes;
+        return this;
+    }
+
+    int mBodyTitleTextColorRes = -1;
+
+    public MMPageBuilder withBodyTitleTextColor(@ColorRes int colorRes){
+        this.mBodyTitleTextColorRes = colorRes;
+        return this;
+    }
+
+    int mBodyDescriptionTextColorRes = -1;
+
+    public MMPageBuilder withBodyDescriptionTextColor(@ColorRes int colorRes){
+        this.mBodyDescriptionTextColorRes = colorRes;
+        return this;
+    }
+
+    int mBodyValueTextColorRes = -1;
+
+    public MMPageBuilder withBodyValueTextColor(@ColorRes int colorRes){
+        this.mBodyValueTextColorRes = colorRes;
+        return this;
+    }
+
+    int mBodyContentTextColorRes = -1;
+
+    public MMPageBuilder withBodyContentTextColor(@ColorRes int colorRes){
+        this.mBodyDescriptionTextColorRes = colorRes;
+        return this;
+    }
+
+    int mIconColorRes = -1;
+
+    private float mHeaderTitleTextSize = -1;
+    private int mHeaderTitleTextSizeUnit = -1;
+
+    public MMPageBuilder withHeaderTitleTextSize(float size){
+        this.mHeaderTitleTextSize = size;
+        return this;
+    }
+
+    public MMPageBuilder withHeaderTitleTextSize(int unit, float size){
+        this.mHeaderTitleTextSizeUnit = unit;
+        this.mHeaderTitleTextSize = size;
+        return this;
+    }
+
+    private float mBodyTitleTextSize = -1;
+    private int mBodyTitleTextSizeUnit = -1;
+
+    public MMPageBuilder withBodyTitleTextSize(float size){
+        this.mBodyTitleTextSize = size;
+        return this;
+    }
+
+    public MMPageBuilder withBodyTitleTextSize(int unit, float size){
+        this.mBodyTitleTextSizeUnit = unit;
+        this.mBodyTitleTextSize = size;
+        return this;
+    }
+
+    private float mBodyDescriptionTextSize = -1;
+    private int mBodyDescriptionTextSizeUnit = -1;
+
+    public MMPageBuilder withBodyDescriptionTextSize(float size){
+        this.mBodyDescriptionTextSize = size;
+        return this;
+    }
+
+    public MMPageBuilder withBodyDescriptionTextSize(int unit, float size){
+        this.mBodyDescriptionTextSizeUnit = unit;
+        this.mBodyDescriptionTextSize = size;
+        return this;
+    }
+
+    private float mBodyValueTextSize = -1;
+    private int mBodyValueTextSizeUnit = -1;
+
+    public MMPageBuilder withBodyValueTextSize(float size){
+        this.mBodyValueTextSize = size;
+        return this;
+    }
+
+    public MMPageBuilder withBodyValueTextSize(int unit, float size){
+        this.mBodyValueTextSizeUnit = unit;
+        this.mBodyValueTextSize = size;
+        return this;
+    }
+
+    private float mBodyContentTextSize = -1;
+    private int mBodyContentTextSizeUnit = -1;
+
+    public MMPageBuilder withBodyContentTextSize(float size){
+        this.mBodyContentTextSize = size;
+        return this;
+    }
+
+    public MMPageBuilder withBodyContentTextSize(int unit, float size){
+        this.mBodyContentTextSizeUnit = unit;
+        this.mBodyContentTextSize = size;
         return this;
     }
 
     public MMPageBuilder withIconColor(@ColorRes int colorRes){
-        mPage.setIconColor(colorRes);
+        this.mIconColorRes = colorRes;
         return this;
     }
+
+    int mIconRightColorRes = -1;
 
     public MMPageBuilder withIconRightColor(@ColorRes int colorRes){
-        mPage.setIconRightColor(colorRes);
+        this.mIconRightColorRes = colorRes;
         return this;
     }
+
+    int mIconLeftColorRes = -1;
 
     public MMPageBuilder withIconLeftColor(@ColorRes int colorRes){
-        mPage.setIconLeftColor(colorRes);
+        this.mIconLeftColorRes = colorRes;
         return this;
     }
+
+    boolean isDividersEnabled = true;
 
     public MMPageBuilder withDividersEnabled(boolean isEnabled){
-        mPage.setDividersEnabled(isEnabled);
+        this.isDividersEnabled = isEnabled;
         return this;
     }
 
+    int mDividerColorRes = -1;
+
     public MMPageBuilder withDividerColor(@ColorRes int colorRes){
-        mPage.setDividerColor(colorRes);
+        this.mDividerColorRes = colorRes;
         return this;
     }
 
@@ -136,10 +234,19 @@ public class MMPageBuilder {
             case IMenuItem.MENU_ITEM_TYPE_HEADER:
                 HeaderMenuItem headerMenuItem = (HeaderMenuItem) item;
 
-                // Set custom header title text color if not already defined
-                if (mPage.getHeaderTitleTextColorRes() != -1){
+                // Update title text color if not already set
+                if (mHeaderTitleTextColorRes != -1){
                     if (headerMenuItem.getTitleTextColorRes() == -1){
-                        headerMenuItem.withTitleTextColor(mPage.getHeaderTitleTextColorRes());
+                        headerMenuItem.withTitleTextColor(mHeaderTitleTextColorRes);
+                    }
+                }
+
+                // Update title text size if not already not set
+                if (mHeaderTitleTextSize != -1){
+                    if (headerMenuItem.getTitleTextSize() == -1){
+                        if (mHeaderTitleTextSizeUnit != -1){
+                            headerMenuItem.withTitleTextSize(mHeaderTitleTextSizeUnit, mHeaderTitleTextSize);
+                        } else headerMenuItem.withTitleTextSize(mHeaderTitleTextSize);
                     }
                 }
 
@@ -149,43 +256,79 @@ public class MMPageBuilder {
 
                 // Update title text color if not already set
                 if (bodyMenuItem.getTitleTextColorRes() == -1){
-                    bodyMenuItem.withTitleTextColor(mPage.getBodyTitleTextColorRes());
+                    bodyMenuItem.withTitleTextColor(mBodyTitleTextColorRes);
+                }
+
+                // Update title text size if not already set
+                if (mBodyTitleTextSize != -1){
+                    if (bodyMenuItem.getTitleTextSize() == -1){
+                        if (mBodyTitleTextSizeUnit != -1){
+                            bodyMenuItem.withTitleTextSize(mBodyTitleTextSizeUnit, mBodyTitleTextSize);
+                        } else bodyMenuItem.withTitleTextSize(mBodyTitleTextSize);
+                    }
                 }
 
                 // Update description text color if not already set
                 if (bodyMenuItem.getDescriptionTextColorRes() == -1){
-                    bodyMenuItem.withDescriptionTextColor(mPage.getBodyDescriptionTextColorRes());
+                    bodyMenuItem.withDescriptionTextColor(mBodyDescriptionTextColorRes);
+                }
+
+                // Update description text size if not already set
+                if (mBodyDescriptionTextSize != -1){
+                    if (bodyMenuItem.getDescriptionTextSize() == -1){
+                        if (mBodyDescriptionTextSizeUnit != -1){
+                            bodyMenuItem.withDescriptionTextSize(mBodyDescriptionTextSizeUnit, mBodyDescriptionTextSize);
+                        } else bodyMenuItem.withDescriptionTextSize(mBodyDescriptionTextSize);
+                    }
                 }
 
                 // Update value text color if not already set
                 if (bodyMenuItem.getValueTextColorRes() == -1){
-                    bodyMenuItem.withValueTextColor(mPage.getBodyValueTextColorRes());
+                    bodyMenuItem.withValueTextColor(mBodyValueTextColorRes);
+                }
+
+                // Update value text size if not already set
+                if (mBodyValueTextSize != -1){
+                    if (bodyMenuItem.getValueTextSize() == -1){
+                        if (mBodyValueTextSizeUnit != -1){
+                            bodyMenuItem.withValueTextSize(mBodyValueTextSizeUnit, mBodyValueTextSize);
+                        } else bodyMenuItem.withValueTextSize(mBodyValueTextSize);
+                    }
                 }
 
                 // Update content text color if not already set
                 if (bodyMenuItem.getContentTextColorRes() == -1){
-                    bodyMenuItem.withContentTextColor(mPage.getBodyContentTextColorRes());
+                    bodyMenuItem.withContentTextColor(mBodyContentTextColorRes);
+                }
+
+                // Update content text size if not already set
+                if (mBodyContentTextSize != -1){
+                    if (bodyMenuItem.getContentTextSize() == -1){
+                        if (mBodyContentTextSizeUnit != -1){
+                            bodyMenuItem.withContentTextSize(mBodyContentTextSizeUnit, mBodyContentTextSize);
+                        } else bodyMenuItem.withContentTextSize(mBodyContentTextSize);
+                    }
                 }
 
                 // Update icon left color if not already set
                 if (bodyMenuItem.getIconLeftColorRes() == -1) {
-                    if (mPage.getIconLeftColorRes() != -1) {
-                        bodyMenuItem.withIconLeftColor(mPage.getIconLeftColorRes());
-                    } else bodyMenuItem.withIconLeftColor(mPage.getIconColorRes());
+                    if (mIconLeftColorRes != -1) {
+                        bodyMenuItem.withIconLeftColor(mIconLeftColorRes);
+                    } else bodyMenuItem.withIconLeftColor(mIconColorRes);
                 }
 
                 // Update icon right color if not already set
                 if (bodyMenuItem.getIconRightColorRes() == -1){
-                    if (mPage.getIconRightColorRes() != -1){
-                        bodyMenuItem.withIconRightColor(mPage.getIconRightColorRes());
-                    } else bodyMenuItem.withIconRightColor(mPage.getIconColorRes());
+                    if (mIconRightColorRes != -1){
+                        bodyMenuItem.withIconRightColor(mIconRightColorRes);
+                    } else bodyMenuItem.withIconRightColor(mIconColorRes);
                 }
 
                 // Update divider color if not already set
-                bodyMenuItem.withDividerEnabled(mPage.isDividersEnabled());
-                if (mPage.getDividerColorRes() != -1){
+                bodyMenuItem.withDividerEnabled(isDividersEnabled);
+                if (mDividerColorRes != -1){
                     if (bodyMenuItem.getDividerColorRes() == -1) {
-                        bodyMenuItem.withDividerColor(mPage.getDividerColorRes());
+                        bodyMenuItem.withDividerColor(mDividerColorRes);
                     }
                 }
 
@@ -196,17 +339,17 @@ public class MMPageBuilder {
     }
 
     public MMPage build(){
-        for (int x = 0; x < mPage.getMenuItems().size(); x++){
-            IMenuItem item = mPage.getMenuItems().get(x);
+        for (int x = 0; x < mItems.size(); x++){
+            IMenuItem item = mItems.get(x);
             IMenuItem nextItem = null;
-            if ((x + 1) != mPage.getMenuItems().size()){
-                nextItem = mPage.getMenuItems().get(x + 1);
+            if ((x + 1) != mItems.size()){
+                nextItem = mItems.get(x + 1);
             }
-            mPage.getMenuItems().remove(x);
+            mItems.remove(x);
             item = prepareMenuItem(item, nextItem);
-            mPage.getMenuItems().add(x, item);
+            mItems.add(x, item);
         }
 
-        return mPage;
+        return new MMPage(this);
     }
 }

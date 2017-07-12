@@ -15,4 +15,12 @@ public interface IHeaderItem<T, VH extends RecyclerView.ViewHolder> extends IMen
     T withTitleTextColor(int colorRes);
 
     int getTitleTextColorRes();
+
+    T withTitleTextSize(float size);
+
+    T withTitleTextSize(int unit, float size);
+
+    float getTitleTextSize();
+
+    int getTitleTextSizeUnit();
 }

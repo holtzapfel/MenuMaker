@@ -3,7 +3,6 @@ package com.studios.holtzapfel.menumaker.model;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorRes;
-import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.res.ResourcesCompat;
@@ -63,6 +62,32 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
         return mTitleTextColorRes;
     }
 
+    private float mTitleTextSize = -1;
+    private int mTitleTextSizeUnit = -1;
+
+    @Override
+    public BodyMenuItem withTitleTextSize(float size) {
+        this.mTitleTextSize = size;
+        return this;
+    }
+
+    @Override
+    public BodyMenuItem withTitleTextSize(int unit, float size) {
+        this.mTitleTextSizeUnit = unit;
+        this.mTitleTextSize = size;
+        return this;
+    }
+
+    @Override
+    public float getTitleTextSize() {
+        return mTitleTextSize;
+    }
+
+    @Override
+    public int getTitleTextSizeUnit() {
+        return mTitleTextSizeUnit;
+    }
+
     private String mDescription;
 
     @Override
@@ -89,6 +114,31 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
         return mDescriptionTextColorRes;
     }
 
+    private float mDescriptionTextSize = -1;
+    private int mDescriptionTextSizeUnit = -1;
+    @Override
+    public BodyMenuItem withDescriptionTextSize(float size) {
+        this.mDescriptionTextSize = size;
+        return this;
+    }
+
+    @Override
+    public BodyMenuItem withDescriptionTextSize(int unit, float size) {
+        this.mDescriptionTextSizeUnit = unit;
+        this.mDescriptionTextSize = size;
+        return this;
+    }
+
+    @Override
+    public float getDescriptionTextSize() {
+        return mDescriptionTextSize;
+    }
+
+    @Override
+    public int getDescriptionTextSizeUnit() {
+        return mDescriptionTextSizeUnit;
+    }
+
     private String mValue;
 
     @Override
@@ -100,6 +150,44 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
     @Override
     public String getValue() {
         return mValue;
+    }
+
+    private int mValueTextColorRes = -1;
+
+    @Override
+    public BodyMenuItem withValueTextColor(@ColorRes int colorRes) {
+        this.mValueTextColorRes = colorRes;
+        return this;
+    }
+
+    @Override
+    public int getValueTextColorRes() {
+        return mValueTextColorRes;
+    }
+
+    private float mValueTextSize = -1;
+    private int mValueTextSizeUnit = -1;
+    @Override
+    public BodyMenuItem withValueTextSize(float size) {
+        this.mValueTextSize = size;
+        return this;
+    }
+
+    @Override
+    public BodyMenuItem withValueTextSize(int unit, float size) {
+        this.mValueTextSizeUnit = unit;
+        this.mValueTextSize = size;
+        return this;
+    }
+
+    @Override
+    public float getValueTextSize() {
+        return mValueTextSize;
+    }
+
+    @Override
+    public int getValueTextSizeUnit() {
+        return mValueTextSizeUnit;
     }
 
     private boolean isValueEditable = false;
@@ -174,19 +262,6 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
         } else return null;
     }
 
-    private int mValueTextColorRes = -1;
-
-    @Override
-    public BodyMenuItem withValueTextColor(@ColorRes int colorRes) {
-        this.mValueTextColorRes = colorRes;
-        return this;
-    }
-
-    @Override
-    public int getValueTextColorRes() {
-        return mValueTextColorRes;
-    }
-
     private boolean mBooleanValue = false;
     private boolean isSwitchUsed = false;
 
@@ -228,11 +303,37 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
         return mContentTextColorRes;
     }
 
+    private float mContentTextSize = -1;
+    private int mContentTextSizeUnit = -1;
+
+    @Override
+    public BodyMenuItem withContentTextSize(float size) {
+        this.mContentTextSize = size;
+        return this;
+    }
+
+    @Override
+    public BodyMenuItem withContentTextSize(int unit, float size) {
+        this.mContentTextSizeUnit = unit;
+        this.mContentTextSize = size;
+        return this;
+    }
+
+    @Override
+    public float getContentTextSize() {
+        return mContentTextSize;
+    }
+
+    @Override
+    public int getContentTextSizeUnit() {
+        return mContentTextSizeUnit;
+    }
+
     private int mIconLeftRes = -1;
     private Drawable mIconLeft;
 
     @Override
-    public BodyMenuItem withIconLeft(@DrawableRes int iconRes) {
+    public BodyMenuItem withIconLeft(int iconRes) {
         this.mIconLeftRes = getMMIconRes(iconRes);
         if (this.mIconLeftRes != -1){
             withIconLeftSize(75, 75);
@@ -306,7 +407,7 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
     private Drawable mIconRight;
 
     @Override
-    public BodyMenuItem withIconRight(@DrawableRes int iconRes) {
+    public BodyMenuItem withIconRight(int iconRes) {
         this.mIconRightRes = getMMIconRes(iconRes);
         if (this.mIconRightRes != -1){
             withIconRightSize(75, 75);
@@ -487,6 +588,13 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
             if (getTitleTextColorRes() != -1 && getTitleTextColorRes() != 0){
                 holder.title.setTextColor(ResourcesCompat.getColor(context.getResources(), getTitleTextColorRes(), context.getTheme()));
             }
+
+            // Set text size
+            if (mTitleTextSize != -1){
+                if (mTitleTextSizeUnit != -1){
+                    holder.title.setTextSize(mTitleTextSizeUnit, mTitleTextSize);
+                } else holder.title.setTextSize(mTitleTextSize);
+            }
         } else holder.title.setVisibility(View.GONE);
 
         // Configure description
@@ -497,6 +605,13 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
             // Set text color
             if (getDescriptionTextColorRes() > 0){
                 holder.description.setTextColor(ResourcesCompat.getColor(context.getResources(), getDescriptionTextColorRes(), context.getTheme()));
+            }
+
+            // Set text color
+            if (mDescriptionTextSize != -1){
+                if (mDescriptionTextSizeUnit != -1){
+                    holder.description.setTextSize(mDescriptionTextSizeUnit, mDescriptionTextSize);
+                } else holder.description.setTextSize(mDescriptionTextSize);
             }
         } else holder.description.setVisibility(View.GONE);
 
@@ -527,6 +642,13 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
             if (getValueTextColorRes() > 0){
                 holder.value.setTextColor(ResourcesCompat.getColor(context.getResources(), getValueTextColorRes(), context.getTheme()));
             }
+
+            // Set text size
+            if (mValueTextSize != -1){
+                if (mValueTextSizeUnit != -1){
+                    holder.value.setTextSize(mValueTextSizeUnit, mValueTextSize);
+                } else holder.value.setTextSize(mValueTextSize);
+            }
         } else holder.value.setVisibility(View.GONE);
 
         // Configure content
@@ -534,8 +656,16 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
             holder.content.setVisibility(View.VISIBLE);
             holder.content.setText(Master.fromHtml(getContent()));
 
+            // Set text color
             if (getContentTextColorRes() > 0){
                 holder.content.setTextColor(ResourcesCompat.getColor(context.getResources(), getContentTextColorRes(), context.getTheme()));
+            }
+
+            // Set text size
+            if (mContentTextSize != -1){
+                if (mContentTextSizeUnit != -1){
+                    holder.content.setTextSize(mContentTextSizeUnit, mContentTextSize);
+                } else holder.content.setTextSize(mContentTextSize);
             }
         } else holder.content.setVisibility(View.GONE);
 

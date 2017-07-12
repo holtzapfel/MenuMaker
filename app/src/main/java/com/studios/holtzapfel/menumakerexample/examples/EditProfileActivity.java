@@ -72,7 +72,7 @@ public class EditProfileActivity extends MMActivity{
         MMPage pageMain = new MMPageBuilder(PAGE_MAIN)
                 .withPageTitle("Edit Profile")
                 .withMenuItems(
-                        new HeaderMenuItem("Basic Info"),
+                        new HeaderMenuItem(0).withTitle("Basic Info"),
                         new BodyMenuItem(ID_FIRST_NAME).withTitle("First Name").withValueEditable(mFirstName, "John", true, true, "Edit First Name", InputType.TYPE_TEXT_FLAG_CAP_WORDS, new BodyMenuItem.OnVerifyInputListener() {
                             @Override
                             public boolean onVerifyInput(CharSequence input) {
@@ -89,7 +89,7 @@ public class EditProfileActivity extends MMActivity{
                         new BodyMenuItem(ID_LAST_NAME).withTitle("Last Name").withValueEditable(mLastName, "Doe", true, true, "Edit Last Name", InputType.TYPE_TEXT_FLAG_CAP_WORDS),
                         new FooterMenuItem(),
 
-                        new HeaderMenuItem("Contact Info"),
+                        new HeaderMenuItem(0).withTitle("Contact Info"),
                         new BodyMenuItem(ID_EMAIL_ADDRESS).withTitle("Email Address").withValueEditable(mEmailAddress, "johndoe@gmail.com", true, true, "Edit Email Address", InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS, true),
                         new BodyMenuItem(ID_PHONE_NUMBER).withTitle("Phone Number").withValueEditable(mPhoneNumber, "18001234567", true, true, "Edit Phone Number", InputType.TYPE_CLASS_PHONE, true),
                         new FooterMenuItem()

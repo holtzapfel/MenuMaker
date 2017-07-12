@@ -174,23 +174,24 @@ public class MainActivity extends MMActivity{
     // Used to build MMMenu object
     private List<MMPage> buildPages(){
         List<MMPage> pages = new ArrayList<>();
+
         pages.add(new MMPageBuilder(PAGE_ROOT)
                 .withPageTitle("Holtzapfel\'s Menu Maker")
                 .withMenuItems(
-                        new HeaderMenuItem("Example Menus"),
+                        new HeaderMenuItem(0).withTitle("Example Menus"),
                         new BodyMenuItem(ID_EXAMPLE_BASIC_MENU).withTitle("Basic Menu").withIconLeft(BodyMenuItem.ICON_ARROW_RIGHT).withIconLeftSize(100, 100),
                         new BodyMenuItem(ID_EXAMPLE_EDIT_PROFILE).withTitle("Edit Profile").withIconLeft(BodyMenuItem.ICON_ARROW_RIGHT).withIconLeftSize(100,100),
                         new BodyMenuItem(ID_EXAMPLE_LOGIN_FORM).withTitle("Login Form").withIconLeft(BodyMenuItem.ICON_ARROW_RIGHT).withIconLeftSize(100, 100),
                         new FooterMenuItem(),
 
-                        new HeaderMenuItem("Features"),
+                        new HeaderMenuItem(0).withTitle("Features"),
                         new BodyMenuItem(ID_FEAT_CUSTOM_ITEMS).withTitle("Custom Menu Items").withDescription("Need each item to appear differently?  No problem.").withIconLeft(R.drawable.ic_star).withIconRight(BodyMenuItem.ICON_ARROW_RIGHT),
                         new BodyMenuItem(ID_FEAT_FORM).withTitle("Forms").withDescription("Allow users to update and edit information").withIconLeft(R.drawable.ic_form).withIconRight(BodyMenuItem.ICON_ARROW_RIGHT),
                         new BodyMenuItem(ID_FEAT_DISPLAY_INFORMATION).withTitle("Display Information").withDescription("Menus do not have to be just about selecting preferences.  Sometimes, like in a Help section, information just needs to be displayed!").withIconLeft(R.drawable.ic_news).withIconRight(BodyMenuItem.ICON_ARROW_RIGHT),
                         new BodyMenuItem(ID_FEAT_SWITCHES).withTitle("Switches").withDescription("Create menus with switches for true/false properties").withIconLeft(R.drawable.ic_switch).withIconRight(BodyMenuItem.ICON_ARROW_RIGHT),
                         new FooterMenuItem(),
 
-                        new HeaderMenuItem("About"),
+                        new HeaderMenuItem(0).withTitle("About"),
                         new BodyMenuItem(ID_GITHUB).withTitle("GitHub").withDescription("Visit the GitHub page to integrate MenuMaker into your app").withIconLeft(R.drawable.ic_github).withIconRight(BodyMenuItem.ICON_OPEN_IN_BROWSER),
                         new BodyMenuItem(ID_CREDITS).withTitle("Credits").withIconLeft(R.drawable.ic_credits).withIconRight(BodyMenuItem.ICON_ARROW_RIGHT),
                         new BodyMenuItem(ID_DEVELOPMENT).withTitle("Development").withIconLeft(R.drawable.ic_developer_board).withIconRight(BodyMenuItem.ICON_ARROW_RIGHT),
@@ -202,13 +203,13 @@ public class MainActivity extends MMActivity{
         pages.add(new MMPageBuilder(PAGE_SWITCHES)
                 .withPageTitle("Switches")
                 .withMenuItems(
-                        new HeaderMenuItem("Group 1"),
+                        new HeaderMenuItem(0).withTitle("Group 1"),
                         new BodyMenuItem(0).withTitle("Switch 1").withDescription("Switch 1 description").withBooleanValue(true),
                         new BodyMenuItem(0).withTitle("Switch 2").withDescription("Switch 2 description").withBooleanValue(false),
                         new BodyMenuItem(0).withTitle("Switch 3").withDescription("Switch 3 description").withBooleanValue(true),
                         new FooterMenuItem(),
 
-                        new HeaderMenuItem("Group 2"),
+                        new HeaderMenuItem(0).withTitle("Group 2"),
                         new BodyMenuItem(0).withTitle("Switch 4").withBooleanValue(false),
                         new FooterMenuItem()
                 )
@@ -224,13 +225,13 @@ public class MainActivity extends MMActivity{
         pages.add(new MMPageBuilder(PAGE_FORMS)
                 .withPageTitle("Forms")
                 .withMenuItems(
-                        new HeaderMenuItem("User Information"),
+                        new HeaderMenuItem(0).withTitle("User Information"),
                         new BodyMenuItem(ID_FORM_FIRST_NAME).withTitle("First Name").withValueEditable(mFirstName, "First Name", true, true, "Edit", InputType.TYPE_TEXT_FLAG_CAP_WORDS),
                         new BodyMenuItem(ID_FORM_LAST_NAME).withTitle("Last Name").withValueEditable(mLastName, "Last Name", true, true, "Edit", InputType.TYPE_TEXT_FLAG_CAP_WORDS),
                         new BodyMenuItem(ID_FORM_EMAIL_ADDRESS).withTitle("Email Address").withValueEditable(mEmailAddress, "Email Address", true, true, "Edit", InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS, true),
                         new FooterMenuItem(),
 
-                        new HeaderMenuItem("Preferences"),
+                        new HeaderMenuItem(0).withTitle("Preferences"),
                         new BodyMenuItem(ID_FORM_RECEIVE_EMAILS).withTitle("Receive emails").withBooleanValue(receiveEmails),
                         new FooterMenuItem()
                 )
@@ -238,15 +239,15 @@ public class MainActivity extends MMActivity{
         );
 
         List<IMenuItem> sampleItems = new ArrayList<>();
-        sampleItems.add(new HeaderMenuItem("FAB Capable"));
+        sampleItems.add(new HeaderMenuItem(0).withTitle("FAB Capable"));
         sampleItems.add(new BodyMenuItem(0).withTitle("Floating Action Buttons").withDescription("Can be enabled and used easily!"));
         sampleItems.add(new FooterMenuItem());
-        sampleItems.add(new HeaderMenuItem("Topics List"));
+        sampleItems.add(new HeaderMenuItem(0).withTitle("Topics List"));
         for (int x = 1; x < 11; x++){
             sampleItems.add(new BodyMenuItem(ID_TOPIC).withTitle("Topic " + String.valueOf(x)).withContent("Here is some content surrounding topic " + String.valueOf(x) + ".  Hopefully this information does something really important for you"));
         }
         sampleItems.add(new FooterMenuItem());
-        sampleItems.add(new HeaderMenuItem("Did you notice that?"));
+        sampleItems.add(new HeaderMenuItem(0).withTitle("Did you notice that?"));
         sampleItems.add(new BodyMenuItem(0).withTitle("The FAB disappeared when scrolling down!"));
         sampleItems.add(new FooterMenuItem());
 
@@ -266,13 +267,13 @@ public class MainActivity extends MMActivity{
         pages.add(new MMPageBuilder(PAGE_CUSTOM_ITEMS)
                 .withPageTitle("Custom Menu Items")
                 .withMenuItems(
-                        new HeaderMenuItem("Example Items"),
+                        new HeaderMenuItem(0).withTitle("Example Items"),
                         new BodyMenuItem(0).withTitle("Simple Item").withTitleTextColor(android.R.color.holo_green_dark).withDescription("What would the world be like if we could divide by zero?").withValue("3.14"),
                         new BodyMenuItem(0).withTitle("Divide by Zero").withDescription("Enabled dividing by zero").withBooleanValue(false),
                         new BodyMenuItem(0).withTitle("Warning!").withTitleTextColor(android.R.color.holo_red_light).withContent("Dividing by zero is not a good thing.  Use only when necessary"),
                         new FooterMenuItem(),
 
-                        new HeaderMenuItem("Individual Items").withTitleTextColor(android.R.color.holo_red_dark),
+                        new HeaderMenuItem(0).withTitle("Individual Items").withTitleTextColor(android.R.color.holo_red_dark),
                         new BodyMenuItem(0).withTitle("Title Only"),
                         new BodyMenuItem(0).withDescription("Description Only"),
                         new BodyMenuItem(0).withValue("Value Only"),
@@ -280,7 +281,7 @@ public class MainActivity extends MMActivity{
                         new BodyMenuItem(0).withBooleanValue(true),
                         new FooterMenuItem(),
 
-                        new HeaderMenuItem("Icon Customization").withTitleTextColor(R.color.colorAccent),
+                        new HeaderMenuItem(0).withTitle("Icon Customization").withTitleTextColor(R.color.colorAccent),
                         new BodyMenuItem(0).withTitle("Left Icon").withIconLeft(R.drawable.ic_face),
                         new BodyMenuItem(0).withTitle("Right Icon").withTitleTextColor(android.R.color.holo_blue_bright).withIconRight(R.drawable.ic_face),
                         new BodyMenuItem(0).withTitle("Bilateral Icons").withDescription("Customize icon colors too!").withTitleTextColor(android.R.color.holo_orange_dark).withIconLeft(R.drawable.ic_face).withIconLeftColor(android.R.color.holo_purple).withIconRight(R.drawable.ic_face).withIconRightColor(android.R.color.holo_green_light),
@@ -307,12 +308,12 @@ public class MainActivity extends MMActivity{
         pages.add(new MMPageBuilder(PAGE_DEVELOPMENT)
                 .withPageTitle("Development")
                 .withMenuItems(
-                        new HeaderMenuItem("Versions"),
+                        new HeaderMenuItem(0).withTitle("Versions"),
                         new BodyMenuItem(0).withTitle("App Release").withValue("v1.0"),
                         new BodyMenuItem(0).withTitle("MenuMaker API").withValue("v1.0-beta1"),
                         new FooterMenuItem(),
 
-                        new HeaderMenuItem("Misc"),
+                        new HeaderMenuItem(0).withTitle("Misc"),
                         new BodyMenuItem(0).withTitle("Author").withValue("Drew Holtzapfel"),
                         new FooterMenuItem()
                 )
