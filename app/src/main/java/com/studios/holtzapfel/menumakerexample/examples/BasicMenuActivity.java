@@ -45,15 +45,17 @@ public class BasicMenuActivity extends MMActivity {
     }
 
     /**
-     * A function that is periodically called by MMActivity and MMFragment to ensure an updated MMMenu
-     * NOTE: This is not called until startMenu() is called.
-     * NOTE: Add a statement like:
+     * This is periodically called by MMActivity and MMFragment to ensure an updated MMMenu is used
+     * Add a statement like this...
      *
      * if (mMenu == null){
      *     // build and store menu
      * }
      *
-     * so that menu can be dynamic.  If setup to always rebuild, user inputted info will likely be erased
+     * ...so that the menu can be dynamic.  If mMenu is always recreated, user inputted info will
+     * likely be reverted
+     *
+     * NOTE: This function is not called until startMenu() is called.
      */
     @Override
     public MMMenu onRequestMenu() {
@@ -66,7 +68,7 @@ public class BasicMenuActivity extends MMActivity {
     /**
      * I prefer to call startMenu() here, but it can be called at any time.
      *
-     * VERY IMPORTANT! If this is not called, the menu will not be created.
+     * VERY IMPORTANT: If this is not called, the menu will not be created.
      *
      * NOTE: If data for menu values needs loaded, pulled, etc., ensure data is loaded before calling startMenu()
      */
@@ -98,33 +100,37 @@ public class BasicMenuActivity extends MMActivity {
         // Compile all pages into MMMenuBuilder and then build()
         // Only one page is used in this example
         return new MMMenuBuilder(BasicMenuActivity.this)
-                .withFrameLayout(R.id.frame)                    // Layout ID must reference to a FrameLayout
-                .withPages(pageMain)                            // Include created pages
-                .withInitialPageID(PAGE_MAIN)                   // Needed more for menus with multiple pages
-                .withOnMenuItemClickListener(new MMMenu.OnMenuItemClickListener() {
-                    @Override
-                    public void onBodyItemClick(BodyMenuItem bodyMenuItem) {
-                        switch (bodyMenuItem.getID()){
-                            case ID_LINK1:
-                                // TODO perform click action
-                                Toast.makeText(BasicMenuActivity.this, bodyMenuItem.getTitle(), Toast.LENGTH_SHORT).show();
-                                break;
-                            case ID_LINK2:
-                                // TODO perform click action
-                                Toast.makeText(BasicMenuActivity.this, bodyMenuItem.getTitle(), Toast.LENGTH_SHORT).show();
-                                break;
-                            case ID_LINK3:
-                                // TODO perform click action
-                                Toast.makeText(BasicMenuActivity.this, bodyMenuItem.getTitle(), Toast.LENGTH_SHORT).show();
-                                break;
-                        }
-                    }
+                .withFrameLayout(R.id.frame)                        // FrameLayout to display menu
+                .withPages(pageMain)                                // Insert created pages
+                .withInitialPageID(PAGE_MAIN)                       // Sets page to be displayed first
+                .withOnMenuItemClickListener(buildClickListener())  // Insert click listener
+                .build();                                           // Prepares and creates MMMenu object
+    }
 
-                    @Override
-                    public void onHeaderItemClick(HeaderMenuItem headerMenuItem) {
+    private MMMenu.OnMenuItemClickListener buildClickListener(){
+        return new MMMenu.OnMenuItemClickListener() {
+            @Override
+            public void onBodyItemClick(BodyMenuItem bodyMenuItem) {
+                switch (bodyMenuItem.getID()){
+                    case ID_LINK1:
+                        // TODO perform click action
+                        Toast.makeText(BasicMenuActivity.this, bodyMenuItem.getTitle(), Toast.LENGTH_SHORT).show();
+                        break;
+                    case ID_LINK2:
+                        // TODO perform click action
+                        Toast.makeText(BasicMenuActivity.this, bodyMenuItem.getTitle(), Toast.LENGTH_SHORT).show();
+                        break;
+                    case ID_LINK3:
+                        // TODO perform click action
+                        Toast.makeText(BasicMenuActivity.this, bodyMenuItem.getTitle(), Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
 
-                    }
-                })
-                .build();                                       // build() prepares and creates MMMenu object
+            @Override
+            public void onHeaderItemClick(HeaderMenuItem headerMenuItem) {
+
+            }
+        };
     }
 }

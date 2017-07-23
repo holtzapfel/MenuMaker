@@ -246,7 +246,7 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
                     break;
                 case InputType.TYPE_CLASS_PHONE:
                     this.verifyIfValueIsPhone = true;
-                    this.verifyIfValueIsEmail = true;
+                    this.verifyIfValueIsEmail = false;
                     break;
             }
         } else {
