@@ -271,7 +271,12 @@ public class MainActivity extends MMActivity{
                         new BodyMenuItem(0).withTitle("Simple Item").withTitleTextColor(android.R.color.holo_green_dark).withDescription("What would the world be like if we could divide by zero?").withValue("3.14"),
                         new BodyMenuItem(0).withTitle("Divide by Zero").withDescription("Enabled dividing by zero").withBooleanValue(false),
                         new BodyMenuItem(0).withTitle("Warning!").withTitleTextColor(android.R.color.holo_red_light).withContent("Dividing by zero is not a good thing.  Use only when necessary"),
-                        new FooterMenuItem(),
+                        new FooterMenuItem().withButtonLeft("Left Button", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Toast.makeText(MainActivity.this, "Left button click!", Toast.LENGTH_SHORT).show();
+                            }
+                        }),
 
                         new HeaderMenuItem(0).withTitle("Individual Items").withTitleTextColor(android.R.color.holo_red_dark),
                         new BodyMenuItem(0).withTitle("Title Only"),
@@ -279,13 +284,23 @@ public class MainActivity extends MMActivity{
                         new BodyMenuItem(0).withValue("Value Only"),
                         new BodyMenuItem(0).withContent("Content Only"),
                         new BodyMenuItem(0).withBooleanValue(true),
-                        new FooterMenuItem(),
+                        new FooterMenuItem().withButtonCenter("Center Button", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Toast.makeText(MainActivity.this, "Center button click!", Toast.LENGTH_SHORT).show();
+                            }
+                        }),
 
                         new HeaderMenuItem(0).withTitle("Icon Customization").withTitleTextColor(R.color.colorAccent),
                         new BodyMenuItem(0).withTitle("Left Icon").withIconLeft(R.drawable.ic_face),
                         new BodyMenuItem(0).withTitle("Right Icon").withTitleTextColor(android.R.color.holo_blue_bright).withIconRight(R.drawable.ic_face),
                         new BodyMenuItem(0).withTitle("Bilateral Icons").withDescription("Customize icon colors too!").withTitleTextColor(android.R.color.holo_orange_dark).withIconLeft(R.drawable.ic_face).withIconLeftColor(android.R.color.holo_purple).withIconRight(R.drawable.ic_face).withIconRightColor(android.R.color.holo_green_light),
-                        new FooterMenuItem()
+                        new FooterMenuItem().withButtonRight("Right Button", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Toast.makeText(MainActivity.this, "Right button click!", Toast.LENGTH_SHORT).show();
+                            }
+                        })
                 )
                 .withFAB(new View.OnClickListener() {
                     @Override

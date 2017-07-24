@@ -13,8 +13,6 @@ import com.studios.holtzapfel.menumaker.model.interfaces.IMenuItem;
 abstract class AbstractMenuItem<T, VH extends RecyclerView.ViewHolder> implements IMenuItem<T, VH>{
 
     private int mID = -1;
-    private boolean isEnabled = true;
-    private boolean isLastItem = false;
 
     @Override
     public int getID() {
@@ -27,6 +25,8 @@ abstract class AbstractMenuItem<T, VH extends RecyclerView.ViewHolder> implement
         return (T) this;
     }
 
+    private boolean isEnabled = true;
+
     @Override
     public boolean isEnabled() {
         return isEnabled;
@@ -37,6 +37,8 @@ abstract class AbstractMenuItem<T, VH extends RecyclerView.ViewHolder> implement
         this.isEnabled = isEnabled;
         return (T) this;
     }
+
+    private boolean isLastItem = false;
 
     @Override
     public boolean isLastItem() {
@@ -64,5 +66,18 @@ abstract class AbstractMenuItem<T, VH extends RecyclerView.ViewHolder> implement
             return R.drawable.ic_action_open_in_browser;
     }
         return -1;
+    }
+
+    private String hiddenValue;
+
+    @Override
+    public T withHiddenValue(String id) {
+        this.hiddenValue = id;
+        return (T) this;
+    }
+
+    @Override
+    public String getHiddenValue() {
+        return hiddenValue;
     }
 }

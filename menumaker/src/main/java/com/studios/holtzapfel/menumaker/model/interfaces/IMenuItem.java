@@ -39,4 +39,8 @@ public interface IMenuItem<T, VH extends RecyclerView.ViewHolder> {
     T withLastItem(boolean isLastItem);
 
     boolean isLastItem();
+
+    T withHiddenValue(String id);
+
+    String getHiddenValue();
 }
