@@ -43,4 +43,8 @@ public interface IMenuItem<T, VH extends RecyclerView.ViewHolder> {
     T withHiddenValue(String id);
 
     String getHiddenValue();
+
+    boolean isClickable();
+
+    T withClickable(boolean isClickable);
 }

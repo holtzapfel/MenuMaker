@@ -179,7 +179,7 @@ public class MainActivity extends MMActivity{
                 .withPageTitle("Holtzapfel\'s Menu Maker")
                 .withMenuItems(
                         new HeaderMenuItem(0).withTitle("Example Menus"),
-                        new BodyMenuItem(ID_EXAMPLE_BASIC_MENU).withTitle("Basic Menu").withIconLeft(BodyMenuItem.ICON_ARROW_RIGHT).withIconLeftSize(100, 100),
+                        new BodyMenuItem(ID_EXAMPLE_BASIC_MENU).withTitle("Basic Menu").withIconLeft(BodyMenuItem.ICON_ARROW_RIGHT).withIconLeftSize(100, 100).withClickable(false),
                         new BodyMenuItem(ID_EXAMPLE_EDIT_PROFILE).withTitle("Edit Profile").withIconLeft(BodyMenuItem.ICON_ARROW_RIGHT).withIconLeftSize(100,100),
                         new BodyMenuItem(ID_EXAMPLE_LOGIN_FORM).withTitle("Login Form").withIconLeft(BodyMenuItem.ICON_ARROW_RIGHT).withIconLeftSize(100, 100),
                         new FooterMenuItem(),

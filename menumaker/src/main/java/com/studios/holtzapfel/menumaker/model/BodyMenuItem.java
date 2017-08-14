@@ -730,6 +730,10 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
         holder.content.setEnabled(isEnabled());
         holder.iconLeft.setEnabled(isEnabled());
         holder.iconRight.setEnabled(isEnabled());
+
+        // Configure clickable
+        holder.cardView.setClickable(isClickable());
+        holder.booleanValue.setClickable(isClickable());
     }
 
     @Override

@@ -80,4 +80,17 @@ abstract class AbstractMenuItem<T, VH extends RecyclerView.ViewHolder> implement
     public String getHiddenValue() {
         return hiddenValue;
     }
+
+    private boolean isClickable = true;
+
+    @Override
+    public boolean isClickable() {
+        return this.isClickable;
+    }
+
+    @Override
+    public T withClickable(boolean isClickable) {
+        this.isClickable = isClickable;
+        return (T) this;
+    }
 }
