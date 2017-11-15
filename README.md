@@ -31,7 +31,19 @@ You will never have to design a menu again.
 **The best way to discover how to use MM is via the [MenuMaker Wiki](https://github.com/holtzapfel/MenuMaker/wiki).**  
 ### Just want to get started?
 Follow the instructions below.
-#### 1. Insert gradle dependency
+#### 1. Add Maven Jitpack repository
+_Project level build.gradle_
+```gradle
+allprojects {
+    repositories {
+        ...
+        maven { 
+            url "https://jitpack.io" 
+        }
+    }
+}
+```
+#### 2. Insert gradle dependency
 _Module level build.gradle_
 ```gradle
 compile 'com.github.holtzapfel:MenuMaker:v1.0.3'
