@@ -34,7 +34,7 @@ Follow the instructions below.
 #### 1. Insert gradle dependency
 _Module level build.gradle_
 ```gradle
-compile 'com.github.holtzapfel:MenuMaker:v1.0.2'
+compile 'com.github.holtzapfel:MenuMaker:v1.0.3'
 ```
 #### 2. Extend with **MMActivity**
 ```java
