@@ -21,9 +21,12 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.studios.holtzapfel.menumaker.MMMenu;
 import com.studios.holtzapfel.menumaker.Master;
-import com.studios.holtzapfel.menumaker.R;
+import com.studios.holtzapfel.menumaker.R2;
 import com.studios.holtzapfel.menumaker.model.interfaces.IBodyItem;
 import com.studios.holtzapfel.menumaker.model.interfaces.IMenuItem;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by holtzapfel on 6/27/17.
@@ -714,7 +717,9 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
         } else holder.iconRight.setVisibility(View.GONE);
 
         // Configure divider
-        if (isDividerEnabled()){
+        if (isLastItem()){
+            holder.divider.setVisibility(View.GONE);
+        } else if (isDividerEnabled()){
             holder.divider.setVisibility(View.VISIBLE);
             if (getDividerColorRes() > 0){
                 holder.divider.setBackgroundColor(ResourcesCompat.getColor(context.getResources(), getDividerColorRes(), context.getTheme()));
@@ -743,27 +748,19 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
 
     public static class BodyMenuItemViewHolder extends RecyclerView.ViewHolder{
 
-        private CardView cardView;
-        private ImageView iconLeft;
-        private TextView title;
-        private TextView description;
-        private TextView value;
-        private Switch booleanValue;
-        private ImageView iconRight;
-        private TextView content;
-        private TextView divider;
+        @BindView(R2.id.mm_item_body_cardview) CardView cardView;
+        @BindView(R2.id.mm_item_body_icon_left) ImageView iconLeft;
+        @BindView(R2.id.mm_item_body_title) TextView title;
+        @BindView(R2.id.mm_item_body_description) TextView description;
+        @BindView(R2.id.mm_item_body_value) TextView value;
+        @BindView(R2.id.mm_item_body_switch) Switch booleanValue;
+        @BindView(R2.id.mm_item_body_icon_right) ImageView iconRight;
+        @BindView(R2.id.mm_item_body_content) TextView content;
+        @BindView(R2.id.mm_item_body_divider) TextView divider;
 
         public BodyMenuItemViewHolder(View v) {
             super(v);
-            this.cardView = (CardView) v.findViewById(R.id.mm_item_body_cardview);
-            this.iconLeft = (ImageView) v.findViewById(R.id.mm_item_body_icon_left);
-            this.title = (TextView) v.findViewById(R.id.mm_item_body_title);
-            this.description = (TextView) v.findViewById(R.id.mm_item_body_description);
-            this.value = (TextView) v.findViewById(R.id.mm_item_body_value);
-            this.booleanValue = (Switch) v.findViewById(R.id.mm_item_body_switch);
-            this.iconRight = (ImageView) v.findViewById(R.id.mm_item_body_icon_right);
-            this.content = (TextView) v.findViewById(R.id.mm_item_body_content);
-            this.divider = (TextView) v.findViewById(R.id.mm_item_body_divider);
+            ButterKnife.bind(this,v);
         }
     }
 }

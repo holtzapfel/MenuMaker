@@ -14,6 +14,9 @@ import android.view.ViewGroup;
 
 import com.studios.holtzapfel.menumaker.adapters.MenuFragmentRecyclerAdapter;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MMFragment extends Fragment{
 
     private static final String ARG_PAGE_ID = "ARG_PAGE_ID";
@@ -22,8 +25,8 @@ public class MMFragment extends Fragment{
 
     private OnFragmentInteractionListener mListener;
 
-    private RecyclerView mRecycler;
-    private FloatingActionButton mFAB;
+    @BindView(R2.id.menu_maker_menu_fragment_recycler) RecyclerView mRecycler;
+    @BindView(R2.id.menu_maker_menu_fragment_fab) FloatingActionButton mFAB;
 
     public MMFragment() {
         // Required empty public constructor
@@ -51,10 +54,7 @@ public class MMFragment extends Fragment{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_menu, container, false);
-
-        // Associate views
-        mRecycler = (RecyclerView) v.findViewById(R.id.menu_maker_menu_fragment_recycler);
-        mFAB = (FloatingActionButton) v.findViewById(R.id.menu_maker_menu_fragment_fab);
+        ButterKnife.bind(this, v);
 
         return v;
     }

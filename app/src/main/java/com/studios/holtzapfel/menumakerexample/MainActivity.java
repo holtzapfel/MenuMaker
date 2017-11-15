@@ -181,7 +181,7 @@ public class MainActivity extends MMActivity{
                         new HeaderMenuItem(0).withTitle("Example Menus"),
                         new BodyMenuItem(ID_EXAMPLE_BASIC_MENU).withTitle("Basic Menu").withIconLeft(BodyMenuItem.ICON_ARROW_RIGHT).withIconLeftSize(100, 100).withClickable(false),
                         new BodyMenuItem(ID_EXAMPLE_EDIT_PROFILE).withTitle("Edit Profile").withIconLeft(BodyMenuItem.ICON_ARROW_RIGHT).withIconLeftSize(100,100),
-                        new BodyMenuItem(ID_EXAMPLE_LOGIN_FORM).withTitle("Login Form").withIconLeft(BodyMenuItem.ICON_ARROW_RIGHT).withIconLeftSize(100, 100),
+                        new BodyMenuItem(ID_EXAMPLE_LOGIN_FORM).withTitle("Login Form").withIconLeft(BodyMenuItem.ICON_ARROW_RIGHT).withIconLeftSize(100, 100).withLastItem(true),
                         new FooterMenuItem(),
 
                         new HeaderMenuItem(0).withTitle("Features"),
@@ -193,8 +193,8 @@ public class MainActivity extends MMActivity{
 
                         new HeaderMenuItem(0).withTitle("About"),
                         new BodyMenuItem(ID_GITHUB).withTitle("GitHub").withDescription("Visit the GitHub page to integrate MenuMaker into your app").withIconLeft(R.drawable.ic_github).withIconRight(BodyMenuItem.ICON_OPEN_IN_BROWSER),
-                        new BodyMenuItem(ID_CREDITS).withTitle("Credits").withIconLeft(R.drawable.ic_credits).withIconRight(BodyMenuItem.ICON_ARROW_RIGHT),
-                        new BodyMenuItem(ID_DEVELOPMENT).withTitle("Development").withIconLeft(R.drawable.ic_developer_board).withIconRight(BodyMenuItem.ICON_ARROW_RIGHT),
+                        new BodyMenuItem(ID_CREDITS).withTitle("Credits").withIconLeft(R.drawable.ic_credits),
+                        new BodyMenuItem(ID_DEVELOPMENT).withTitle("Development").withIconLeft(R.drawable.ic_developer_board),
                         new FooterMenuItem()
                 )
                 .build()
