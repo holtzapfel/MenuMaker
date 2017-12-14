@@ -61,12 +61,14 @@ public class MenuFragmentRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
                 break;
             case IMenuItem.MENU_ITEM_TYPE_BODY:
                 BodyMenuItem bodyMenuItem = (BodyMenuItem) menuItem;
-                if (position + 1 < mItems.size()){
-                    IMenuItem nextItem = mItems.get(position + 1);
-                    if (nextItem.getMenuType() != IMenuItem.MENU_ITEM_TYPE_BODY){
-                        bodyMenuItem.withDividerEnabled(false);
-                    } else bodyMenuItem.withDividerEnabled(true);
-                } else bodyMenuItem.withDividerEnabled(false);
+                if (bodyMenuItem.isDividerEnabled()) {
+                    if (position + 1 < mItems.size()) {
+                        IMenuItem nextItem = mItems.get(position + 1);
+                        if (nextItem.getMenuType() != IMenuItem.MENU_ITEM_TYPE_BODY) {
+                            bodyMenuItem.withDividerEnabled(false);
+                        } else bodyMenuItem.withDividerEnabled(true);
+                    } else bodyMenuItem.withDividerEnabled(false);
+                }
                 bodyMenuItem.bindView(mContext, (BodyMenuItem.BodyMenuItemViewHolder) holder, mListener);
                 break;
             case IMenuItem.MENU_ITEM_TYPE_FOOTER:
