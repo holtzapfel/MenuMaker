@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/MenuMakerExample.iml" filepath="$PROJECT_DIR$/MenuMakerExample.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MenuMaker.iml" filepath="$PROJECT_DIR$/MenuMaker.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/menumaker/menumaker.iml" filepath="$PROJECT_DIR$/menumaker/menumaker.iml" />
     </modules>
