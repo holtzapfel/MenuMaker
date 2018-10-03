@@ -1,9 +1,6 @@
 package com.studios.holtzapfel.menumaker.model;
 
 import android.content.Context;
-import android.support.v4.content.res.ResourcesCompat;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
@@ -12,6 +9,9 @@ import com.studios.holtzapfel.menumaker.Master;
 import com.studios.holtzapfel.menumaker.R2;
 import com.studios.holtzapfel.menumaker.model.interfaces.IHeaderItem;
 
+import androidx.cardview.widget.CardView;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -109,6 +109,7 @@ public class HeaderMenuItem extends AbstractMenuItem<HeaderMenuItem, HeaderMenuI
 
     }
 
+    @SuppressWarnings("unused")
     public static class HeaderViewHolder extends RecyclerView.ViewHolder{
 
         @BindView(R2.id.mm_item_header_cardview) CardView cardView;

@@ -1,17 +1,18 @@
 package com.studios.holtzapfel.menumaker;
 
-import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.studios.holtzapfel.menumaker.model.interfaces.IMenuItem;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
+
 /**
  * Created by holtzapfel on 6/25/17.
  */
 
-@SuppressWarnings({"WeakerAccess", "unused"})
+@SuppressWarnings({"WeakerAccess", "unused", "UnusedReturnValue"})
 public class MMPage {
 
     private MMPageBuilder mPageBuilder;

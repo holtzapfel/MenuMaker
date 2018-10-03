@@ -1,8 +1,6 @@
 package com.studios.holtzapfel.menumaker.model;
 
 import android.content.Context;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 
@@ -10,6 +8,8 @@ import com.studios.holtzapfel.menumaker.MMMenu;
 import com.studios.holtzapfel.menumaker.R2;
 import com.studios.holtzapfel.menumaker.model.interfaces.IFooterItem;
 
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

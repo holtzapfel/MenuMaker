@@ -1,14 +1,16 @@
 package com.studios.holtzapfel.menumaker.model.interfaces;
 
 import android.graphics.drawable.Drawable;
-import android.support.annotation.ColorRes;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.annotation.ColorRes;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by holtzapfel on 6/27/17.
  */
 
+@SuppressWarnings({"UnusedReturnValue", "unused"})
 public interface IBodyItem<T, VH extends RecyclerView.ViewHolder> extends IMenuItem<T, VH> {
 
     // TITLE

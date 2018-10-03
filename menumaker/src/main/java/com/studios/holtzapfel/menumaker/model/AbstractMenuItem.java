@@ -1,9 +1,9 @@
 package com.studios.holtzapfel.menumaker.model;
 
-import android.support.v7.widget.RecyclerView;
-
 import com.studios.holtzapfel.menumaker.R;
 import com.studios.holtzapfel.menumaker.model.interfaces.IMenuItem;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by holtzapfel on 6/19/17.

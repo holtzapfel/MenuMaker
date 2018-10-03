@@ -1,7 +1,7 @@
 package com.studios.holtzapfel.menumakerexample.examples;
 
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.text.InputType;
 import android.widget.Toast;
 

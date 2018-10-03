@@ -2,9 +2,6 @@ package com.studios.holtzapfel.menumaker;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.ColorRes;
-import android.support.annotation.IdRes;
-import android.support.annotation.NonNull;
 import android.widget.FrameLayout;
 
 import com.studios.holtzapfel.menumaker.model.BodyMenuItem;
@@ -15,11 +12,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import androidx.annotation.ColorRes;
+import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
+
 /**
  * Created by holtzapfel on 6/24/17.
  */
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "UnusedReturnValue"})
 public class MMMenuBuilder {
 
     /**

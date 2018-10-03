@@ -4,12 +4,12 @@
     android:layout_height="match_parent"
     tools:context="com.studios.holtzapfel.menumaker.MMFragment">
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/menu_maker_menu_fragment_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/menu_maker_menu_fragment_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

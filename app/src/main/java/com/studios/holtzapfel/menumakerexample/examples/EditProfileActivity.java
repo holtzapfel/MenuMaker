@@ -3,8 +3,8 @@ package com.studios.holtzapfel.menumakerexample.examples;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import android.text.InputType;
 import android.widget.Toast;
 

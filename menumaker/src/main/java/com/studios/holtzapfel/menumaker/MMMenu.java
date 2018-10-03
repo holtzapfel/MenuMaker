@@ -13,9 +13,8 @@ import java.util.List;
  * Created by holtzapfel on 6/28/17.
  */
 
+@SuppressWarnings({"UnusedReturnValue", "unused", "WeakerAccess"})
 public class MMMenu {
-
-    //private static final String TAG = "MMMenu";
 
     static final String BUNDLE_CURRENT_PAGE_ID = "BUNDLE_CURRENT_PAGE_ID";
 

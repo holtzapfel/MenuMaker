@@ -1,7 +1,7 @@
 package com.studios.holtzapfel.menumaker.model.interfaces;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.studios.holtzapfel.menumaker.MMMenu;
 
@@ -9,6 +9,7 @@ import com.studios.holtzapfel.menumaker.MMMenu;
  * Created by holtzapfel on 6/19/17.
  */
 
+@SuppressWarnings({"UnusedReturnValue", "unused"})
 public interface IMenuItem<T, VH extends RecyclerView.ViewHolder> {
 
     int ICON_ARROW_RIGHT = 100;

@@ -1,21 +1,23 @@
 package com.studios.holtzapfel.menumaker;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.res.ResourcesCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.studios.holtzapfel.menumaker.adapters.MenuFragmentRecyclerAdapter;
 
+import androidx.core.content.res.ResourcesCompat;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 public class MMFragment extends Fragment{
 
@@ -24,6 +26,7 @@ public class MMFragment extends Fragment{
     private int mPageID;
 
     private OnFragmentInteractionListener mListener;
+    private Unbinder mUnbinder;
 
     @BindView(R2.id.menu_maker_menu_fragment_recycler) RecyclerView mRecycler;
     @BindView(R2.id.menu_maker_menu_fragment_fab) FloatingActionButton mFAB;
@@ -54,7 +57,9 @@ public class MMFragment extends Fragment{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_menu, container, false);
-        ButterKnife.bind(this, v);
+
+        // ButterKnife it
+        mUnbinder = ButterKnife.bind(this, v);
 
         return v;
     }
@@ -77,11 +82,18 @@ public class MMFragment extends Fragment{
         updateUI(mPageID);
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mUnbinder.unbind();
+    }
+
     interface OnFragmentInteractionListener {
         MMMenu onRetrieveMenu();
         void onNotifyCurrentPageID(int pageID);
     }
 
+    @SuppressLint("RestrictedApi")
     public void updateUI(int pageID){
         // Retrieve menu; throw exception if null
         MMMenu menu = mListener.onRetrieveMenu();
