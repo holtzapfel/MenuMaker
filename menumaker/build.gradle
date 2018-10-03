@@ -1,5 +1,4 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.jakewharton.butterknife'
 apply plugin: 'com.github.dcendents.android-maven'
 group = 'com.github.holtzapfel'
 
@@ -38,7 +37,5 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
 
     // OTHERS
-    implementation 'com.jakewharton:butterknife:9.0.0-SNAPSHOT'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
 }

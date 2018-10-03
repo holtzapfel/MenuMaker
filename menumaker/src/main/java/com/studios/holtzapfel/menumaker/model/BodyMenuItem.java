@@ -15,7 +15,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.studios.holtzapfel.menumaker.MMMenu;
 import com.studios.holtzapfel.menumaker.Master;
-import com.studios.holtzapfel.menumaker.R2;
+import com.studios.holtzapfel.menumaker.R;
 import com.studios.holtzapfel.menumaker.model.interfaces.IBodyItem;
 import com.studios.holtzapfel.menumaker.model.interfaces.IMenuItem;
 
@@ -25,8 +25,6 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by holtzapfel on 6/27/17.
@@ -748,19 +746,29 @@ public class BodyMenuItem extends AbstractMenuItem<BodyMenuItem, BodyMenuItem.Bo
 
     public static class BodyMenuItemViewHolder extends RecyclerView.ViewHolder{
 
-        @BindView(R2.id.mm_item_body_cardview) CardView cardView;
-        @BindView(R2.id.mm_item_body_icon_left) ImageView iconLeft;
-        @BindView(R2.id.mm_item_body_title) TextView title;
-        @BindView(R2.id.mm_item_body_description) TextView description;
-        @BindView(R2.id.mm_item_body_value) TextView value;
-        @BindView(R2.id.mm_item_body_switch) Switch booleanValue;
-        @BindView(R2.id.mm_item_body_icon_right) ImageView iconRight;
-        @BindView(R2.id.mm_item_body_content) TextView content;
-        @BindView(R2.id.mm_item_body_divider) TextView divider;
+        CardView cardView;
+        ImageView iconLeft;
+        TextView title;
+        TextView description;
+        TextView value;
+        Switch booleanValue;
+        ImageView iconRight;
+        TextView content;
+        TextView divider;
 
         public BodyMenuItemViewHolder(View v) {
             super(v);
-            ButterKnife.bind(this,v);
+
+            // Associate views
+            cardView = v.findViewById(R.id.mm_item_body_cardview);
+            iconLeft = v.findViewById(R.id.mm_item_body_icon_left);
+            title = v.findViewById(R.id.mm_item_body_title);
+            description = v.findViewById(R.id.mm_item_body_description);
+            value = v.findViewById(R.id.mm_item_body_value);
+            booleanValue = v.findViewById(R.id.mm_item_body_switch);
+            iconRight = v.findViewById(R.id.mm_item_body_icon_right);
+            content = v.findViewById(R.id.mm_item_body_content);
+            divider = v.findViewById(R.id.mm_item_body_divider);
         }
     }
 }

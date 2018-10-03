@@ -6,14 +6,12 @@ import android.widget.TextView;
 
 import com.studios.holtzapfel.menumaker.MMMenu;
 import com.studios.holtzapfel.menumaker.Master;
-import com.studios.holtzapfel.menumaker.R2;
+import com.studios.holtzapfel.menumaker.R;
 import com.studios.holtzapfel.menumaker.model.interfaces.IHeaderItem;
 
 import androidx.cardview.widget.CardView;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by holtzapfel on 6/19/17.
@@ -112,12 +110,15 @@ public class HeaderMenuItem extends AbstractMenuItem<HeaderMenuItem, HeaderMenuI
     @SuppressWarnings("unused")
     public static class HeaderViewHolder extends RecyclerView.ViewHolder{
 
-        @BindView(R2.id.mm_item_header_cardview) CardView cardView;
-        @BindView(R2.id.mm_item_header_title) TextView title;
+        CardView cardView;
+        TextView title;
 
         public HeaderViewHolder(View v) {
             super(v);
-            ButterKnife.bind(this, v);
+
+            // Associate views
+            cardView = v.findViewById(R.id.mm_item_header_cardview);
+            title = v.findViewById(R.id.mm_item_header_title);
         }
     }
 }

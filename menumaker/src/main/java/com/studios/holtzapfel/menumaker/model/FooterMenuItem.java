@@ -5,13 +5,11 @@ import android.view.View;
 import android.widget.Button;
 
 import com.studios.holtzapfel.menumaker.MMMenu;
-import com.studios.holtzapfel.menumaker.R2;
+import com.studios.holtzapfel.menumaker.R;
 import com.studios.holtzapfel.menumaker.model.interfaces.IFooterItem;
 
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by holtzapfel on 6/20/17.
@@ -92,14 +90,19 @@ public class FooterMenuItem extends AbstractMenuItem<FooterMenuItem, FooterMenuI
     }
 
     public static class FooterViewHolder extends RecyclerView.ViewHolder{
-        @BindView(R2.id.mm_item_footer_cardview) CardView cardView;
-        @BindView(R2.id.mm_item_footer_button_left) Button buttonLeft;
-        @BindView(R2.id.mm_item_footer_button_center) Button buttonCenter;
-        @BindView(R2.id.mm_item_footer_button_right) Button buttonRight;
+        CardView cardView;
+        Button buttonLeft;
+        Button buttonCenter;
+        Button buttonRight;
 
         public FooterViewHolder(View v) {
             super(v);
-            ButterKnife.bind(this, v);
+
+            // Associate views
+            cardView = v.findViewById(R.id.mm_item_footer_cardview);
+            buttonLeft = v.findViewById(R.id.mm_item_footer_button_left);
+            buttonCenter = v.findViewById(R.id.mm_item_footer_button_center);
+            buttonRight = v.findViewById(R.id.mm_item_footer_button_right);
         }
     }
 }

@@ -15,9 +15,6 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 public class MMFragment extends Fragment{
 
@@ -26,10 +23,9 @@ public class MMFragment extends Fragment{
     private int mPageID;
 
     private OnFragmentInteractionListener mListener;
-    private Unbinder mUnbinder;
 
-    @BindView(R2.id.menu_maker_menu_fragment_recycler) RecyclerView mRecycler;
-    @BindView(R2.id.menu_maker_menu_fragment_fab) FloatingActionButton mFAB;
+    private RecyclerView mRecycler;
+    private FloatingActionButton mFAB;
 
     public MMFragment() {
         // Required empty public constructor
@@ -58,8 +54,9 @@ public class MMFragment extends Fragment{
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_menu, container, false);
 
-        // ButterKnife it
-        mUnbinder = ButterKnife.bind(this, v);
+        // Associate views
+        mRecycler = v.findViewById(R.id.menu_maker_menu_fragment_recycler);
+        mFAB = v.findViewById(R.id.menu_maker_menu_fragment_fab);
 
         return v;
     }
@@ -80,12 +77,6 @@ public class MMFragment extends Fragment{
     public void onResume() {
         super.onResume();
         updateUI(mPageID);
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        mUnbinder.unbind();
     }
 
     interface OnFragmentInteractionListener {
