@@ -46,7 +46,7 @@ allprojects {
 #### 2. Insert gradle dependency
 _Module level build.gradle_
 ```gradle
-compile 'com.github.holtzapfel:MenuMaker:v1.0.3'
+compile 'com.github.holtzapfel:MenuMaker:1.0.4'
 ```
 #### 2. Extend with **MMActivity**
 ```java
@@ -54,6 +54,4 @@ public class MainActivity extends MMActivity{
 ...
 }
 ```
-That is it!  Enjoy!
-
-For more help, see the [MenuMaker Wiki](https://github.com/holtzapfel/MenuMaker/wiki).
+Those are the beginning steps.  Please read the [MenuMaker Wiki](https://github.com/holtzapfel/MenuMaker/wiki) for more usage information.  Enjoy!
